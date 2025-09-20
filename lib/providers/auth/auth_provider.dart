@@ -42,7 +42,6 @@ class AuthProvider extends ChangeNotifier {
   bool socialRegisterLoader = false;
   bool updateFCMLoader = false;
 
-
   bool _rememberMe = false;
   bool get rememberMe => _rememberMe;
 
@@ -72,11 +71,8 @@ class AuthProvider extends ChangeNotifier {
       String dToken = await MyNotification.getFcmToken();
 
       final response = await CallApi.post(AppEndpoints.login,
-          data: jsonEncode({
-            'email': email,
-            'password': password,
-            'fcm_token' : dToken
-          }),
+          data: jsonEncode(
+              {'email': email, 'password': password, 'fcm_token': dToken}),
           isLogin: true);
       print(response.body);
       print(response.statusCode);
@@ -98,7 +94,8 @@ class AuthProvider extends ChangeNotifier {
           LocalData.setRememberedEmail(email);
           LocalData.changeIsLogin(true);
 
-          Provider.of<CartProvider>(context, listen: false).getCartCount(context);
+          Provider.of<CartProvider>(context, listen: false)
+              .getCartCount(context);
 
           notGuest();
           AppRoutes.routeRemoveAllTo(context, const HomePage());
@@ -107,8 +104,10 @@ class AuthProvider extends ChangeNotifier {
         loginLoader = false;
         notifyListeners();
 
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
-        showSnackbar( error, error: true);
+        final error = jsonDecode(response.body)['message'] ??
+            jsonDecode(response.body)['error'] ??
+            'An error occurred';
+        showSnackbar(error, error: true);
       }
     } catch (e) {
       loginLoader = false;
@@ -123,21 +122,19 @@ class AuthProvider extends ChangeNotifier {
       socialLoginLoader = true;
       notifyListeners();
 
-      await GoogleSignIn().signOut();
+      await GoogleSignIn.instance.signOut();
 
-      final googleSignIn = await GoogleSignIn().signIn();
+      final googleSignIn = await GoogleSignIn.instance.authenticate();
 
-      if(googleSignIn == null) {
+      if (googleSignIn == null) {
         socialLoginLoader = false;
-      notifyListeners();
-        return;}
+        notifyListeners();
+        return;
+      }
 
       String dToken = await MyNotification.getFcmToken();
       final response = await CallApi.post(AppEndpoints.socialLogin,
-          data: jsonEncode({
-            'email': googleSignIn.email,
-            'fcm_token' : dToken
-          }),
+          data: jsonEncode({'email': googleSignIn.email, 'fcm_token': dToken}),
           isLogin: true);
       print(response.statusCode);
 
@@ -155,7 +152,8 @@ class AuthProvider extends ChangeNotifier {
           LocalData.setUserData(currentUser!);
           LocalData.setToken(userModel.data!.accessToken!);
           LocalData.changeIsLogin(true);
-          Provider.of<CartProvider>(context, listen: false).getCartCount(context);
+          Provider.of<CartProvider>(context, listen: false)
+              .getCartCount(context);
 
           notGuest();
           AppRoutes.routeRemoveAllTo(context, const HomePage());
@@ -168,13 +166,15 @@ class AuthProvider extends ChangeNotifier {
             SocialRegisterPage(
               name: googleSignIn.displayName!,
               email: googleSignIn.email,
-              photoUrl: googleSignIn.photoUrl??'',
+              photoUrl: googleSignIn.photoUrl ?? '',
             ));
       } else {
         socialLoginLoader = false;
         notifyListeners();
 
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
+        final error = jsonDecode(response.body)['message'] ??
+            jsonDecode(response.body)['error'] ??
+            'An error occurred';
         showSnackbar(error, error: true);
       }
       // GlobalMethods.errorDialog(subtitle:googleSignIn!.email.toString()+ googleSignIn.displayName.toString(), context: context);
@@ -193,16 +193,15 @@ class AuthProvider extends ChangeNotifier {
 
       // await GoogleSignIn().signOut();
 
-      final credential = await SignInWithApple.getAppleIDCredential(
-          scopes: [AppleIDAuthorizationScopes.email,
-            AppleIDAuthorizationScopes.fullName]);
+      final credential = await SignInWithApple.getAppleIDCredential(scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName
+      ]);
 
       String dToken = await MyNotification.getFcmToken();
       final response = await CallApi.post(AppEndpoints.socialLogin,
-          data: jsonEncode({
-            'email': credential.email??'',
-            'fcm_token' : dToken
-          }),
+          data: jsonEncode(
+              {'email': credential.email ?? '', 'fcm_token': dToken}),
           isLogin: true);
       print(response.statusCode);
 
@@ -220,7 +219,8 @@ class AuthProvider extends ChangeNotifier {
           LocalData.setUserData(currentUser!);
           LocalData.setToken(userModel.data!.accessToken!);
           LocalData.changeIsLogin(true);
-          Provider.of<CartProvider>(context, listen: false).getCartCount(context);
+          Provider.of<CartProvider>(context, listen: false)
+              .getCartCount(context);
 
           notGuest();
           AppRoutes.routeRemoveAllTo(context, const HomePage());
@@ -231,15 +231,17 @@ class AuthProvider extends ChangeNotifier {
         AppRoutes.routeTo(
             context,
             SocialRegisterPage(
-              name: credential.givenName??'',
-              email: credential.email??'',
+              name: credential.givenName ?? '',
+              email: credential.email ?? '',
               photoUrl: '',
             ));
       } else {
         socialLoginLoader = false;
         notifyListeners();
 
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
+        final error = jsonDecode(response.body)['message'] ??
+            jsonDecode(response.body)['error'] ??
+            'An error occurred';
         showSnackbar(error, error: true);
       }
       // GlobalMethods.errorDialog(subtitle:googleSignIn!.email.toString()+ googleSignIn.displayName.toString(), context: context);
@@ -257,7 +259,8 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
       await FacebookAuth.instance.logOut();
 
-      final LoginResult loginResult = await FacebookAuth.instance.login(permissions: [ "email"], loginBehavior: LoginBehavior.webOnly);
+      final LoginResult loginResult = await FacebookAuth.instance
+          .login(permissions: ["email"], loginBehavior: LoginBehavior.webOnly);
 
       print('loginResult.message');
       print(loginResult.message);
@@ -265,11 +268,10 @@ class AuthProvider extends ChangeNotifier {
       // Create a credential from the access token
       //    if(loginResult.accessToken != null) {
 
-
       // Once signed in, return the UserCredential
-      if(loginResult.status == LoginStatus.success) {
+      if (loginResult.status == LoginStatus.success) {
         final OAuthCredential facebookAuthCredential =
-        FacebookAuthProvider.credential(loginResult.accessToken!.token);
+            FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
 
         final login = await FirebaseAuth.instance
             .signInWithCredential(facebookAuthCredential);
@@ -278,10 +280,7 @@ class AuthProvider extends ChangeNotifier {
 
         String dToken = await MyNotification.getFcmToken();
         final response = await CallApi.post(AppEndpoints.socialLogin,
-            data: jsonEncode({
-              'email': login.user!.email,
-              'fcm_token' : dToken
-            }),
+            data: jsonEncode({'email': login.user!.email, 'fcm_token': dToken}),
             isLogin: true);
         print(response.statusCode);
         print(response.body);
@@ -300,7 +299,8 @@ class AuthProvider extends ChangeNotifier {
             LocalData.setUserData(currentUser!);
             LocalData.setToken(userModel.data!.accessToken!);
             LocalData.changeIsLogin(true);
-            Provider.of<CartProvider>(context, listen: false).getCartCount(context);
+            Provider.of<CartProvider>(context, listen: false)
+                .getCartCount(context);
 
             notGuest();
             AppRoutes.routeRemoveAllTo(context, const HomePage());
@@ -319,14 +319,16 @@ class AuthProvider extends ChangeNotifier {
           socialLoginLoader = false;
           notifyListeners();
 
-          final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
+          final error = jsonDecode(response.body)['message'] ??
+              jsonDecode(response.body)['error'] ??
+              'An error occurred';
           showSnackbar(error, error: true);
         }
       }
       // }
       socialLoginLoader = false;
       notifyListeners();
-    // final response = await CallApi.post(AppEndpoints.socialLogin,
+      // final response = await CallApi.post(AppEndpoints.socialLogin,
       //     data: jsonEncode({
       //       'email': login['email'],
       //     }),
@@ -357,13 +359,12 @@ class AuthProvider extends ChangeNotifier {
       // }
       // print(login.user?.displayName);
       // GlobalMethods.errorDialog(subtitle:login['email']+ login['name'], context: context);
-    }  on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException catch (e) {
       socialLoginLoader = false;
       notifyListeners();
       print('..........................................');
       print(e);
-    }
-    catch (e) {
+    } catch (e) {
       socialLoginLoader = false;
       notifyListeners();
       print('..........................................');
@@ -396,11 +397,11 @@ class AuthProvider extends ChangeNotifier {
         'phone': phone,
         'gender': gender,
         'photoUrl': photoUrl,
-        'fcm_token' : dToken
+        'fcm_token': dToken
         // 'locale': 'en-GB',
       };
-      final response =
-          await CallApi.post(AppEndpoints.socialRegister, data: jsonEncode(data));
+      final response = await CallApi.post(AppEndpoints.socialRegister,
+          data: jsonEncode(data));
 
       print('=======response======');
       print(response.statusCode);
@@ -421,14 +422,14 @@ class AuthProvider extends ChangeNotifier {
         }
 
         notGuest();
-        AppRoutes.routeRemoveAllTo(
-            context,
-            const HomePage());
+        AppRoutes.routeRemoveAllTo(context, const HomePage());
       } else {
         socialRegisterLoader = false;
         notifyListeners();
 
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
+        final error = jsonDecode(response.body)['message'] ??
+            jsonDecode(response.body)['error'] ??
+            'An error occurred';
         showSnackbar(error, error: true);
       }
     } catch (e) {
@@ -463,7 +464,6 @@ class AuthProvider extends ChangeNotifier {
             'phone': phone,
             'password': password,
             'password_confirmation': password,
-
           }));
 
       if (response.statusCode == 200) {
@@ -473,7 +473,7 @@ class AuthProvider extends ChangeNotifier {
         final jsonRes = jsonDecode(response.body);
         u.UserModel userModel = u.UserModel.fromJson(jsonRes);
         currentUser = userModel.data?.user;
-        if(currentUser != null) {
+        if (currentUser != null) {
           LocalData.setUserData(currentUser!);
           LocalData.setToken(userModel.data!.accessToken!);
         }
@@ -488,7 +488,9 @@ class AuthProvider extends ChangeNotifier {
         signupLoader = false;
         notifyListeners();
 
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
+        final error = jsonDecode(response.body)['message'] ??
+            jsonDecode(response.body)['error'] ??
+            'An error occurred';
         showSnackbar(error, error: true);
       }
     } catch (e) {
@@ -499,16 +501,14 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> updateProfile(
-    context, {
-    required String? firstName,
-    required String? lastName,
-    required String? email,
-    required File? avatar,
-    required String? phone,
-    required String? password,
-        bool newPhone = false
-  }) async {
+  Future<void> updateProfile(context,
+      {required String? firstName,
+      required String? lastName,
+      required String? email,
+      required File? avatar,
+      required String? phone,
+      required String? password,
+      bool newPhone = false}) async {
     try {
       updateProfileLoader = true;
       notifyListeners();
@@ -530,18 +530,17 @@ class AuthProvider extends ChangeNotifier {
       print(response.body);
 
       if (response.statusCode == 200) {
-
         final jsonRes = jsonDecode(response.body);
         u.UserModel userModel = u.UserModel.fromJson(jsonRes);
         currentUser = userModel.data?.user;
         if (currentUser != null) {
           LocalData.setUserData(currentUser!);
-
         }
-        if(newPhone && currentUser!.verified == 0){
+        if (newPhone && currentUser!.verified == 0) {
           // LocalData.removeUserData();
           LocalData.changeIsLogin(false);
-          AppRoutes.routeRemoveAllTo(context, OTPCodePage(phone: currentUser!.phone!));
+          AppRoutes.routeRemoveAllTo(
+              context, OTPCodePage(phone: currentUser!.phone!));
         }
         showSnackbar(jsonRes['message'], error: true);
 
@@ -553,13 +552,17 @@ class AuthProvider extends ChangeNotifier {
         updateProfileLoader = false;
         notifyListeners();
 
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
-        showSnackbar(error, error: true);      }
+        final error = jsonDecode(response.body)['message'] ??
+            jsonDecode(response.body)['error'] ??
+            'An error occurred';
+        showSnackbar(error, error: true);
+      }
     } catch (e) {
       updateProfileLoader = false;
       notifyListeners();
 
-      showSnackbar(e.toString(), error: true);    }
+      showSnackbar(e.toString(), error: true);
+    }
   }
 
   Future<void> logout(context) async {
@@ -582,7 +585,9 @@ class AuthProvider extends ChangeNotifier {
         logoutLoader = false;
         notifyListeners();
 
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
+        final error = jsonDecode(response.body)['message'] ??
+            jsonDecode(response.body)['error'] ??
+            'An error occurred';
         GlobalMethods.errorDialog(subtitle: error, context: context);
       }
     } catch (e) {
@@ -595,24 +600,23 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> deleteAccount(context) async {
     try {
-
       final response = await CallApi.get(
         AppEndpoints.deleteAccount,
       );
 
       if (response.statusCode == 200) {
-
-
         LocalData.removeUserData();
 
         AppRoutes.routeRemoveAllTo(context, const LoginPage());
       } else {
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
-log(error);
+        final error = jsonDecode(response.body)['message'] ??
+            jsonDecode(response.body)['error'] ??
+            'An error occurred';
+        log(error);
         showSnackbar(error, error: true);
       }
     } catch (e) {
-log(e.toString());
+      log(e.toString());
       showSnackbar(e.toString(), error: true);
     }
   }
@@ -647,7 +651,9 @@ log(e.toString());
         forgetPasswordLoader = false;
         notifyListeners();
 
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
+        final error = jsonDecode(response.body)['message'] ??
+            jsonDecode(response.body)['error'] ??
+            'An error occurred';
         GlobalMethods.errorDialog(subtitle: error, context: context);
       }
     } catch (e) {
@@ -683,7 +689,9 @@ log(e.toString());
         resendCodeLoader = false;
         notifyListeners();
 
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
+        final error = jsonDecode(response.body)['message'] ??
+            jsonDecode(response.body)['error'] ??
+            'An error occurred';
         showSnackbar(error, error: true);
       }
     } catch (e) {
@@ -724,7 +732,9 @@ log(e.toString());
         verificationCodeLoader = false;
         notifyListeners();
 
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
+        final error = jsonDecode(response.body)['message'] ??
+            jsonDecode(response.body)['error'] ??
+            'An error occurred';
         showSnackbar(error, error: true);
       }
     } catch (e) {
@@ -766,7 +776,9 @@ log(e.toString());
         verificationCodeLoader = false;
         notifyListeners();
 
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
+        final error = jsonDecode(response.body)['message'] ??
+            jsonDecode(response.body)['error'] ??
+            'An error occurred';
         showSnackbar(error, error: true);
       }
     } catch (e) {
@@ -777,14 +789,12 @@ log(e.toString());
     }
   }
 
-  Future<void> resendVerificationCode(
-    context) async {
+  Future<void> resendVerificationCode(context) async {
     try {
       resendCodeLoader = true;
       notifyListeners();
 
-      final response =
-          await CallApi.get(AppEndpoints.resendOtp);
+      final response = await CallApi.get(AppEndpoints.resendOtp);
 
       print('=======response======');
       print(response.statusCode);
@@ -795,12 +805,13 @@ log(e.toString());
         notifyListeners();
 
         showSnackbar(jsonDecode(response.body)['message']);
-
       } else {
         resendCodeLoader = false;
         notifyListeners();
 
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
+        final error = jsonDecode(response.body)['message'] ??
+            jsonDecode(response.body)['error'] ??
+            'An error occurred';
         showSnackbar(error, error: true);
       }
     } catch (e) {
@@ -811,12 +822,10 @@ log(e.toString());
     }
   }
 
-  Future<void> resetPassword(
-    context, {
-    required String phone,
-    required String password,
-        bool isFromProfile = false
-  }) async {
+  Future<void> resetPassword(context,
+      {required String phone,
+      required String password,
+      bool isFromProfile = false}) async {
     try {
       resetPasswordLoader = true;
       notifyListeners();
@@ -836,18 +845,19 @@ log(e.toString());
       if (response.statusCode == 200) {
         resetPasswordLoader = false;
         notifyListeners();
-        if(isFromProfile){
+        if (isFromProfile) {
           showSnackbar(jsonDecode(response.body)['message']);
           Navigator.pop(context);
-        }
-        else{
+        } else {
           AppRoutes.routeRemoveAllTo(context, const LoginPage());
         }
       } else {
         resetPasswordLoader = false;
         notifyListeners();
 
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
+        final error = jsonDecode(response.body)['message'] ??
+            jsonDecode(response.body)['error'] ??
+            'An error occurred';
         showSnackbar(error, error: true);
       }
     } catch (e) {
@@ -873,7 +883,9 @@ log(e.toString());
         NationalityModel nationalityModel = NationalityModel.fromJson(jsonRes);
         _nationalities = nationalityModel.data?.nationalities ?? [];
       } else {
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
+        final error = jsonDecode(response.body)['message'] ??
+            jsonDecode(response.body)['error'] ??
+            'An error occurred';
         // GlobalMethods.errorDialog(subtitle: error, context: context);
         showSnackbar(error, error: true);
       }
@@ -885,33 +897,35 @@ log(e.toString());
 
   Future<void> getProfileData(context) async {
     // try {
-      profileLoader = true;
+    profileLoader = true;
+    notifyListeners();
+
+    final response = await CallApi.get(
+      AppEndpoints.getProfile,
+    );
+
+    print('=======response======');
+    print(response.statusCode);
+    log(response.body.toString());
+
+    if (response.statusCode == 200) {
+      profileLoader = false;
       notifyListeners();
 
-      final response = await CallApi.get(
-        AppEndpoints.getProfile,
-      );
+      final jsonRes = jsonDecode(response.body);
+      ProfileModel profileModel = ProfileModel.fromJson(jsonRes);
+      _userProfile = profileModel.data?.user;
+      print(_userProfile);
+    } else {
+      profileLoader = false;
+      notifyListeners();
 
-      print('=======response======');
-      print(response.statusCode);
-      log(response.body.toString());
-
-      if (response.statusCode == 200) {
-        profileLoader = false;
-        notifyListeners();
-
-        final jsonRes = jsonDecode(response.body);
-        ProfileModel profileModel = ProfileModel.fromJson(jsonRes);
-        _userProfile = profileModel.data?.user;
-        print(_userProfile);
-      } else {
-        profileLoader = false;
-        notifyListeners();
-
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
-        showSnackbar(error, error: true);
-        // GlobalMethods.errorDialog(subtitle: error, context: context);
-      }
+      final error = jsonDecode(response.body)['message'] ??
+          jsonDecode(response.body)['error'] ??
+          'An error occurred';
+      showSnackbar(error, error: true);
+      // GlobalMethods.errorDialog(subtitle: error, context: context);
+    }
     // } catch (e) {
     //   profileLoader = false;
     //   notifyListeners();
@@ -926,8 +940,8 @@ log(e.toString());
       loginGuestLoader = true;
       notifyListeners();
 
-      final response = await CallApi.post(AppEndpoints.loginAsGuest,
-          isLogin: true);
+      final response =
+          await CallApi.post(AppEndpoints.loginAsGuest, isLogin: true);
       log(response.body.toString());
       log(response.statusCode.toString());
 
@@ -938,16 +952,17 @@ log(e.toString());
 
         final jsonRes = jsonDecode(response.body);
 
-          LocalData.setToken(jsonRes['data']['session_token']);
+        LocalData.setToken(jsonRes['data']['session_token']);
 
-          AppRoutes.routeRemoveAllTo(context, const HomePage());
-
+        AppRoutes.routeRemoveAllTo(context, const HomePage());
       } else {
         loginGuestLoader = false;
         notifyListeners();
 
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
-        showSnackbar( error, error: true);
+        final error = jsonDecode(response.body)['message'] ??
+            jsonDecode(response.body)['error'] ??
+            'An error occurred';
+        showSnackbar(error, error: true);
       }
     } catch (e) {
       loginGuestLoader = false;
@@ -964,24 +979,21 @@ log(e.toString());
 
       String dToken = await MyNotification.getFcmToken();
       final response = await CallApi.post(AppEndpoints.updateFCM,
-          data: jsonEncode({
-            'fcm_token' : dToken
-          }),
-          isLogin: true);
+          data: jsonEncode({'fcm_token': dToken}), isLogin: true);
       print(response.body);
       print(response.statusCode);
 
       if (response.statusCode == 200) {
         updateFCMLoader = false;
         notifyListeners();
-
-
       } else {
         updateFCMLoader = false;
         notifyListeners();
 
-        final error = jsonDecode(response.body)['message']?? jsonDecode(response.body)['error']?? 'An error occurred';
-        showSnackbar( error, error: true);
+        final error = jsonDecode(response.body)['message'] ??
+            jsonDecode(response.body)['error'] ??
+            'An error occurred';
+        showSnackbar(error, error: true);
       }
     } catch (e) {
       updateFCMLoader = false;
@@ -991,7 +1003,7 @@ log(e.toString());
     }
   }
 
-  void notGuest(){
+  void notGuest() {
     _isGuest = false;
   }
 
@@ -1006,8 +1018,8 @@ log(e.toString());
     notifyListeners();
   }
 
-  void changeRememberMe(bool? val){
-    _rememberMe = val??false;
+  void changeRememberMe(bool? val) {
+    _rememberMe = val ?? false;
     notifyListeners();
   }
 }
