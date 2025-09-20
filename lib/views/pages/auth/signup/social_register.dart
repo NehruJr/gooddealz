@@ -1,11 +1,9 @@
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:goodealz/core/constants/app_routes.dart';
 import 'package:goodealz/core/helper/extensions/assetss_widgets.dart';
 import 'package:goodealz/core/helper/extensions/context_size.dart';
 import 'package:goodealz/core/helper/extensions/validations.dart';
 import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
-import 'package:goodealz/views/pages/auth/otp_code/otp_code_page.dart';
 import 'package:goodealz/views/widgets/main_button.dart';
 import 'package:goodealz/views/widgets/main_page.dart';
 import 'package:goodealz/views/widgets/main_text.dart';
@@ -13,7 +11,6 @@ import 'package:goodealz/views/widgets/main_textfield.dart';
 import 'package:goodealz/views/widgets/rounded_square.dart';
 
 import '../../../../core/constants/app_colors.dart';
-import '../../../../core/ys_localizations/ys_localizations_provider.dart';
 import '../../../../providers/auth/auth_provider.dart';
 import '../../../widgets/dropdown/custom_dropdown.dart';
 

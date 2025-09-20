@@ -197,7 +197,7 @@ List<DrawerItem> drawer(BuildContext context, bool isGuest) => [
         icon: 'Profile-f',
         title: 'my_account'.tr,
         onTap: () {
-          AppRoutes.routeTo(context, MyAccountPage());
+          AppRoutes.routeTo(context, const MyAccountPage());
         },
       ),
       DrawerItem(

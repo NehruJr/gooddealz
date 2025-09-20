@@ -10,14 +10,12 @@ import 'package:goodealz/core/ys_localizations/ys_localizations_provider.dart';
 import 'package:goodealz/data/models/city_model.dart';
 import 'package:goodealz/data/models/order/order_model.dart';
 import 'package:goodealz/data/models/purchase_code_model.dart';
-import 'package:goodealz/data/models/winner_model.dart';
 import 'package:goodealz/providers/cart/cart_provider.dart';
 import 'package:goodealz/providers/payment/payment_provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../core/constants/app_endpoints.dart';
 import '../../core/constants/app_routes.dart';
-import '../../core/helper/functions/global_methods.dart';
 import '../../core/helper/functions/navigation_service.dart';
 import '../../data/remote/http_api.dart';
 import '../../views/pages/payment_done/payment_done_page.dart';

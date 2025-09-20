@@ -1,32 +1,23 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:goodealz/core/constants/app_colors.dart';
 import 'package:goodealz/core/constants/app_routes.dart';
 import 'package:goodealz/core/helper/extensions/assetss_widgets.dart';
-import 'package:goodealz/core/helper/functions/date_converter.dart';
-import 'package:goodealz/core/helper/functions/get_asset.dart';
 import 'package:goodealz/core/helper/functions/show_snackbar.dart';
 import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
-import 'package:goodealz/data/remote/remote_data.dart';
-import 'package:goodealz/providers/auth/auth_provider.dart';
 import 'package:goodealz/providers/checkout/checkout_provider.dart';
-import 'package:goodealz/views/pages/payment_done/payment_done_page.dart';
 import 'package:goodealz/views/widgets/main_button.dart';
 import 'package:goodealz/views/widgets/main_page.dart';
 import 'package:goodealz/views/widgets/main_text.dart';
 import 'package:goodealz/views/widgets/main_textfield.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:provider/provider.dart';
 
 import '../../../core/helper/functions/navigation_service.dart';
 import '../../../core/ys_localizations/ys_localizations_provider.dart';
-import '../../../data/models/city_model.dart';
 import '../../../providers/cart/cart_provider.dart';
 import '../../../providers/discount/discount_provider.dart';
-import '../../../providers/payment/payment_provider.dart';
 import '../../widgets/dropdown/custom_dropdown.dart';
 import '../../widgets/location_permission_dialog.dart';
 import '../location_screen/location_screen.dart';

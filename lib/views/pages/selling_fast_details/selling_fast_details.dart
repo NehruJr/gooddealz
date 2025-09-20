@@ -1,24 +1,17 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:goodealz/core/constants/app_colors.dart';
 import 'package:goodealz/core/helper/extensions/assetss_widgets.dart';
 import 'package:goodealz/core/helper/extensions/context_size.dart';
-import 'package:goodealz/core/helper/extensions/string_to_from.dart';
-import 'package:goodealz/core/helper/functions/date_converter.dart';
 import 'package:goodealz/core/helper/functions/get_asset.dart';
 import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
 import 'package:goodealz/data/models/product_model.dart';
 import 'package:goodealz/views/widgets/main_button.dart';
 import 'package:goodealz/views/widgets/main_page.dart';
 import 'package:goodealz/views/widgets/main_text.dart';
-import 'package:percent_indicator/percent_indicator.dart';
-import 'package:slide_countdown/slide_countdown.dart';
-import 'package:square_progress_bar/square_progress_bar.dart';
 
 import '../../../../core/ys_localizations/ys_localizations_provider.dart';
 import '../../../../providers/cart/cart_provider.dart';
-import '../../../../providers/product/product_provider.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/app_routes.dart';
 import '../../../providers/prizes/prizes_provider.dart';

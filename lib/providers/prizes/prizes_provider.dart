@@ -6,8 +6,6 @@ import 'package:goodealz/core/helper/functions/show_snackbar.dart';
 import 'package:goodealz/data/models/winner_model.dart';
 
 import '../../core/constants/app_endpoints.dart';
-import '../../core/helper/functions/global_methods.dart';
-import '../../data/models/product_model.dart';
 import '../../data/models/prize/prize_details.dart';
 import '../../data/remote/http_api.dart';
 

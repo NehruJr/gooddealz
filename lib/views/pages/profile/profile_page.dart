@@ -58,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           GestureDetector(
             onTap: () {
-              AppRoutes.routeTo(context, MyAccountPage(), then: (val){
+              AppRoutes.routeTo(context, const MyAccountPage(), then: (val){
                 setState(() {});});
             },
             child: Column(

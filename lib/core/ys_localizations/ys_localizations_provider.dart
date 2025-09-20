@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:goodealz/views/pages/home/home_page.dart';
-import 'package:goodealz/views/pages/welcome/splash/splash_page.dart';
 import 'package:provider/provider.dart';
 import 'package:goodealz/core/helper/functions/navigation_service.dart';
 import 'package:goodealz/core/ys_localizations/saved_language_code.dart';

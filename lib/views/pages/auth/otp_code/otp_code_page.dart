@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:goodealz/core/constants/app_colors.dart';
-import 'package:goodealz/core/constants/app_routes.dart';
 import 'package:goodealz/core/helper/extensions/assetss_widgets.dart';
 import 'package:goodealz/core/helper/extensions/context_size.dart';
 import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
-import 'package:goodealz/core/ys_localizations/ys_localizations_provider.dart';
 import 'package:goodealz/providers/auth/auth_provider.dart';
-import 'package:goodealz/views/pages/auth/reset_password/reset_password_page.dart';
 import 'package:goodealz/views/widgets/main_button.dart';
 import 'package:goodealz/views/widgets/main_page.dart';
 import 'package:goodealz/views/widgets/main_text.dart';

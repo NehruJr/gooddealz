@@ -2,15 +2,11 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:goodealz/core/constants/enums.dart';
 import 'package:goodealz/core/helper/functions/show_snackbar.dart';
 import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
-import 'package:goodealz/data/models/cart/cart_model.dart';
-import 'package:goodealz/data/models/discount/coupon_model.dart';
 import 'package:goodealz/data/models/order/order_model.dart';
 
 import '../../core/constants/app_endpoints.dart';
-import '../../core/helper/functions/global_methods.dart';
 import '../../data/remote/http_api.dart';
 
 class OrderProvider extends ChangeNotifier {

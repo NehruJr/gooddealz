@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:goodealz/core/helper/extensions/assetss_widgets.dart';
 import 'package:shimmer/shimmer.dart';
 

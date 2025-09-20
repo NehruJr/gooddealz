@@ -1,7 +1,6 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:goodealz/core/helper/extensions/assetss_widgets.dart';
 import 'package:goodealz/core/helper/functions/get_asset.dart';
 import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
@@ -9,15 +8,11 @@ import 'package:goodealz/data/models/order/order_model.dart';
 import 'package:goodealz/providers/checkout/checkout_provider.dart';
 import 'package:goodealz/views/widgets/main_page.dart';
 import 'package:goodealz/views/widgets/main_text.dart';
-import 'package:goodealz/views/widgets/main_textfield.dart';
-import 'package:goodealz/views/widgets/product_widget.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/ys_localizations/ys_localizations_provider.dart';
 import '../../../providers/payment/payment_provider.dart';
-import '../../../providers/product/product_provider.dart';
 import '../../widgets/main_button.dart';
-import '../../widgets/no_data_widget.dart';
 
 class OrderDetailsPage extends StatefulWidget {
   const OrderDetailsPage({super.key, required this.order});

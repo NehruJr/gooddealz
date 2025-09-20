@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:goodealz/core/constants/app_colors.dart';
@@ -14,7 +13,6 @@ import 'package:goodealz/core/helper/functions/get_asset.dart';
 import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
 import 'package:goodealz/data/models/user_model.dart';
 import 'package:goodealz/providers/auth/auth_provider.dart';
-import 'package:goodealz/views/pages/auth/otp_code/otp_code_page.dart';
 import 'package:goodealz/views/widgets/main_button.dart';
 import 'package:goodealz/views/widgets/main_page.dart';
 import 'package:goodealz/views/widgets/main_text.dart';

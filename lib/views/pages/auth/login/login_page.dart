@@ -8,11 +8,9 @@ import 'package:goodealz/core/helper/extensions/context_size.dart';
 import 'package:goodealz/core/helper/extensions/validations.dart';
 import 'package:goodealz/core/helper/functions/get_asset.dart';
 import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
-import 'package:goodealz/core/ys_localizations/ys_localizations_provider.dart';
 import 'package:goodealz/data/local/local_data.dart';
 import 'package:goodealz/views/pages/auth/forget_password/forget_password_page.dart';
 import 'package:goodealz/views/pages/auth/signup/signup_page.dart';
-import 'package:goodealz/views/pages/home/home_page.dart';
 import 'package:goodealz/views/widgets/main_button.dart';
 import 'package:goodealz/views/widgets/main_page.dart';
 import 'package:goodealz/views/widgets/main_text.dart';
@@ -21,7 +19,6 @@ import 'package:goodealz/views/widgets/rounded_square.dart';
 
 import '../../../../core/constants/app_colors.dart';
 import '../../../../providers/auth/auth_provider.dart';
-import '../../../widgets/custom_checkbox.dart';
 import '../../../widgets/loading_manager.dart';
 
 class LoginPage extends StatefulWidget {

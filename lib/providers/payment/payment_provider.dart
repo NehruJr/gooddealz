@@ -4,25 +4,15 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:goodealz/core/helper/functions/show_snackbar.dart';
-import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
-import 'package:goodealz/core/ys_localizations/ys_localizations_provider.dart';
 import 'package:goodealz/data/models/order/order_model.dart';
 import 'package:goodealz/data/models/payment_item_model.dart';
-import 'package:goodealz/data/models/purchase_code_model.dart';
 import 'package:goodealz/data/models/user_model.dart';
-import 'package:goodealz/data/models/winner_model.dart';
 import 'package:goodealz/providers/auth/auth_provider.dart';
-import 'package:goodealz/providers/cart/cart_provider.dart';
 
 import '../../core/constants/app_constants.dart';
-import '../../core/constants/app_endpoints.dart';
 import '../../core/constants/app_routes.dart';
-import '../../core/helper/functions/global_methods.dart';
-import '../../core/helper/functions/navigation_service.dart';
 import '../../data/remote/http_api.dart';
-import '../../views/pages/payment_done/payment_done_page.dart';
 import '../../views/pages/webView_page.dart';
-import '../discount/discount_provider.dart';
 import 'package:crypto/crypto.dart';
 
 class PaymentProvider extends ChangeNotifier {
