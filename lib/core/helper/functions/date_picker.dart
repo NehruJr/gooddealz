@@ -10,6 +10,6 @@ Future<String> datePicker(BuildContext context) async {
       //DateTime.now() - not to allow to choose before today.
       lastDate: DateTime(2100));
 
-  formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+  formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate ?? DateTime.now());
   return formattedDate;
 }
