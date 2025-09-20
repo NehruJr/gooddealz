@@ -127,7 +127,7 @@ import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
 import 'package:goodealz/views/widgets/main_text.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_maps_webservice/places.dart';
+// import 'package:google_maps_webservice/places.dart';
 
 const String kGoogleApiKey = 'AIzaSyBLelj-m_yNs9NZTYfyo7aN7oVAJTugkHs';
 
@@ -147,8 +147,9 @@ class _LocationScreenState extends State<LocationScreen> {
   bool _selectLoader = false;
 
   final TextEditingController _searchController = TextEditingController();
-  final GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: kGoogleApiKey);
-  List<Prediction> _suggestions = [];
+  // final GoogleMapsPlaces _places = GoogleMapsPlaces(apiKey: kGoogleApiKey);
+  // List<Prediction> _suggestions = [];
+  var _suggestions = [];
   Timer? _debounce;
 
   @override
@@ -226,12 +227,12 @@ class _LocationScreenState extends State<LocationScreen> {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(milliseconds: 300), () async {
       if (query.isNotEmpty) {
-        final response = await _places.autocomplete(query,
-            language: 'en',
-            components: [Component(Component.country, 'eg')]); // 🇪🇬 Limit to Egypt if you like
-        setState(() {
-          _suggestions = response.predictions;
-        });
+        // final response = await _places.autocomplete(query,
+        //     language: 'en',
+        //     components: [Component(Component.country, 'eg')]); // 🇪🇬 Limit to Egypt if you like
+        // setState(() {
+        //   _suggestions = response.predictions;
+        // });
       } else {
         setState(() {
           _suggestions.clear();
@@ -240,16 +241,16 @@ class _LocationScreenState extends State<LocationScreen> {
     });
   }
 
-  Future<void> _selectSuggestion(Prediction p) async {
-    _searchController.text = p.description!;
-    _suggestions.clear();
-
-    final detail = await _places.getDetailsByPlaceId(p.placeId!);
-    final location = detail.result.geometry!.location;
-    final pos = LatLng(location.lat, location.lng);
-    mapController?.animateCamera(CameraUpdate.newLatLng(pos));
-    _setMarker(pos);
-  }
+  // Future<void> _selectSuggestion(Prediction p) async {
+  //   _searchController.text = p.description!;
+  //   _suggestions.clear();
+  //
+  //   final detail = await _places.getDetailsByPlaceId(p.placeId!);
+  //   final location = detail.result.geometry!.location;
+  //   final pos = LatLng(location.lat, location.lng);
+  //   mapController?.animateCamera(CameraUpdate.newLatLng(pos));
+  //   _setMarker(pos);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -314,7 +315,7 @@ class _LocationScreenState extends State<LocationScreen> {
                         final p = _suggestions[index];
                         return ListTile(
                           title: Text(p.description ?? ''),
-                          onTap: () => _selectSuggestion(p),
+                          // onTap: () => _selectSuggestion(p),
                         );
                       },
                     ),
