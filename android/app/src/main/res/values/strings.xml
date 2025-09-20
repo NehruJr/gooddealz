@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Goodeals</string>
+    <string name="facebook_app_id">914607640513646</string>
+    <string name="facebook_client_token">71bf638ffe9479e35ef383ba38846082</string>
+    <string name="fb_login_protocol_scheme">fb914607640513646</string>
+</resources>

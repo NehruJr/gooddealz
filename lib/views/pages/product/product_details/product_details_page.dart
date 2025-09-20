@@ -1,0 +1,478 @@
+import 'package:carousel_custom_slider/carousel_custom_slider.dart';
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:goodealz/core/constants/app_colors.dart';
+import 'package:goodealz/core/helper/extensions/assetss_widgets.dart';
+import 'package:goodealz/core/helper/extensions/context_size.dart';
+import 'package:goodealz/core/helper/extensions/string_to_from.dart';
+import 'package:goodealz/core/helper/functions/date_converter.dart';
+import 'package:goodealz/core/helper/functions/get_asset.dart';
+import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
+import 'package:goodealz/data/models/product_model.dart';
+import 'package:goodealz/views/widgets/main_button.dart';
+import 'package:goodealz/views/widgets/main_page.dart';
+import 'package:goodealz/views/widgets/main_text.dart';
+import 'package:percent_indicator/percent_indicator.dart';
+import 'package:slide_countdown/slide_countdown.dart';
+import 'package:square_progress_bar/square_progress_bar.dart';
+
+import '../../../../core/constants/app_constants.dart';
+import '../../../../core/helper/functions/navigation_service.dart';
+import '../../../../core/ys_localizations/ys_localizations_provider.dart';
+import '../../../../providers/cart/cart_provider.dart';
+import '../../../../providers/product/product_provider.dart';
+import '../../../widgets/carousal_widget.dart';
+import '../../../widgets/winner_card.dart';
+
+class ProductDetailsPage extends StatefulWidget {
+  const ProductDetailsPage({super.key, required this.productDetails});
+
+  final ProductDetails productDetails;
+
+  @override
+  State<ProductDetailsPage> createState() => _ProductDetailsPageState();
+}
+
+class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  int status = 0;
+
+  bool showMore = false;
+
+  final List<String> _productImages = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    if(widget.productDetails.productImages != null) {
+      _productImages.addAll(widget.productDetails.productImages!) ;
+      _productImages.add(widget.productDetails.image??'') ;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print('widget.productDetails.productImages');
+    print(widget.productDetails.productImages);
+    final date = DateTime.tryParse(widget.productDetails.withdrawalStartTime ?? '')
+        ?.difference(DateTime.now());
+    final drawDate = DateTime.tryParse(widget.productDetails.withdrawalStartTime ?? '')?.
+    add(Duration(days: widget.productDetails.withdrawalStartDays??0));
+        print(drawDate);
+
+    return MainPage(
+      appBarHeight: 125,
+      titleWidget: widget.productDetails.salesPercentage != "100" && date == null || date!.isNegative
+          ? Container(
+
+              margin: 16.hEdge,
+              child: Container(
+                padding: 12.aEdge,
+                alignment: Alignment.center,
+                child: CircularPercentIndicator(
+                      radius: 42,
+                      // default: max available space
+                      percent:
+                        (  widget.productDetails.salesPercentage.toDoubleNum <= 100 ? widget.productDetails.salesPercentage.toDoubleNum : 100) / 100,
+                      lineWidth: 5,
+                      // default: 15, bar width
+                      circularStrokeCap: CircularStrokeCap.round,
+                      progressColor: const Color(0xFF17BADA),
+                      // default: blue, main bar color
+                      backgroundColor: const Color(0xFFE6E6E6),
+                  center: Center(
+                    child: FittedBox(
+                      child: Row(
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              MainText(
+                                'sold'.tr,
+                                fontSize: 10,
+                                color: AppColors.ySecondry2Color,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              2.sSize,
+                              MainText(
+                                '${widget.productDetails.quantitySold ?? ''}',
+                                fontSize: 9,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 35,
+                            child: VerticalDivider(
+                              thickness: 1.5,
+                              color: Colors.black.withOpacity(0.5),
+                              width: 8,
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              MainText(
+                                'out_of'.tr,
+                                fontSize: 10,
+                                color: AppColors.ySecondry2Color,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              2.sSize,
+                              MainText(
+                                '${widget.productDetails.quantity ?? ''}',
+                                fontSize: 9,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          : Column(
+              children: [
+               if(!date.isNegative) Text('Winner_announced'.tr),
+                const SizedBox(
+                  height: 5,
+                ),
+                Directionality(
+            textDirection: TextDirection.ltr,
+                  child: SlideCountdownSeparated(
+                    duration: date,
+                    style: const TextStyle(color: Colors.black),
+                    decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.red,
+                        ),
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(7)),
+                  ),
+                ),
+              ],
+            ),
+      actionWidgets: [
+        Consumer<ProductProvider>(builder: (context, productProvider, _) {
+          return productProvider.toggleLoader &&
+                  productProvider.toggleId == widget.productDetails.id
+              ? const SizedBox(width: 30, child: CircularProgressIndicator())
+              : InkWell(
+                  onTap: () {
+                    productProvider.toggleFavorite(context, widget.productDetails);
+                  },
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    child: SvgPicture.asset(
+                      productProvider.isInFavorite(widget.productDetails)
+                          ? getSvgAsset('Heart')
+                          : getSvgAsset('Heart-selected'),
+                      height: 22,
+                    ),
+                  ),
+                );
+        })
+      ],
+      body: Stack(
+        children: [
+          ClipRRect(
+            // borderRadius: const BorderRadius.only(
+            //   topLeft: Radius.circular(45),
+            //   topRight: Radius.circular(45),
+            // ),
+            child: FancyShimmerImage(
+              imageUrl: widget.productDetails.prize?.cover ?? '',
+              width: context.width,
+              height: context.width,
+              boxFit: BoxFit.cover,
+              errorWidget: Image.asset(
+                getPngAsset('product'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Container(
+            width: context.width,
+            height: context.width,
+            decoration: BoxDecoration(
+              borderRadius: 22.cBorder,
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.black.withOpacity(0),
+                  Colors.black.withOpacity(0.6),
+                ],
+              ),
+            ),
+            child: Padding(
+              padding: 16.aEdge,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                //  10.sSize,
+                  MainText(
+                    'win'.tr,
+                    fontSize: 32,
+                    color: AppColors.yPrimaryColor,
+                    fontWeight: FontWeight.w900,
+                    fontStyle: FontStyle.italic,
+                  ),
+                  MainText(
+                    widget.productDetails.prize?.title ?? '',
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  32.sSize,
+                ],
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Container(
+              padding: 32.hvEdge,
+              height: context.height - context.width - 30,
+              width: context.width,
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(45),
+                  topRight: Radius.circular(45),
+                ),
+              ),
+              child: ListView(
+                // padding: 38.hvEdge,
+                children: [
+                  16.sSize,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: MainText(
+                          widget.productDetails.title ?? '',
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      16.sSize,
+                      Row(
+                        children: [
+                          MainText(
+                            YsLocalizationsProvider.listenFalse(NavigationService.currentContext)
+                                .languageCode == 'en' ? '${widget.productDetails.price ?? ''} ' : '${widget.productDetails.currency ?? ''} ',
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          MainText(
+                            YsLocalizationsProvider.listenFalse(NavigationService.currentContext)
+                                .languageCode == 'en' ?  widget.productDetails.currency ?? '' : widget.productDetails.price ?? '' ,
+                            fontSize: 16,
+                            color: Colors.black,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  // 8.sSize,
+                  // Row(
+                  //   children: [
+                  //     MainText(
+                  //       'by ',
+                  //       overflow: TextOverflow.ellipsis,
+                  //       fontSize: 12,
+                  //       color: Colors.black.withOpacity(0.4),
+                  //     ),
+                  //     const MainText(
+                  //       'James Ruth',
+                  //       fontSize: 12,
+                  //       color: AppColors.yPrimaryColor,
+                  //     ),
+                  //   ],
+                  // ),
+                  16.sSize,
+                  SizedBox(
+                    width: context.width - 32,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MainText(
+                          'description'.tr,
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black.withOpacity(0.7),
+                        ),
+                        8.sSize,
+                        if(widget.productDetails.description != null)
+                        MainText(
+                          widget.productDetails.description ?? '',
+                          maxLines: widget.productDetails.description!.length > AppConstants.descriptionMaxLength && !showMore ? 3 : null,
+                          overflow: widget.productDetails.description!.length > AppConstants.descriptionMaxLength && !showMore ? TextOverflow.ellipsis : null,
+                          fontSize: 14,
+                          color: Colors.black.withOpacity(0.4),
+                        ),
+                        2.sSize,
+                        if(widget.productDetails.description != null && widget.productDetails.description!.length > AppConstants.descriptionMaxLength)
+                      GestureDetector(
+                        
+                        onTap: (){
+                            showMore = !showMore;
+                            setState(() {});
+                          },
+                          child: MainText(
+                            showMore ? 'show_less'.tr : 'show_more'.tr,
+                          
+                            fontSize: 12,
+                            color: AppColors.ySecondry2Color,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  32.sSize,
+                  SizedBox(
+                    width: context.width,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 3,
+                          child: Column(
+                            children: [
+                              MainText(
+                                widget.productDetails.title ?? '',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              8.sSize,
+                              if(widget.productDetails.withdrawalStartTime != null)MainText(
+                                '${'draw_date'.tr} ${DateConverter.containTAndZToUTCFormat(drawDate.toString())}.',
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                                fontSize: 12,
+                                color: Colors.black.withOpacity(0.5),
+                              ),
+                            ],
+                          ),
+                        ),
+                        8.sSize,
+                        // Expanded(
+                        //   flex: 2,
+                        //   child: FancyShimmerImage(
+                        //     imageUrl: widget.productDetails.image ?? '',
+                        //     height: 100,
+                        //     width: 100 ,
+                        //     boxFit: BoxFit.contain,
+                        //     errorWidget: Image.asset(
+                        //       getPngAsset('product'),
+                        //       fit: BoxFit.cover,
+                        //     ),
+                        //   ),
+                        // ),
+
+                        Expanded(
+                          flex: 3,
+                          child: CarousalWidget(images: _productImages,),
+                        ),
+
+                      ],
+                    ),
+                  ),
+                  32.sSize,
+                  widget.productDetails.quantity != widget.productDetails.quantitySold
+                      ? Consumer<CartProvider>(
+                          builder: (context, cartProvider, _) {
+                          return MainButton(
+                            onPressed: cartProvider.addProductLoader &&
+                                    cartProvider.addProductId ==
+                                        widget.productDetails.prizeId
+                                ? () {}
+                                : () {
+                                    cartProvider.addProduct(context,
+                                        prizeId: widget.productDetails.prizeId!,
+                                      productId: widget.productDetails.id!,
+                                    );
+                                  },
+                            color: cartProvider.addProductLoader
+                                ? AppColors.ySecondryColor
+                                : AppColors.yPrimaryColor,
+                            width: 150,
+                            radius: 28,
+                            child: MainText(
+                              cartProvider.addProductLoader
+                                  ? 'wait'.tr
+                                  : 'add_cart'.tr,
+                              fontSize: 15,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          );
+                        })
+                      : 0.sSize,
+              
+                  if(widget.productDetails.prize?.winner != null )
+                  MainText(
+                    'winner'.tr,
+                    fontSize: 18,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w700,
+                  ),
+              
+                  if(widget.productDetails.prize?.winner != null )
+                    Card(
+                      surfaceTintColor: Colors.white,
+                      elevation: 3,
+                      child: ListTile(
+                        minVerticalPadding: 16,
+                        leading: CircleAvatar(
+                          child: FancyShimmerImage(
+                            imageUrl: widget.productDetails.prize?.winner!.avatar??'',
+                            // height: size.width * 0.21,
+                            // width: size.width * 0.2,
+                            boxFit: BoxFit.fill,
+                            errorWidget: Image.asset(
+                              getPngAsset('person'),
+                            ),
+                          ),
+                        ),
+                        title: MainText(
+                          '${widget.productDetails.prize?.winner!.lastName} ${widget.productDetails.prize?.winner!.lastName}',
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        subtitle: MainText(
+                          '${'winner'.tr} : # ${widget.productDetails.prize?.winner!.id}',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          fontSize: 14,
+                          color: Colors.black.withOpacity(0.6),
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

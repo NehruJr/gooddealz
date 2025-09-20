@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "336224681714",
+    "project_id": "goodealz-c362e",
+    "storage_bucket": "goodealz-c362e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:336224681714:android:845d6e7c6c1c8f36d79a6b",
+        "android_client_info": {
+          "package_name": "com.goods.goodealz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCU2BsSFzHT0g--_Xh9223bBXa-_UhpvCA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:336224681714:android:63cde7a74f468c02d79a6b",
+        "android_client_info": {
+          "package_name": "com.tqniait.goodealz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCU2BsSFzHT0g--_Xh9223bBXa-_UhpvCA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
