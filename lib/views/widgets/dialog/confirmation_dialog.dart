@@ -18,7 +18,7 @@ class ConfirmationDialog extends StatefulWidget {
   const ConfirmationDialog({
     Key? key,
     required this.icon,
-    this.iconSize = 50,
+    this.iconSize = 100,
     this.title,
     required this.description,
     required this.onYesPressed,
@@ -41,10 +41,7 @@ class _ConfirmationDialogState extends State<ConfirmationDialog> {
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Column(mainAxisSize: MainAxisSize.min, children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Image.asset(getPngAsset(widget.icon), width: widget.iconSize, height: widget.iconSize),
-          ),
+          Image.asset(getPngAsset(widget.icon), width: widget.iconSize, height: widget.iconSize),
           widget.title != null
               ? Padding(
             padding: const EdgeInsets.symmetric(

@@ -50,25 +50,27 @@ class _SignupPageState extends State<SignupPage> {
       body: Container(
         height: context.height,
         width: context.width,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.white.withOpacity(0.1),
-              Colors.white,
-              Colors.white,
-            ],
-          ),
-        ),
+        // decoration: BoxDecoration(
+        //   gradient: LinearGradient(
+        //     begin: Alignment.topCenter,
+        //     end: Alignment.bottomCenter,
+        //     colors: [
+        //       Colors.white.withOpacity(0.1),
+        //       Colors.white,
+        //       Colors.white,
+        //     ],
+        //   ),
+        // ),
         child: SingleChildScrollView(
           padding: 16.aEdge,
           child: Column(
             children: [
               SizedBox(
-                height: 70,
-                child: SvgPicture.asset(
-                  getSvgAsset('logo'),
+                height: 80,
+                width: 200,
+                child: Image.asset(
+                  getPngAsset('black_logo'),
+                  fit: BoxFit.cover,
                 ),
               ),
               32.sSize,
@@ -252,8 +254,7 @@ class _SignupPageState extends State<SignupPage> {
                             children: [
                               Checkbox(
                                 value: isAccept,
-                                fillColor:
-                                    const WidgetStatePropertyAll(Colors.red),
+                                fillColor: WidgetStatePropertyAll(isAccept? AppColors.yPrimaryColor : AppColors.yBGColor),
                                 onChanged: (value) {
                                   setState(() {
                                     isAccept = value ?? false;

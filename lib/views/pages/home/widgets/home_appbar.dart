@@ -43,10 +43,11 @@ class HomeAppBar extends StatelessWidget {
               AppRoutes.routeTo(context, const LiveDrawsPage());
             },
             child: SizedBox(
-              height: 30,
+              height: 90,
               width: 110,
-              child: SvgPicture.asset(
-                getSvgAsset('logo'),
+              child: Image.asset(
+                getPngAsset('black_logo'),
+                fit: BoxFit.cover,
               ),
             ),
           ),

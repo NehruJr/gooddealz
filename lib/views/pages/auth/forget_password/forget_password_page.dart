@@ -32,17 +32,17 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
       body: Container(
         height: context.height,
         width: context.width,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.white.withOpacity(0.1),
-              Colors.white,
-              Colors.white,
-            ],
-          ),
-        ),
+        // decoration: BoxDecoration(
+        //   gradient: LinearGradient(
+        //     begin: Alignment.topCenter,
+        //     end: Alignment.bottomCenter,
+        //     colors: [
+        //       Colors.white.withOpacity(0.1),
+        //       Colors.white,
+        //       Colors.white,
+        //     ],
+        //   ),
+        // ),
         child: Column(
           children: [
             Expanded(
@@ -55,33 +55,34 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Column(
+                          // crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedBox(
-                              width: 200,
+                              // width: 200,
                               child: MainText(
                                 'recovery_password'.tr,
                                 fontSize: 24,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black,
-                                maxLines: 2,
+                                maxLines: 1,
                               ),
                             ),
-                            32.sSize,
+                            42.sSize,
                             SizedBox(
-                              width: context.width - 150,
+                              width: context.width - 32,
                               child: MainText(
                                 'enter_phone_get_otp'.tr,
-                                fontSize: 12,
+                                fontSize: 18,
                                 fontWeight: FontWeight.w400,
                                 color: Colors.black.withOpacity(0.5),
-                                maxLines: 2,
+                                maxLines: 1,
                               ),
                             ),
                           ],
                         ),
                       ],
                     ),
-                    32.sSize,
+                    10.sSize,
                     Form(
                       key: formKey,
                       child: Column(

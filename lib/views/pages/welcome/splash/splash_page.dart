@@ -50,9 +50,9 @@ class _SplashPageState extends State<SplashPage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             SizedBox(
-              height: 70,
-              child: SvgPicture.asset(
-                getSvgAsset('logo'),
+              height: 200,
+              child: Image.asset(
+                getPngAsset('black_logo'),
               ),
             ),
             const SizedBox(height: 80),

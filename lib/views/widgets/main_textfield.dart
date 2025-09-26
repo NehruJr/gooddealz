@@ -50,7 +50,7 @@ class MainTextField extends StatefulWidget {
     this.border,
     this.isDense = true,
     this.contentPadding,
-    this.filledColor = const Color(0xFFFFFFFF),
+    this.filledColor = const Color(0xFFF5F5F5),
     this.suffix,
     this.onSubmit,
     this.enable = true,

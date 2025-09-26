@@ -162,7 +162,7 @@ class CartItemCard extends StatelessWidget {
                     showDialog(
                         context: context,
                         builder: (context) => ConfirmationDialog(
-                            icon: 'logo',
+                            icon: 'black_logo',
                             description: 'delete_question'.tr,
                             onYesPressed:()=>
                               cartProvider.deleteCart(context,

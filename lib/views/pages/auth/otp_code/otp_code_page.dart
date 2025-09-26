@@ -41,17 +41,17 @@ class _OTPCodePageState extends State<OTPCodePage> {
               body: Container(
                 height: context.height,
                 width: context.width,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.white.withOpacity(0.1),
-                      Colors.white,
-                      Colors.white,
-                    ],
-                  ),
-                ),
+                // decoration: BoxDecoration(
+                //   gradient: LinearGradient(
+                //     begin: Alignment.topCenter,
+                //     end: Alignment.bottomCenter,
+                //     colors: [
+                //       Colors.white.withOpacity(0.1),
+                //       Colors.white,
+                //       Colors.white,
+                //     ],
+                //   ),
+                // ),
                 child: Column(
                   children: [
                     Expanded(
