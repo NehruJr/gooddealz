@@ -51,19 +51,18 @@ class _HomePageState extends State<HomePage> {
     _isGuest = Provider.of<AuthProvider>(context, listen: false).isGuest!;
 
     Provider.of<SettingsProvider>(context, listen: false).getBanners(context);
-    if(!_isGuest) {
+    if (!_isGuest) {
       Provider.of<ProductProvider>(context, listen: false)
           .getFavoriteProducts(context);
       Provider.of<NotificationProvider>(context, listen: false)
           .getNotifications(context);
-    Provider.of<PrizesProvider>(context, listen: false).getWinners(context);
-    Provider.of<PrizesProvider>(context, listen: false)
-        .getSellingFastPrizes(context);
-    Provider.of<PrizesProvider>(context, listen: false)
-        .getSoldOutPrizes(context);
+      Provider.of<PrizesProvider>(context, listen: false).getWinners(context);
+      Provider.of<PrizesProvider>(context, listen: false)
+          .getSellingFastPrizes(context);
+      Provider.of<PrizesProvider>(context, listen: false)
+          .getSoldOutPrizes(context);
     }
     Provider.of<ProductProvider>(context, listen: false).getProducts(context);
-
   }
 
   @override
@@ -71,14 +70,15 @@ class _HomePageState extends State<HomePage> {
     bool isGuest = Provider.of<AuthProvider>(context, listen: false).isGuest!;
     return MainPage(
       isAppBar: false,
-      subAppBar: HomeAppBar(isGuest: isGuest,),
+      subAppBar: HomeAppBar(
+        isGuest: isGuest,
+      ),
       bottomNavigationBarIndex: 0,
-      body: Consumer<ConectivityProvider>(
-          builder: (context, connect, _) {
-    if(connect.isOffline){
-      return const NoConnectionWidget();
-    }
-        else{  return SingleChildScrollView(
+      body: Consumer<ConectivityProvider>(builder: (context, connect, _) {
+        if (connect.isOffline) {
+          return const NoConnectionWidget();
+        } else {
+          return SingleChildScrollView(
             padding: 16.aEdge,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -112,113 +112,140 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 16.sSize,
-                Consumer<ProductProvider>(builder: (context, productProvider, _) {
-                    return productProvider.productLoader ? const SearchShimmer() :
-                      MainTextField(
-                      unfocusWhenTapOutside: true,
-                      textInputAction: TextInputAction.search,
-                      controller: _searchController,
-                      prefixIcon: IconButton(
-                        icon: SvgPicture.asset(
-                          getSvgAsset('Search'),
-                          height: 22,
-                        ),
-                        onPressed: () {
-                          if(productProvider.searchProducts.isNotEmpty){
-                          AppRoutes.routeTo(context, const ExplorePage());
-                          _searchController.clear();
-                        }
-                          else{
-                            showSnackbar('no_search'.tr);
-                          }
-                      },
-                      ),
-                      suffixIcon: productProvider.searchText.isNotEmpty ? IconButton(
-                        onPressed: () {
-                          productProvider.clearSearch();
-                          _searchController.clear();
-                        },
-                        icon: const Icon(Icons.close),
-                      ) : null,
-                      hint: 'search_items'.tr,
-                      onChanged: (value){
-                        productProvider.searchForProducts(value);
-                      },
-                      onSubmit: (value){
-                         if(productProvider.searchProducts.isNotEmpty){
-                          AppRoutes.routeTo(context, const ExplorePage(fromSearch: true,));
-                          _searchController.clear();
-                        }
-                          else{
-                            showSnackbar('no_search'.tr);
-                          }
-                      },
-                    );
-                  }
-                ),
-                16.sSize,
-                Consumer<SettingsProvider>(builder: (context, settingsProvider, _) {
-                  return settingsProvider.bannerLoader
-                      ? const Center(
-                          child: BannerShimmer(),
-                        )
-                      : BannerWidget(bannerModel: settingsProvider.bannerModel);
+                Consumer<ProductProvider>(
+                    builder: (context, productProvider, _) {
+                  return productProvider.productLoader
+                      ? const SearchShimmer()
+                      : MainTextField(
+                          unfocusWhenTapOutside: true,
+                          textInputAction: TextInputAction.search,
+                          controller: _searchController,
+                          prefixIcon: IconButton(
+                            icon: SvgPicture.asset(
+                              getSvgAsset('Search'),
+                              height: 22,
+                            ),
+                            onPressed: () {
+                              if (productProvider.searchProducts.isNotEmpty) {
+                                AppRoutes.routeTo(context, const ExplorePage());
+                                _searchController.clear();
+                              } else {
+                                showSnackbar('no_search'.tr);
+                              }
+                            },
+                          ),
+                          suffixIcon: productProvider.searchText.isNotEmpty
+                              ? IconButton(
+                                  onPressed: () {
+                                    productProvider.clearSearch();
+                                    _searchController.clear();
+                                  },
+                                  icon: const Icon(Icons.close),
+                                )
+                              : null,
+                          hint: 'search_items'.tr,
+                          onChanged: (value) {
+                            productProvider.searchForProducts(value);
+                          },
+                          onSubmit: (value) {
+                            if (productProvider.searchProducts.isNotEmpty) {
+                              AppRoutes.routeTo(
+                                  context,
+                                  const ExplorePage(
+                                    fromSearch: true,
+                                  ));
+                              _searchController.clear();
+                            } else {
+                              showSnackbar('no_search'.tr);
+                            }
+                          },
+                        );
                 }),
                 16.sSize,
-                  
-
+                Consumer<SettingsProvider>(
+                  builder: (context, settingsProvider, _) {
+                    return settingsProvider.bannerLoader
+                        ? const Center(
+                            child: BannerShimmer(),
+                          )
+                        : BannerWidget(
+                            bannerModels: settingsProvider.bannerModel != null
+                                ? [
+                                    settingsProvider.bannerModel!,
+                                    settingsProvider.bannerModel!
+                                  ]
+                                : [],
+                            textPosition: TextPosition.topLeft,
+                            autoPlay: true,
+                            autoPlayInterval: const Duration(seconds: 5),
+                            // showIndicators: true,
+                            // showCounter: true,
+                            // enableParallax: true,
+                          );
+                  },
+                ),
+                16.sSize,
                 Consumer<PrizesProvider>(builder: (context, prizesProvider, _) {
                   if (prizesProvider.sellingFastLoader) {
                     return const Center(
-                          child: SellingFastShimmer(),
-                        );
-                  } else {
-                    return prizesProvider.sellingFastPrizes .isEmpty ? 0.sSize : Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        isGuest || Provider.of<PrizesProvider>(context).sellingFastPrizes.isEmpty ?
-                        0.sSize
-                            :
-                        MainText(
-                          'selling_fast'.tr,
-                          fontSize: 18,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700,
-                        ),
-                        SizedBox(
-                            height: 300,
-                            child: ListView.separated(
-                                shrinkWrap: true,
-                                scrollDirection: Axis.horizontal,
-                                // physics: const NeverScrollableScrollPhysics(),
-                                separatorBuilder: (context, index) => const SizedBox(width: 5,),
-                                itemCount: prizesProvider.sellingFastPrizes.length,
-                                itemBuilder: (context, index) {
-                                  return PrizeWidget(
-                                      prize: prizesProvider.sellingFastPrizes[index]);
-                                },
-                              ),
-                          ),
-                      ],
+                      child: SellingFastShimmer(),
                     );
+                  } else {
+                    return prizesProvider.sellingFastPrizes.isEmpty
+                        ? 0.sSize
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              isGuest ||
+                                      Provider.of<PrizesProvider>(context)
+                                          .sellingFastPrizes
+                                          .isEmpty
+                                  ? 0.sSize
+                                  : MainText(
+                                      'selling_fast'.tr,
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                              SizedBox(
+                                height: 300,
+                                child: ListView.separated(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  // physics: const NeverScrollableScrollPhysics(),
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(
+                                    width: 5,
+                                  ),
+                                  itemCount:
+                                      prizesProvider.sellingFastPrizes.length,
+                                  itemBuilder: (context, index) {
+                                    return PrizeWidget(
+                                        prize: prizesProvider
+                                            .sellingFastPrizes[index]);
+                                  },
+                                ),
+                              ),
+                            ],
+                          );
                   }
                 }),
                 16.sSize,
-
-                Consumer<ProductProvider>(builder: (context, productProvider, _) {
+                Consumer<ProductProvider>(
+                    builder: (context, productProvider, _) {
                   return productProvider.productLoader
                       ? const Center(
                           child: ExploreProductShimmer(),
                         )
                       : Column(
-                        children: [
-                          SeeAllWidget(
-                          title: 'explore_campaigns'.tr,
-                          onTap: () {
-                            AppRoutes.routeTo(context, const ExplorePage());
-                          },
-                        ),
-                          ListView.builder(
+                          children: [
+                            SeeAllWidget(
+                              title: 'explore_campaigns'.tr,
+                              onTap: () {
+                                AppRoutes.routeTo(context, const ExplorePage());
+                              },
+                            ),
+                            ListView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: productProvider.products.length <= 2
@@ -227,80 +254,88 @@ class _HomePageState extends State<HomePage> {
                               itemBuilder: (context, index) {
                                 print(productProvider.products.length);
                                 return ProductWidget(
-                                  productDetails: productProvider.products[index],
-                                  isDone: productProvider.products[index].salesPercentage=="100",
+                                  productDetails:
+                                      productProvider.products[index],
+                                  isDone: productProvider
+                                          .products[index].salesPercentage ==
+                                      "100",
                                 );
                               },
                             ),
-                        ],
-                      );
+                          ],
+                        );
                 }),
                 16.sSize,
-               
-
-                if(!isGuest) Consumer<PrizesProvider>(builder: (context, prizesProvider, _) {
-                  return prizesProvider.soldOutLoader
-                      ? const Center(
-                          child: SoldOutShimmer(),
-                        )
-                      : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          MainText(
-                            'sold_out'.tr,
-                            fontSize: 18,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700,
-                          ),
-                          ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: prizesProvider.soldOutPrizes.length < 5
-                                  ? prizesProvider.soldOutPrizes.length
-                                  : 5,
-                              itemBuilder: (context, index) {
-                                return PrizeWidget(
-                                    prize: prizesProvider.soldOutPrizes[index]);
-                              },
-                            ),
-                        ],
-                      );
-                }),
+                if (!isGuest)
+                  Consumer<PrizesProvider>(
+                      builder: (context, prizesProvider, _) {
+                    return prizesProvider.soldOutLoader
+                        ? const Center(
+                            child: SoldOutShimmer(),
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              MainText(
+                                'sold_out'.tr,
+                                fontSize: 18,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w700,
+                              ),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount:
+                                    prizesProvider.soldOutPrizes.length < 5
+                                        ? prizesProvider.soldOutPrizes.length
+                                        : 5,
+                                itemBuilder: (context, index) {
+                                  return PrizeWidget(
+                                      prize:
+                                          prizesProvider.soldOutPrizes[index]);
+                                },
+                              ),
+                            ],
+                          );
+                  }),
                 16.sSize,
-
-                if(!isGuest) Consumer<PrizesProvider>(builder: (context, prizesProvider, _) {
-                  return prizesProvider.winnersLoader
-                      ? const Center(
-                          child: WinnerShimmer(),
-                        )
-                      : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SeeAllWidget(
-                            title: 'the_winners'.tr,
-                            onTap: () {
-                              AppRoutes.routeTo(context, const WinnersPage());
-                            },
-                          ),
-                          ListView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: prizesProvider.winners.length < 5
-                                  ? prizesProvider.winners.length
-                                  : 5,
-                              itemBuilder: (context, index) {
-                                return WinnerCard(
-                                    winner: prizesProvider.winners[index].winner!);
-                              },
-                            ),
-                        ],
-                      );
-                }),
+                if (!isGuest)
+                  Consumer<PrizesProvider>(
+                      builder: (context, prizesProvider, _) {
+                    return prizesProvider.winnersLoader
+                        ? const Center(
+                            child: WinnerShimmer(),
+                          )
+                        : Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SeeAllWidget(
+                                title: 'the_winners'.tr,
+                                onTap: () {
+                                  AppRoutes.routeTo(
+                                      context, const WinnersPage());
+                                },
+                              ),
+                              ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: prizesProvider.winners.length < 5
+                                    ? prizesProvider.winners.length
+                                    : 5,
+                                itemBuilder: (context, index) {
+                                  return WinnerCard(
+                                      winner: prizesProvider
+                                          .winners[index].winner!);
+                                },
+                              ),
+                            ],
+                          );
+                  }),
               ],
             ),
           );
-        }}
-      ),
+        }
+      }),
     );
   }
 }

@@ -9,13 +9,31 @@ import 'package:goodealz/views/widgets/main_text.dart';
 import 'package:scroll_page_view/pager/page_controller.dart';
 import 'package:scroll_page_view/pager/scroll_page_view.dart';
 
+enum TextPosition {
+  topLeft,
+  topCenter,
+  topRight,
+  centerLeft,
+  center,
+  centerRight,
+  bottomLeft,
+  bottomCenter,
+  bottomRight,
+}
+
 class BannerWidget extends StatefulWidget {
   BannerWidget({
     super.key,
-    required this.bannerModel
+    required this.bannerModels,
+    this.textPosition = TextPosition.center,
+    this.autoPlay = true,
+    this.autoPlayInterval = const Duration(seconds: 3),
   });
 
-  BannerModel? bannerModel;
+  final List<BannerModel> bannerModels;
+  final TextPosition textPosition;
+  final bool autoPlay;
+  final Duration autoPlayInterval;
 
   @override
   State<BannerWidget> createState() => _BannerWidgetState();
@@ -23,48 +41,77 @@ class BannerWidget extends StatefulWidget {
 
 class _BannerWidgetState extends State<BannerWidget> {
   final ss = ScrollPageController();
+  int currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.autoPlay && widget.bannerModels.isNotEmpty) {
+      _startAutoPlay();
+    }
+  }
+
+  void _startAutoPlay() {
+    Future.delayed(widget.autoPlayInterval, () {
+      if (mounted && widget.bannerModels.isNotEmpty) {
+        setState(() {
+          currentIndex = (currentIndex + 1) % widget.bannerModels.length;
+        });
+        ss.controller.animateToPage(
+          currentIndex,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+        _startAutoPlay();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        // AppRoutes.routeTo(context, const OffersPage());
-      },
-      child: SizedBox(
-        width: context.width,
-        child: AspectRatio(
-          aspectRatio: 3 / 2, // Or try 3 / 1 or 2 / 1 based on your design
-          child: ClipRRect(
-            borderRadius: 22.cBorder,
-            child: ScrollPageView(
-              checkedIndicatorColor: Colors.red,
-              controller: ss,
-              children: [
-                bannerContent(context, mainImage: widget.bannerModel?.data?.banner?.mainSliderImage ??'', backgroundImage: widget.bannerModel?.data?.banner?.mainSliderBackgroundImage ??'', title: widget.bannerModel?.data?.banner?.mainSliderText??''),
-                // bannerContent(context, title: 'Join To Our\nWinners Today!'),
-                // bannerContent(context, title: 'Join To Our\nWinners Today!'),
-              ],
-            ),
+    if (widget.bannerModels.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return SizedBox(
+      width: context.width,
+      child: AspectRatio(
+        aspectRatio: 3 / 2,
+        child: ClipRRect(
+          borderRadius: 22.cBorder,
+          child: ScrollPageView(
+            checkedIndicatorColor: AppColors.yPrimaryColor,
+            controller: ss,
+            onPageChanged: (index) {
+              setState(() {
+                currentIndex = index;
+              });
+            },
+            children: widget.bannerModels.map((bannerModel) {
+              return bannerContent(
+                context,
+                mainImage: bannerModel.data?.banner?.mainSliderImage ?? '',
+                backgroundImage:
+                    bannerModel.data?.banner?.mainSliderBackgroundImage ?? '',
+                title: bannerModel.data?.banner?.mainSliderText ?? '',
+              );
+            }).toList(),
           ),
         ),
-
-
       ),
     );
   }
 
-  Widget bannerContent(context, {required String title, required String mainImage, required String backgroundImage}){
+  Widget bannerContent(
+    BuildContext context, {
+    required String title,
+    required String mainImage,
+    required String backgroundImage,
+  }) {
     return Stack(
       children: [
-
         ClipRRect(
           borderRadius: 22.cBorder,
-          // child: Image.asset(
-          //   getPngAsset('product'),
-          //   height: MediaQuery.of(context).size.width - 32,
-          //   width: MediaQuery.of(context).size.width - 32,
-          //   fit: BoxFit.cover,
-          // ),
           child: FancyShimmerImage(
             imageUrl: backgroundImage,
             height: MediaQuery.of(context).size.width - 32,
@@ -78,12 +125,6 @@ class _BannerWidgetState extends State<BannerWidget> {
         ),
         ClipRRect(
           borderRadius: 22.cBorder,
-          // child: Image.asset(
-          //   getPngAsset('product'),
-          //   height: MediaQuery.of(context).size.width - 32,
-          //   width: MediaQuery.of(context).size.width - 32,
-          //   fit: BoxFit.cover,
-          // ),
           child: FancyShimmerImage(
             imageUrl: mainImage,
             height: MediaQuery.of(context).size.width - 32,
@@ -116,20 +157,109 @@ class _BannerWidgetState extends State<BannerWidget> {
             ),
           ),
         ),
-        0.sSize,
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Center(
-            child: MainText(
-              title,
-              fontSize: 32,
-              color: Colors.white,
-              fontWeight: FontWeight.w700,
-            textAlign: TextAlign.center,
-            ),
-          ),
-        ),
+        _buildPositionedText(title),
       ],
     );
+  }
+
+  Widget _buildPositionedText(String title) {
+    Widget textWidget = Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: MainText(
+        title,
+        fontSize: 32,
+        color: Colors.white,
+        fontWeight: FontWeight.w700,
+        textAlign: _getTextAlign(),
+      ),
+    );
+
+    switch (widget.textPosition) {
+      case TextPosition.topLeft:
+        return Positioned(
+          top: 0,
+          left: 0,
+          child: textWidget,
+        );
+      case TextPosition.topCenter:
+        return Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: textWidget,
+        );
+      case TextPosition.topRight:
+        return Positioned(
+          top: 0,
+          right: 0,
+          child: textWidget,
+        );
+      case TextPosition.centerLeft:
+        return Positioned(
+          top: 0,
+          bottom: 0,
+          left: 0,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: textWidget,
+          ),
+        );
+      case TextPosition.center:
+        return Positioned.fill(
+          child: Center(child: textWidget),
+        );
+      case TextPosition.centerRight:
+        return Positioned(
+          top: 0,
+          bottom: 0,
+          right: 0,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: textWidget,
+          ),
+        );
+      case TextPosition.bottomLeft:
+        return Positioned(
+          bottom: 0,
+          left: 0,
+          child: textWidget,
+        );
+      case TextPosition.bottomCenter:
+        return Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: textWidget,
+        );
+      case TextPosition.bottomRight:
+        return Positioned(
+          bottom: 0,
+          right: 0,
+          child: textWidget,
+        );
+    }
+  }
+
+  TextAlign _getTextAlign() {
+    switch (widget.textPosition) {
+      case TextPosition.topLeft:
+      case TextPosition.centerLeft:
+      case TextPosition.bottomLeft:
+        return TextAlign.left;
+      case TextPosition.topCenter:
+      case TextPosition.center:
+      case TextPosition.bottomCenter:
+        return TextAlign.center;
+      case TextPosition.topRight:
+      case TextPosition.centerRight:
+      case TextPosition.bottomRight:
+        return TextAlign.right;
+    }
+  }
+
+  @override
+  void dispose() {
+    ss.controller.dispose();
+    super.dispose();
   }
 }

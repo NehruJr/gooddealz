@@ -15,6 +15,7 @@ class MainText extends StatelessWidget {
     this.overflow,
     this.decoration,
     this.fontStyle,
+     List<Shadow>? shadows,
   });
   final String text;
   final Color? color;

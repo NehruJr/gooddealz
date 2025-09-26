@@ -126,6 +126,8 @@ class AuthProvider extends ChangeNotifier {
 
       final googleSignIn = await GoogleSignIn.instance.authenticate();
 
+      print("google: ${googleSignIn}");
+
       if (googleSignIn == null) {
         socialLoginLoader = false;
         notifyListeners();
@@ -271,7 +273,8 @@ class AuthProvider extends ChangeNotifier {
       // Once signed in, return the UserCredential
       if (loginResult.status == LoginStatus.success) {
         final OAuthCredential facebookAuthCredential =
-            FacebookAuthProvider.credential(loginResult.accessToken!.tokenString);
+            FacebookAuthProvider.credential(
+                loginResult.accessToken!.tokenString);
 
         final login = await FirebaseAuth.instance
             .signInWithCredential(facebookAuthCredential);
