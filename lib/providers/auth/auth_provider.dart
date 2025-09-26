@@ -159,8 +159,6 @@ class AuthProvider extends ChangeNotifier {
         isLogin: true,
       );
 
-      log("repomsee ${response.statusCode}");
-
       if (response.statusCode == 200) {
         socialLoginLoader = false;
         notifyListeners();
@@ -288,10 +286,7 @@ class AuthProvider extends ChangeNotifier {
       print('loginResult.message');
       print(loginResult.message);
       print(loginResult.status);
-      // Create a credential from the access token
-      //    if(loginResult.accessToken != null) {
-
-      // Once signed in, return the UserCredential
+ 
       if (loginResult.status == LoginStatus.success) {
         final OAuthCredential facebookAuthCredential =
             FacebookAuthProvider.credential(

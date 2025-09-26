@@ -102,10 +102,8 @@ class _LocationScreenState extends State<LocationScreen> {
       if (placemarks.isNotEmpty) {
         final Placemark place = placemarks.first;
 
-        // Try different combinations to get the most readable address
         List<String> addressOptions = [];
 
-        // Option 1: Name + locality/subLocality
         if (place.name != null &&
             place.name!.isNotEmpty &&
             _isReadableText(place.name!)) {
@@ -119,7 +117,6 @@ class _LocationScreenState extends State<LocationScreen> {
           }
         }
 
-        // Option 2: Thoroughfare + locality
         if (place.thoroughfare != null &&
             place.thoroughfare!.isNotEmpty &&
             _isReadableText(place.thoroughfare!)) {
@@ -128,7 +125,6 @@ class _LocationScreenState extends State<LocationScreen> {
           }
         }
 
-        // Option 3: Subadministrative area + administrative area
         if (place.subAdministrativeArea != null &&
             _isReadableText(place.subAdministrativeArea!)) {
           if (place.administrativeArea != null &&
@@ -140,7 +136,6 @@ class _LocationScreenState extends State<LocationScreen> {
           }
         }
 
-        // Option 4: Locality or sublocality alone
         if (place.locality != null &&
             place.locality!.isNotEmpty &&
             _isReadableText(place.locality!)) {
@@ -151,12 +146,10 @@ class _LocationScreenState extends State<LocationScreen> {
           addressOptions.add(place.subLocality!);
         }
 
-        // Return the first valid option, or fallback to country
         if (addressOptions.isNotEmpty) {
           return addressOptions.first;
         }
 
-        // Final fallback
         if (place.country != null && place.country!.isNotEmpty) {
           return place.country!;
         }
@@ -170,22 +163,18 @@ class _LocationScreenState extends State<LocationScreen> {
   bool _isReadableText(String text) {
     if (text.isEmpty) return false;
 
-    // Filter out plus codes
     if (RegExp(r'^[A-Z0-9]{4}\+[A-Z0-9]{2,3}$').hasMatch(text.trim())) {
       return false;
     }
 
-    // Filter out codes that are mostly uppercase letters and numbers
     if (RegExp(r'^[A-Z0-9\+]{3,15}$').hasMatch(text.trim())) {
       return false;
     }
 
-    // Text should contain at least some lowercase letters or be a reasonable length
     if (!text.contains(RegExp(r'[a-z]')) && text.length < 4) {
       return false;
     }
 
-    // Text should not be too short to be meaningful (unless it's a known abbreviation)
     if (text.length < 3 &&
         !['NY', 'LA', 'SF', 'DC'].contains(text.toUpperCase())) {
       return false;
