@@ -172,15 +172,16 @@ class _HomePageState extends State<HomePage> {
                             bannerModels: settingsProvider.bannerModel != null
                                 ? [
                                     settingsProvider.bannerModel!,
-                                    settingsProvider.bannerModel!
+                                    settingsProvider.bannerModel!,
+                                    settingsProvider.bannerModel!,
+                                    settingsProvider.bannerModel!,
                                   ]
                                 : [],
                             textPosition: TextPosition.topLeft,
                             autoPlay: true,
                             autoPlayInterval: const Duration(seconds: 5),
-                            // showIndicators: true,
-                            // showCounter: true,
-                            // enableParallax: true,
+                            // indicatorStyle: IndicatorStyle.circle,
+                           
                           );
                   },
                 ),

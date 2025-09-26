@@ -189,5 +189,7 @@
   "open_settings": "فتح الاعدادات",
   "close": "إغلاق",
   "show_video": "مشاهدة الفيديو",
-  "no_video": "لا يوجد فيديو"
+  "no_video": "لا يوجد فيديو",
+    "selected_location":"الموقع المحدد",
+      "Searching":"جاري البحث"
 }

@@ -58,8 +58,9 @@ class _ProfilePageState extends State<ProfilePage> {
         children: [
           GestureDetector(
             onTap: () {
-              AppRoutes.routeTo(context, const MyAccountPage(), then: (val){
-                setState(() {});});
+              AppRoutes.routeTo(context, const MyAccountPage(), then: (val) {
+                setState(() {});
+              });
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -67,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 50.sSize,
                 ClipOval(
                   child: FancyShimmerImage(
-                    imageUrl: currentUser?.avatar??"",
+                    imageUrl: currentUser?.avatar ?? "",
                     height: 100,
                     width: 100,
                     boxFit: BoxFit.cover,
@@ -79,15 +80,16 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 8.sSize,
                 MainText(
-                  currentUser?.firstName == null || currentUser?.firstName == ''? currentUser?.name??'':
-                  '${currentUser?.firstName??""} ${currentUser?.lastName??""}',
+                  currentUser?.firstName == null || currentUser?.firstName == ''
+                      ? currentUser?.name ?? ''
+                      : '${currentUser?.firstName ?? ""} ${currentUser?.lastName ?? ""}',
                   overflow: TextOverflow.ellipsis,
                   fontSize: 24,
                   color: Colors.black,
                   fontWeight: FontWeight.w500,
                 ),
                 MainText(
-                  currentUser?.email??"",
+                  currentUser?.email ?? "",
                   fontSize: 12,
                   color: Colors.black.withOpacity(0.6),
                   fontWeight: FontWeight.w400,
@@ -115,9 +117,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                 title: 'order_progress'.tr,
                                 subTitle:
                                     '${authProvider.userProfile?.order?.length ?? ""}',
-                                onTap: (){
-                                  AppRoutes.routeTo(context, const MyOrdersPage(), then: (val){
-                setState(() {});});
+                                onTap: () {
+                                  AppRoutes.routeTo(
+                                      context, const MyOrdersPage(),
+                                      then: (val) {
+                                    setState(() {});
+                                  });
                                 },
                               ),
                               12.sSize,
@@ -127,9 +132,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                 title: 'promocodes'.tr,
                                 subTitle:
                                     '${authProvider.userProfile?.couponsCount ?? ""}',
-                                onTap: (){
-                                  AppRoutes.routeTo(context, const CouponsPage(fromProfile: true,), then: (val){
-                setState(() {});});
+                                onTap: () {
+                                  AppRoutes.routeTo(
+                                      context,
+                                      const CouponsPage(
+                                        fromProfile: true,
+                                      ), then: (val) {
+                                    setState(() {});
+                                  });
                                 },
                               ),
                               // 12.sSize,
@@ -160,19 +170,26 @@ class _ProfilePageState extends State<ProfilePage> {
                               children: [
                                 InfoRow(
                                   title: '${'name'.tr} :',
-                                  subTitle:
-                                      authProvider.userProfile?.firstName == null || authProvider.userProfile?.firstName == ''? authProvider.userProfile?.name??'':
-                  '${authProvider.userProfile?.firstName??""} ${authProvider.userProfile?.lastName??""}',
+                                  subTitle: authProvider
+                                                  .userProfile?.firstName ==
+                                              null ||
+                                          authProvider.userProfile?.firstName ==
+                                              ''
+                                      ? authProvider.userProfile?.name ?? ''
+                                      : '${authProvider.userProfile?.firstName ?? ""} ${authProvider.userProfile?.lastName ?? ""}',
                                 ),
                                 16.sSize,
                                 InfoRow(
                                   title: '${'email'.tr} :',
-                                  subTitle: authProvider.userProfile?.email ?? "",
+                                  subTitle:
+                                      authProvider.userProfile?.email ?? "",
                                 ),
                                 16.sSize,
                                 InfoRow(
                                   title: '${'nationality'.tr} :',
-                                  subTitle: authProvider.userProfile?.nationality ?? "",
+                                  subTitle:
+                                      authProvider.userProfile?.nationality ??
+                                          "",
                                 ),
                                 // 16.sSize,
                                 // const InfoRow(
@@ -182,7 +199,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 16.sSize,
                                 InfoRow(
                                   title: '${'phone'.tr} :',
-                                  subTitle: authProvider.userProfile?.phone ?? "",
+                                  subTitle:
+                                      authProvider.userProfile?.phone ?? "",
                                 ),
                               ],
                             ),
@@ -250,7 +268,7 @@ class ProfileInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: GestureDetector(
-        onTap: ()=>onTap(),
+        onTap: () => onTap(),
         child: Card(
           surfaceTintColor: Colors.white,
           elevation: 3,

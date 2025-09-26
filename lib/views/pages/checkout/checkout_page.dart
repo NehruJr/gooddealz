@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:goodealz/core/constants/app_colors.dart';
 import 'package:goodealz/core/constants/app_routes.dart';
 import 'package:goodealz/core/helper/extensions/assetss_widgets.dart';
+import 'package:goodealz/core/helper/functions/get_asset.dart';
 import 'package:goodealz/core/helper/functions/show_snackbar.dart';
 import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
 import 'package:goodealz/providers/checkout/checkout_provider.dart';
@@ -52,12 +53,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
       _determinePosition();
     });
   }
-  
 
- @override
+  @override
   void dispose() {
     super.dispose();
-    
   }
 
   Future<void> _determinePosition() async {
@@ -72,6 +71,19 @@ class _CheckoutPageState extends State<CheckoutPage> {
   @override
   Widget build(BuildContext context) {
     return MainPage(
+      actionWidgets: [
+        SizedBox(
+          height: 90,
+          width: 110,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 6.0),
+            child: Image.asset(
+              getPngAsset('black_logo'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        )
+      ],
       subAppBar: Padding(
         padding: 16.vhEdge,
         child: Row(
@@ -101,7 +113,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
             16.sSize,
             Consumer<CheckoutProvider>(builder: (context, checkoutProvider, _) {
               print('position ==============================');
-              print('${checkoutProvider.myPosition?.latitude}, ${checkoutProvider.myPosition?.longitude}');
+              print(
+                  '${checkoutProvider.myPosition?.latitude}, ${checkoutProvider.myPosition?.longitude}');
               return Container(
                 width: 680,
                 height: 250,
@@ -127,8 +140,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             LocationScreen(
                               latLng: checkoutProvider.myPosition != null
                                   ? LatLng(
-                                  checkoutProvider.myPosition!.latitude,
-                                  checkoutProvider.myPosition!.longitude)
+                                      checkoutProvider.myPosition!.latitude,
+                                      checkoutProvider.myPosition!.longitude)
                                   : const LatLng(23, 89),
                             ), then: (value) {
                           if (value != null && value.isNotEmpty) {
@@ -242,31 +255,28 @@ class _CheckoutPageState extends State<CheckoutPage> {
             // ),
             16.sSize,
 
-            Consumer<CheckoutProvider>(
-
-                builder: (context, checkoutProvider, _) {
-                  return CustomDropDown(
-                    list: checkoutProvider.cities.map((e) => e.name!).toList(),
-                    borderColor: AppColors.ySecondryColor,
-                    hint: 'select_city'.tr,
-                    item: city,
-                    enabled: checkoutProvider.cityLoader ? false : true,
-                    onChange: (val){
-                      city = val;
-                      checkoutProvider
-                          .getDeliveryCost(context, city: city!)
-                          .then((value) {
-                        Provider.of<CartProvider>(context,
-                            listen: false)
-                            .setDeliveryCost(checkoutProvider.deliveryCost??0);
-                      });
-                    },
-                    validator: (val){
-                      return null;
-                    },
-                    // enable: false,
-                  );
-                }),
+            Consumer<CheckoutProvider>(builder: (context, checkoutProvider, _) {
+              return CustomDropDown(
+                list: checkoutProvider.cities.map((e) => e.name!).toList(),
+                borderColor: AppColors.ySecondryColor,
+                hint: 'select_city'.tr,
+                item: city,
+                enabled: checkoutProvider.cityLoader ? false : true,
+                onChange: (val) {
+                  city = val;
+                  checkoutProvider
+                      .getDeliveryCost(context, city: city!)
+                      .then((value) {
+                    Provider.of<CartProvider>(context, listen: false)
+                        .setDeliveryCost(checkoutProvider.deliveryCost ?? 0);
+                  });
+                },
+                validator: (val) {
+                  return null;
+                },
+                // enable: false,
+              );
+            }),
             16.sSize,
             Selector<CheckoutProvider, String?>(
                 selector: (context, checkoutProvider) =>
@@ -293,9 +303,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
               fillColor: const WidgetStatePropertyAll(Colors.red),
               contentPadding: EdgeInsets.zero,
               onChanged: (value) {
-                 setState(() {
-                   paymentMethod = value??'';
-                          });
+                setState(() {
+                  paymentMethod = value ?? '';
+                });
               },
               title: MainText(
                 'digital_payment'.tr,
@@ -310,9 +320,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
               fillColor: const WidgetStatePropertyAll(Colors.red),
               contentPadding: EdgeInsets.zero,
               onChanged: (value) {
-                 setState(() {
-                   paymentMethod = value??'';
-                          });
+                setState(() {
+                  paymentMethod = value ?? '';
+                });
               },
               title: MainText(
                 'wallet'.tr,
@@ -327,9 +337,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
               fillColor: const WidgetStatePropertyAll(Colors.red),
               contentPadding: EdgeInsets.zero,
               onChanged: (value) {
-                 setState(() {
-                   paymentMethod = value??'';
-                          });
+                setState(() {
+                  paymentMethod = value ?? '';
+                });
               },
               title: MainText(
                 'cash'.tr,
@@ -373,58 +383,56 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
                 8.sSize,
                 Consumer<DiscountProvider>(
-                      builder: (context, discountProvider, _) {
-                        if (discountProvider.couponLoader) {
-                          return Padding(
-                        padding: 16.aEdge,
-                        child: SizedBox(
-                            width: 30,
-                            height: 30,
-                            child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    Theme.of(context).primaryColor))),
-                      );
-                        } else {
-                          return InkWell(
-                            onTap: () {
-                              FocusScope.of(context).unfocus();
-                              if (_couponController.text.isNotEmpty) {
-                                discountProvider
-                                    .applyCoupon(_couponController.text)
-                                    .then((value) {
-                                      print('--=-==-=--');
-                                      print(discountProvider.discountCoupon);
-                                    Provider.of<CartProvider>(
-                                            context,
-                                            listen: false)
-                                        .setCoupon(
-                                            discountProvider
-                                                .discountCoupon);}
-                                    
-                                                );
-                              }
-                            },
-                            child: Container(
-                                width: 100,
-                                height: 60,
-                                decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor,
-                                    borderRadius: YsLocalizationsProvider.listenFalse(NavigationService.currentContext)
-                                        .languageCode == 'en' ?  const BorderRadius.only(
-                                        bottomRight: Radius.circular(10),
-                                        topRight: Radius.circular(10)) : const BorderRadius.only(
-                                        topLeft: Radius.circular(10),
-                                        bottomLeft: Radius.circular(10))),
-                                child: Center(
-                                    child: MainText(
-                                  'apply'.tr,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                ))),
-                          );
+                    builder: (context, discountProvider, _) {
+                  if (discountProvider.couponLoader) {
+                    return Padding(
+                      padding: 16.aEdge,
+                      child: SizedBox(
+                          width: 30,
+                          height: 30,
+                          child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Theme.of(context).primaryColor))),
+                    );
+                  } else {
+                    return InkWell(
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
+                        if (_couponController.text.isNotEmpty) {
+                          discountProvider
+                              .applyCoupon(_couponController.text)
+                              .then((value) {
+                            print('--=-==-=--');
+                            print(discountProvider.discountCoupon);
+                            Provider.of<CartProvider>(context, listen: false)
+                                .setCoupon(discountProvider.discountCoupon);
+                          });
                         }
-                      }
-                    )
+                      },
+                      child: Container(
+                          width: 100,
+                          height: 60,
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor,
+                              borderRadius: YsLocalizationsProvider.listenFalse(
+                                              NavigationService.currentContext)
+                                          .languageCode ==
+                                      'en'
+                                  ? const BorderRadius.only(
+                                      bottomRight: Radius.circular(10),
+                                      topRight: Radius.circular(10))
+                                  : const BorderRadius.only(
+                                      topLeft: Radius.circular(10),
+                                      bottomLeft: Radius.circular(10))),
+                          child: Center(
+                              child: MainText(
+                            'apply'.tr,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ))),
+                    );
+                  }
+                })
               ]),
             ),
 
@@ -506,35 +514,42 @@ class _CheckoutPageState extends State<CheckoutPage> {
             }),
             16.sSize,
             Center(
-              child: Consumer<CheckoutProvider>(builder: (context, checkoutProvider, _) {
-                  return MainButton(
-                    onPressed: checkoutProvider.checkoutLoader ? (){} : () {
-
-                      if(city == null){
-                        showSnackbar( 'please_select_city'.tr);
-                      }else if(_addressController.text.isEmpty){
-                        showSnackbar( 'please_select_address'.tr);
-                      }else if(lat ==null || lng== null){
-                        showSnackbar( 'please_pick_location'.tr);
-                      }
-                      else{
-                        checkoutProvider.checkout(context, city: city!,
-                            address: _addressController.text, paymentMethod: paymentMethod,
-                        lat: lat!, lng: lng!);
-                      }
-                    },
-                    color: checkoutProvider.checkoutLoader ? AppColors.ySecondryColor :  AppColors.yPrimaryColor,
-                    width: 150,
-                    radius: 28,
-                    child: MainText(
-                      checkoutProvider.checkoutLoader ? 'wait'.tr : 'place_order'.tr,
-                      fontSize: 15,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  );
-                }
-              ),
+              child: Consumer<CheckoutProvider>(
+                  builder: (context, checkoutProvider, _) {
+                return MainButton(
+                  onPressed: checkoutProvider.checkoutLoader
+                      ? () {}
+                      : () {
+                          if (city == null) {
+                            showSnackbar('please_select_city'.tr);
+                          } else if (_addressController.text.isEmpty) {
+                            showSnackbar('please_select_address'.tr);
+                          } else if (lat == null || lng == null) {
+                            showSnackbar('please_pick_location'.tr);
+                          } else {
+                            checkoutProvider.checkout(context,
+                                city: city!,
+                                address: _addressController.text,
+                                paymentMethod: paymentMethod,
+                                lat: lat!,
+                                lng: lng!);
+                          }
+                        },
+                  color: checkoutProvider.checkoutLoader
+                      ? AppColors.ySecondryColor
+                      : AppColors.yPrimaryColor,
+                  width: 150,
+                  radius: 28,
+                  child: MainText(
+                    checkoutProvider.checkoutLoader
+                        ? 'wait'.tr
+                        : 'place_order'.tr,
+                    fontSize: 15,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
+                );
+              }),
             ),
           ],
         ),
