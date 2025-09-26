@@ -45,7 +45,8 @@ class MainDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = Provider.of<AuthProvider>(context, listen: false).currentUser;
+    final currentUser =
+        Provider.of<AuthProvider>(context, listen: false).currentUser;
     final isGuest = Provider.of<AuthProvider>(context, listen: false).isGuest;
     return Drawer(
       width: context.width * 0.75,
@@ -79,8 +80,10 @@ class MainDrawer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         MainText(
-                          currentUser?.firstName == null || currentUser?.firstName == ''? currentUser?.name??'':
-                          '${currentUser?.firstName??""} ${currentUser?.lastName??""}',
+                          currentUser?.firstName == null ||
+                                  currentUser?.firstName == ''
+                              ? currentUser?.name ?? ''
+                              : '${currentUser?.firstName ?? ""} ${currentUser?.lastName ?? ""}',
                           overflow: TextOverflow.ellipsis,
                           fontSize: 16,
                           color: Colors.black,
@@ -114,7 +117,10 @@ class MainDrawer extends StatelessWidget {
                             padding: 8.aEdge,
                             child: SvgPicture.asset(
                               getSvgAsset(drawer(context, isGuest)[i].icon),
-                              color: drawer(context, isGuest)[i].icon == 'Info Square' ? null : AppColors.yPrimaryColor,
+                              color: drawer(context, isGuest)[i].icon ==
+                                      'Info Square'
+                                  ? null
+                                  : AppColors.yPrimaryColor,
                             ),
                           ),
                           8.sSize,
@@ -134,35 +140,45 @@ class MainDrawer extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   GestureDetector(
-                    onTap: ()async{
-  if (await canLaunchUrl(Uri.parse('https://www.facebook.com/TqniaIT'))) {
-    await launchUrl(Uri.parse('https://www.facebook.com/TqniaIT'));
-  } else {
-    showSnackbar('Could not launch Facebook page', error: true) ;
-  }
-
-                    },
-                    child: SvgPicture.asset(getSvgAsset('mingcute_facebook-line'))),
+                      onTap: () async {
+                        if (await canLaunchUrl(
+                            Uri.parse('https://www.facebook.com/TqniaIT'))) {
+                          await launchUrl(
+                              Uri.parse('https://www.facebook.com/TqniaIT'));
+                        } else {
+                          showSnackbar('Could not launch Facebook page',
+                              error: true);
+                        }
+                      },
+                      child: SvgPicture.asset(
+                          getSvgAsset('mingcute_facebook-line'))),
                   GestureDetector(
-                    onTap: ()async{
-  if (await canLaunchUrl(Uri.parse('https://www.instagram.com/tqniait9'))) {
-    await launchUrl(Uri.parse('https://www.instagram.com/tqniait9'), );
-  } else {
-    showSnackbar('Could not launch instagram page', error: true) ;
-  }
-                    },
-                    child: SvgPicture.asset(getSvgAsset('iconoir_instagram'))),
+                      onTap: () async {
+                        if (await canLaunchUrl(
+                            Uri.parse('https://www.instagram.com/tqniait9'))) {
+                          await launchUrl(
+                            Uri.parse('https://www.instagram.com/tqniait9'),
+                          );
+                        } else {
+                          showSnackbar('Could not launch instagram page',
+                              error: true);
+                        }
+                      },
+                      child:
+                          SvgPicture.asset(getSvgAsset('iconoir_instagram'))),
                   GestureDetector(
-                    onTap: ()async{
-
-  if (await canLaunchUrl(Uri.parse('https://twitter.com/TqniaIT'))) {
-    await launchUrl(Uri.parse('https://twitter.com/TqniaIT'));
-  } else {
-    showSnackbar('Could not launch twitter page', error: true) ;
-  }
-
-                    },
-                    child: SvgPicture.asset(getSvgAsset('teenyicons_twitter-outline'))),
+                      onTap: () async {
+                        if (await canLaunchUrl(
+                            Uri.parse('https://twitter.com/TqniaIT'))) {
+                          await launchUrl(
+                              Uri.parse('https://twitter.com/TqniaIT'));
+                        } else {
+                          showSnackbar('Could not launch twitter page',
+                              error: true);
+                        }
+                      },
+                      child: SvgPicture.asset(
+                          getSvgAsset('teenyicons_twitter-outline'))),
                 ],
               ),
               16.sSize,
@@ -193,13 +209,14 @@ List<DrawerItem> drawer(BuildContext context, bool isGuest) => [
           AppRoutes.routeRemoveAllTo(context, const HomePage());
         },
       ),
-     if(!isGuest) DrawerItem(
-        icon: 'Profile-f',
-        title: 'my_account'.tr,
-        onTap: () {
-          AppRoutes.routeTo(context, const MyAccountPage());
-        },
-      ),
+      if (!isGuest)
+        DrawerItem(
+          icon: 'Profile-f',
+          title: 'my_account'.tr,
+          onTap: () {
+            AppRoutes.routeTo(context, const MyAccountPage());
+          },
+        ),
       DrawerItem(
         icon: 'ic_round-language',
         title: 'languages'.tr,
@@ -214,41 +231,46 @@ List<DrawerItem> drawer(BuildContext context, bool isGuest) => [
           AppRoutes.routeTo(context, const LiveDrawsPage());
         },
       ),
-  if(!isGuest) DrawerItem(
-        icon: 'ep_ticket',
-        title: 'purchase_codes'.tr,
-        onTap: () {
-          AppRoutes.routeTo(context, const PurchaseCodePage());
-        },
-      ),
-  if(!isGuest) DrawerItem(
-        icon: 'Discount',
-        title: 'coupons'.tr,
-        onTap: () {
-          AppRoutes.routeTo(context, const CouponsPage());
-        },
-      ),
-  if(!isGuest) DrawerItem(
-        icon: 'File_dock_duotone_2x',
-        title: 'tickets'.tr,
-        onTap: () {
-          AppRoutes.routeTo(context, const TicketsPage());
-        },
-      ),
-  if(!isGuest) DrawerItem(
-        icon: 'Wallet',
-        title: 'wallets'.tr,
-        onTap: () {
-          AppRoutes.routeTo(context, const WalletsPage());
-        },
-      ),
-  if(!isGuest) DrawerItem(
-        icon: 'Bag',
-        title: 'my_orders'.tr,
-        onTap: () {
-          AppRoutes.routeTo(context, const MyOrdersPage());
-        },
-      ),
+      if (!isGuest)
+        DrawerItem(
+          icon: 'ep_ticket',
+          title: 'purchase_codes'.tr,
+          onTap: () {
+            AppRoutes.routeTo(context, const PurchaseCodePage());
+          },
+        ),
+      if (!isGuest)
+        DrawerItem(
+          icon: 'Discount',
+          title: 'coupons'.tr,
+          onTap: () {
+            AppRoutes.routeTo(context, const CouponsPage());
+          },
+        ),
+      if (!isGuest)
+        DrawerItem(
+          icon: 'File_dock_duotone_2x',
+          title: 'tickets'.tr,
+          onTap: () {
+            AppRoutes.routeTo(context, const TicketsPage());
+          },
+        ),
+      if (!isGuest)
+        DrawerItem(
+          icon: 'Wallet',
+          title: 'wallets'.tr,
+          onTap: () {
+            AppRoutes.routeTo(context, const WalletsPage());
+          },
+        ),
+      if (!isGuest)
+        DrawerItem(
+          icon: 'Bag',
+          title: 'my_orders'.tr,
+          onTap: () {
+            AppRoutes.routeTo(context, const MyOrdersPage());
+          },
+        ),
       DrawerItem(
         icon: 'Calling-f',
         title: 'contact_us'.tr,
@@ -284,48 +306,55 @@ List<DrawerItem> drawer(BuildContext context, bool isGuest) => [
           AppRoutes.routeTo(context, const FAQPage());
         },
       ),
-  DrawerItem(
+      DrawerItem(
         icon: 'Video_fill_3x',
         title: 'how_it_works'.tr,
         onTap: () {
           AppRoutes.routeTo(context, const HowItWorksPage());
         },
       ),
-  // DrawerItem(
-  //       icon: 'Video_fill_3x',
-  //       title: 'winners'.tr,
-  //       onTap: () {
-  //         AppRoutes.routeTo(context, const WinnersVideoPage());
-  //       },
-  //     ),
-  isGuest ?
-  DrawerItem(
-        icon: 'login',
-        title: 'login'.tr,
-        onTap: () {
-          Provider.of<AuthProvider>(context, listen: false).notGuest();
-          AppRoutes.routeRemoveAllTo(context, const LoginPage());
-        },
-      ) : DrawerItem(
-    icon: 'Logout',
-    title: Provider.of<AuthProvider>(context).logoutLoader ? 'wait'.tr : 'logout'.tr,
-    onTap: Provider.of<AuthProvider>(context).logoutLoader ? (){} : () {
-      Provider.of<AuthProvider>(context, listen: false).logout(context);
-    },
-  ),
-  if(!isGuest) DrawerItem(
-        icon: 'deleteAccount',
-        title: 'delete_account'.tr,
-        onTap:  () {
-          showDialog(
-              context: context,
-              builder: (context) => ConfirmationDialog(
-                  icon: 'deleteAccount',
-                  description: 'delete_account_desc'.tr,
-                  isLogOut: true,
-                  onYesPressed:()=>
-                      Provider.of<AuthProvider>(context, listen: false).deleteAccount(context)
-              ));
-        },
-      ),
+      // DrawerItem(
+      //       icon: 'Video_fill_3x',
+      //       title: 'winners'.tr,
+      //       onTap: () {
+      //         AppRoutes.routeTo(context, const WinnersVideoPage());
+      //       },
+      //     ),
+      isGuest
+          ? DrawerItem(
+              icon: 'login',
+              title: 'login'.tr,
+              onTap: () {
+                Provider.of<AuthProvider>(context, listen: false).notGuest();
+                AppRoutes.routeRemoveAllTo(context, const LoginPage());
+              },
+            )
+          : DrawerItem(
+              icon: 'Logout',
+              title: Provider.of<AuthProvider>(context).logoutLoader
+                  ? 'wait'.tr
+                  : 'logout'.tr,
+              onTap: Provider.of<AuthProvider>(context).logoutLoader
+                  ? () {}
+                  : () {
+                      Provider.of<AuthProvider>(context, listen: false)
+                          .logout(context);
+                    },
+            ),
+      if (!isGuest)
+        DrawerItem(
+          icon: 'deleteAccount',
+          title: 'delete_account'.tr,
+          onTap: () {
+            showDialog(
+                context: context,
+                builder: (context) => ConfirmationDialog(
+                    icon: 'deleteAccount',
+                    description: 'delete_account_desc'.tr,
+                    isLogOut: true,
+                    onYesPressed: () =>
+                        Provider.of<AuthProvider>(context, listen: false)
+                            .deleteAccount(context)));
+          },
+        ),
     ];

@@ -189,5 +189,7 @@
   "open_settings": "Open Settings",
   "close": "Close",
   "show_video": "Show video",
-  "no_video": "There is no video"
+  "no_video": "There is no video",
+  "selected_location":"Selected Location",
+  "Searching":"Searching"
 }

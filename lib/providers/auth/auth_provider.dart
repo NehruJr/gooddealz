@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -124,21 +125,41 @@ class AuthProvider extends ChangeNotifier {
 
       await GoogleSignIn.instance.signOut();
 
-      final googleSignIn = await GoogleSignIn.instance.authenticate();
+      await GoogleSignIn.instance.initialize(
+        serverClientId:
+            "336224681714-2ol6inejkogngjkjitgcf40j71h8fmcv.apps.googleusercontent.com",
+      );
 
-      print("google: ${googleSignIn}");
+      final GoogleSignIn googleSignIn = GoogleSignIn.instance;
 
-      if (googleSignIn == null) {
+      final GoogleSignInAccount? googleUser = await googleSignIn.authenticate();
+
+      if (googleUser == null) {
         socialLoginLoader = false;
         notifyListeners();
         return;
       }
 
+      googleUser.authentication;
+
+      log("Google user email: ${googleUser.email}");
+      log("Google user displayName: ${googleUser.displayName}");
+      log("Google user photoUrl: ${googleUser.photoUrl}");
+
       String dToken = await MyNotification.getFcmToken();
-      final response = await CallApi.post(AppEndpoints.socialLogin,
-          data: jsonEncode({'email': googleSignIn.email, 'fcm_token': dToken}),
-          isLogin: true);
-      print(response.statusCode);
+
+      final response = await CallApi.post(
+        AppEndpoints.socialLogin,
+        data: jsonEncode({
+          'email': googleUser.email,
+          'fcm_token': dToken,
+          'name': googleUser.displayName ?? '',
+          'photo_url': googleUser.photoUrl ?? '',
+        }),
+        isLogin: true,
+      );
+
+      log("repomsee ${response.statusCode}");
 
       if (response.statusCode == 200) {
         socialLoginLoader = false;
@@ -147,6 +168,7 @@ class AuthProvider extends ChangeNotifier {
         final jsonRes = jsonDecode(response.body);
         u.UserModel userModel = u.UserModel.fromJson(jsonRes);
         currentUser = userModel.data?.user;
+
         if (currentUser != null && currentUser!.verified == 0) {
           LocalData.setToken(userModel.data!.accessToken!);
           AppRoutes.routeTo(context, OTPCodePage(phone: currentUser!.phone!));
@@ -156,20 +178,21 @@ class AuthProvider extends ChangeNotifier {
           LocalData.changeIsLogin(true);
           Provider.of<CartProvider>(context, listen: false)
               .getCartCount(context);
-
           notGuest();
           AppRoutes.routeRemoveAllTo(context, const HomePage());
         }
       } else if (response.statusCode == 401) {
         socialLoginLoader = false;
         notifyListeners();
+
         AppRoutes.routeTo(
-            context,
-            SocialRegisterPage(
-              name: googleSignIn.displayName!,
-              email: googleSignIn.email,
-              photoUrl: googleSignIn.photoUrl ?? '',
-            ));
+          context,
+          SocialRegisterPage(
+            name: googleUser.displayName ?? '',
+            email: googleUser.email,
+            photoUrl: googleUser.photoUrl ?? '',
+          ),
+        );
       } else {
         socialLoginLoader = false;
         notifyListeners();
@@ -179,12 +202,10 @@ class AuthProvider extends ChangeNotifier {
             'An error occurred';
         showSnackbar(error, error: true);
       }
-      // GlobalMethods.errorDialog(subtitle:googleSignIn!.email.toString()+ googleSignIn.displayName.toString(), context: context);
     } catch (e) {
       socialLoginLoader = false;
       notifyListeners();
-      print(e);
-      showSnackbar(e.toString(), error: true);
+      showSnackbar("Google Sign-In failed: ${e.toString()}", error: true);
     }
   }
 

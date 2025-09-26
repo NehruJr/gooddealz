@@ -29,7 +29,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
@@ -39,313 +38,323 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
 
-    _emailController.text = LocalData.rememberedEmail??'';
+    _emailController.text = LocalData.rememberedEmail ?? '';
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Selector<AuthProvider, bool>(
-        selector: (context, authProvider) =>
-        authProvider.socialLoginLoader,
+        selector: (context, authProvider) => authProvider.socialLoginLoader,
         builder: (context, socialLoginLoader, _) {
           return LoadingManager(
             isLoading: socialLoginLoader,
-          child: MainPage(
-            noDrawer: true,
-            body: Container(
-              height: context.height,
-              width: context.width,
-              // decoration: BoxDecoration(
-              //   gradient: LinearGradient(
-              //     begin: Alignment.topCenter,
-              //     end: Alignment.bottomCenter,
-              //     colors: [
-              //       Colors.white.withOpacity(0.1),
-              //       Colors.white,
-              //       Colors.white,
-              //     ],
-              //   ),
-              // ),
-              child: SingleChildScrollView(
-                padding: 16.aEdge,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 80,
-                      width: 200,
-                      child: Image.asset(
-                        getPngAsset('black_logo'),
-                        fit: BoxFit.cover,
+            child: MainPage(
+              noDrawer: true,
+              body: Container(
+                height: context.height,
+                width: context.width,
+                // decoration: BoxDecoration(
+                //   gradient: LinearGradient(
+                //     begin: Alignment.topCenter,
+                //     end: Alignment.bottomCenter,
+                //     colors: [
+                //       Colors.white.withOpacity(0.1),
+                //       Colors.white,
+                //       Colors.white,
+                //     ],
+                //   ),
+                // ),
+                child: SingleChildScrollView(
+                  padding: 16.aEdge,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 80,
+                        width: 200,
+                        child: Image.asset(
+                          getPngAsset('black_logo'),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                    32.sSize,
-                    MainText(
-                      'login'.tr,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
-                    32.sSize,
-                    Form(
-                      key: formKey,
-                      child: Column(
-                        children: [
-                          // MainTextField(
-                          //   hint: 'phone'.tr,
-                          //   unfocusWhenTapOutside: true,
-                          //   prefixIcon: const RoundedSquare(icon: 'Calling'),
-                          //   keyboardType: TextInputType.phone,
-                          //   suffixIcon: Padding(
-                          //     padding: 18.vhEdge,
-                          //     child: Row(
-                          //       mainAxisSize: MainAxisSize.min,
-                          //       children: [
-                          //         VerticalDivider(
-                          //             thickness: 1.1,
-                          //             color: Colors.black.withOpacity(0.7)),
-                          //         const MainText('+20', color: Colors.black54)
-                          //       ],
-                          //     ),
-                          //   ),
-                          //   validator: (value) {
-                          //     if (!(value ?? '').isValidPhone) {
-                          //       return '';
-                          //     } else {
-                          //       return null;
-                          //     }
-                          //   },
-                          // ),
-                          MainTextField(
-                            hint: 'email'.tr,
-                            unfocusWhenTapOutside: true,
-                            controller: _emailController,
-                            prefixIcon: const RoundedSquare(icon: 'Message'),
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'enter_email'.tr;
-                              } 
-                              else if (!(value ?? '').isValidEmail) {
-                                return 'invalid_email'.tr;
-                              } 
-                              else {
-                                return null;
-                              }
-                            },
-                          ),
-                          12.sSize,
-                          MainTextField(
-                            hint: 'password'.tr,
-                            unfocusWhenTapOutside: true,
-                            controller: _passwordController,
-                            prefixIcon: const RoundedSquare(icon: 'Lock'),
-                            obscureText: true,
-                            isPassword: true,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'enter_password'.tr;
-                              } else if(!(value ?? '').isValidPassword) {
-                                return 'invalid_password'.tr;
-                              }
-                              else {
-                                return null;
-                              }
-                            },
-                          ),
-                          12.sSize,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  AppRoutes.routeTo(
-                                      context, const ForgetPasswordPage());
-                                },
-                                child: MainText(
-                                  'forget_password'.tr,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.black,
+                      32.sSize,
+                      MainText(
+                        'login'.tr,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                      32.sSize,
+                      Form(
+                        key: formKey,
+                        child: Column(
+                          children: [
+                            // MainTextField(
+                            //   hint: 'phone'.tr,
+                            //   unfocusWhenTapOutside: true,
+                            //   prefixIcon: const RoundedSquare(icon: 'Calling'),
+                            //   keyboardType: TextInputType.phone,
+                            //   suffixIcon: Padding(
+                            //     padding: 18.vhEdge,
+                            //     child: Row(
+                            //       mainAxisSize: MainAxisSize.min,
+                            //       children: [
+                            //         VerticalDivider(
+                            //             thickness: 1.1,
+                            //             color: Colors.black.withOpacity(0.7)),
+                            //         const MainText('+20', color: Colors.black54)
+                            //       ],
+                            //     ),
+                            //   ),
+                            //   validator: (value) {
+                            //     if (!(value ?? '').isValidPhone) {
+                            //       return '';
+                            //     } else {
+                            //       return null;
+                            //     }
+                            //   },
+                            // ),
+                            MainTextField(
+                              hint: 'email'.tr,
+                              unfocusWhenTapOutside: true,
+                              controller: _emailController,
+                              prefixIcon: const RoundedSquare(icon: 'Message'),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'enter_email'.tr;
+                                } else if (!(value ?? '').isValidEmail) {
+                                  return 'invalid_email'.tr;
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+                            12.sSize,
+                            MainTextField(
+                              hint: 'password'.tr,
+                              unfocusWhenTapOutside: true,
+                              controller: _passwordController,
+                              prefixIcon: const RoundedSquare(icon: 'Lock'),
+                              obscureText: true,
+                              isPassword: true,
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'enter_password'.tr;
+                                } else if (!(value ?? '').isValidPassword) {
+                                  return 'invalid_password'.tr;
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+                            12.sSize,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    AppRoutes.routeTo(
+                                        context, const ForgetPasswordPage());
+                                  },
+                                  child: MainText(
+                                    'forget_password'.tr,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          32.sSize,
-                          Consumer<AuthProvider>(
-                            builder: (context, authProvider, _) {
+                              ],
+                            ),
+                            32.sSize,
+                            Consumer<AuthProvider>(
+                                builder: (context, authProvider, _) {
                               return MainButton(
                                 width: 220,
-                                color: authProvider.loginLoader ? AppColors.ySecondryColor : AppColors.yPrimaryColor,
-                                onPressed: authProvider.loginLoader ? (){} : () async {
-                                  if (formKey.currentState!.validate()) {
-                                    authProvider.login(context,
-                                        email: _emailController.text.trim(),
-                                    password: _passwordController.text
-                                    );
-                                  }
-
-                                },
+                                color: authProvider.loginLoader
+                                    ? AppColors.ySecondryColor
+                                    : AppColors.yPrimaryColor,
+                                onPressed: authProvider.loginLoader
+                                    ? () {}
+                                    : () async {
+                                        if (formKey.currentState!.validate()) {
+                                          authProvider.login(context,
+                                              email:
+                                                  _emailController.text.trim(),
+                                              password:
+                                                  _passwordController.text);
+                                        }
+                                      },
                                 child: MainText(
-                                  authProvider.loginLoader ? 'wait'.tr : 'login'.tr,
+                                  authProvider.loginLoader
+                                      ? 'wait'.tr
+                                      : 'login'.tr,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.white,
                                 ),
                               );
-                            }
-                          ),
-                          16.sSize,
-                          Consumer<AuthProvider>(
-                            builder: (context, authProvider, _) {
+                            }),
+                            16.sSize,
+                            Consumer<AuthProvider>(
+                                builder: (context, authProvider, _) {
                               return MainButton(
                                 width: 220,
                                 color: AppColors.yLightGreyColor,
-                                onPressed: authProvider.loginGuestLoader ? (){} : () async {
-
-                                    authProvider.loginAsGuest(context,);
-
-                                },
+                                onPressed: authProvider.loginGuestLoader
+                                    ? () {}
+                                    : () async {
+                                        authProvider.loginAsGuest(
+                                          context,
+                                        );
+                                      },
                                 child: MainText(
-                                  authProvider.loginGuestLoader ? 'wait'.tr : 'guest'.tr,
+                                  authProvider.loginGuestLoader
+                                      ? 'wait'.tr
+                                      : 'guest'.tr,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.black,
                                 ),
                               );
-                            }
-                          ),
-                        ],
+                            }),
+                          ],
+                        ),
                       ),
-                    ),
-                    32.sSize,
-                    SizedBox(
-                      width: 220,
-                      child: Row(
+                      32.sSize,
+                      SizedBox(
+                        width: 220,
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: Divider(
+                              color: Colors.black.withOpacity(0.6),
+                            )),
+                            Padding(
+                              padding: 12.aEdge,
+                              child: MainText(
+                                'or'.tr,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Expanded(
+                                child: Divider(
+                              color: Colors.black.withOpacity(0.6),
+                            )),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        width: 220,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Provider.of<AuthProvider>(context,
+                                        listen: false)
+                                    .loginWithFaceBook(context);
+                              },
+                              child: Container(
+                                height: 60,
+                                width: 60,
+                                padding: 16.aEdge,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 5,
+                                      offset: const Offset(2, 2),
+                                      color: Colors.black.withOpacity(0.12),
+                                    ),
+                                  ],
+                                ),
+                                child:
+                                    SvgPicture.asset(getSvgAsset('facebook')),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Provider.of<AuthProvider>(context,
+                                        listen: false)
+                                    .loginWithGoogle(context);
+                              },
+                              child: Container(
+                                height: 60,
+                                width: 60,
+                                padding: 16.aEdge,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      blurRadius: 5,
+                                      offset: const Offset(2, 2),
+                                      color: Colors.black.withOpacity(0.12),
+                                    ),
+                                  ],
+                                ),
+                                child: SvgPicture.asset(getSvgAsset('google')),
+                              ),
+                            ),
+                            if (Platform.isIOS)
+                              GestureDetector(
+                                onTap: () {
+                                  Provider.of<AuthProvider>(context,
+                                          listen: false)
+                                      .loginWithApple(context);
+                                },
+                                child: Container(
+                                  height: 60,
+                                  width: 60,
+                                  padding: 16.aEdge,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        blurRadius: 5,
+                                        offset: const Offset(2, 2),
+                                        color: Colors.black.withOpacity(0.12),
+                                      ),
+                                    ],
+                                  ),
+                                  child: const Icon(Icons.apple),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                      32.sSize,
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Expanded(
-                              child: Divider(
-                            color: Colors.black.withOpacity(0.6),
-                          )),
-                          Padding(
-                            padding: 12.aEdge,
+                          MainText(
+                            'do_not_have_account'.tr,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.black.withOpacity(0.4),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              AppRoutes.routeTo(context, const SignupPage());
+                            },
                             child: MainText(
-                              'or'.tr,
-                              fontSize: 13,
+                              'signup'.tr,
+                              fontSize: 14,
                               fontWeight: FontWeight.w500,
                               color: Colors.black,
                             ),
                           ),
-                          Expanded(
-                              child: Divider(
-                            color: Colors.black.withOpacity(0.6),
-                          )),
                         ],
                       ),
-                    ),
-                    SizedBox(
-                      width: 220,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Provider.of<AuthProvider>(context, listen: false).loginWithFaceBook(context);
-                            },
-                            child: Container(
-                              height: 60,
-                              width: 60,
-                              padding: 16.aEdge,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 5,
-                                    offset: const Offset(2, 2),
-                                    color: Colors.black.withOpacity(0.12),
-                                  ),
-                                ],
-                              ),
-                              child: SvgPicture.asset(getSvgAsset('facebook')),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Provider.of<AuthProvider>(context, listen: false).loginWithGoogle(context);
-                            },
-                            child: Container(
-                              height: 60,
-                              width: 60,
-                              padding: 16.aEdge,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 5,
-                                    offset: const Offset(2, 2),
-                                    color: Colors.black.withOpacity(0.12),
-                                  ),
-                                ],
-                              ),
-                              child: SvgPicture.asset(getSvgAsset('google')),
-                            ),
-                          ),
-                          if(Platform.isIOS)GestureDetector(
-                            onTap: () {
-                              Provider.of<AuthProvider>(context, listen: false).loginWithApple(context);
-                            },
-                            child: Container(
-                              height: 60,
-                              width: 60,
-                              padding: 16.aEdge,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    blurRadius: 5,
-                                    offset: const Offset(2, 2),
-                                    color: Colors.black.withOpacity(0.12),
-                                  ),
-                                ],
-                              ),
-                              child: const Icon(Icons.apple),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    32.sSize,
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        MainText(
-                          'do_not_have_account'.tr,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.black.withOpacity(0.4),
-                        ),
-                        InkWell(
-                          onTap: () {
-                            AppRoutes.routeTo(context, const SignupPage());
-                          },
-                          child: MainText(
-                            'signup'.tr,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-      }
-    );
+          );
+        });
   }
 }
