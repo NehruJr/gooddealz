@@ -9,10 +9,11 @@ class AppColors {
   static const Color yLightGreyColor = Color(0xffEBF0FF);
   static const Color yBlackColor = Color(0xFF223263);
   static const Color yWhiteColor = Colors.white;
+  static const Color textFieldColor = Color(0xFFF5F5F5);
   static const Color yLightColor = Color(0xFFEBF0FF);
   static const Color yDarkColor = Color(0xFF223263);
   static const Color yRedColor = Color(0xFFFF2828);
   static const Color yGreenColor = Color(0xFF38D109);
-  static const Color yBGColor = Color(0xFFFBFBFD);
+  static const Color yBGColor = Color(0xFFFAF9F6);
   static const Color yAmberColor = Colors.amber;
 }

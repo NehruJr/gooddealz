@@ -52,33 +52,35 @@ class MainPage extends StatelessWidget {
       onRefresh: onRefresh ?? (() => Future.delayed(Duration.zero)),
       edgeOffset: onRefresh != null ? 0 : -300,
       child: Scaffold(
-        backgroundColor: const Color(0xFFFBFBFD),
+        backgroundColor: const Color(0xFFFAF9F6),
         body: Stack(
           children: [
-            isBackgroundImage
-                ? backgroundImage ??
-                    SizedBox(
-                      width: context.width,
-                      height: context.height,
-                      child: SvgPicture.asset(getSvgAsset('splash_bg')),
-                    )
-                : 0.sSize,
-            isWhiteLayer
-                ? Container(
+            // isBackgroundImage
+            //     ? backgroundImage ??
+            //         SizedBox(
+            //           width: context.width,
+            //           height: context.height,
+            //           child: SvgPicture.asset(getSvgAsset('splash_bg')),
+            //         )
+            //     : 0.sSize,
+            // isWhiteLayer
+            //     ?
+            Container(
                     height: context.height,
                     width: context.width,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          AppColors.yBGColor.withOpacity(0.1),
-                          AppColors.yBGColor,
-                        ],
-                      ),
-                    ),
-                  )
-                : 0.sSize,
+                    color: AppColors.yBGColor,
+                    // decoration: const BoxDecoration(
+                    //   gradient: LinearGradient(
+                    //     begin: Alignment.topCenter,
+                    //     end: Alignment.bottomCenter,
+                    //     colors: [
+                    //       AppColors.yBGColor,
+                    //       AppColors.yBGColor,
+                    //     ],
+                    //   ),
+                    // ),
+                  ),
+                // : 0.sSize,
             SafeArea(
               child: Column(
                 children: [
