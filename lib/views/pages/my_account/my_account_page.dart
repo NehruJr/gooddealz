@@ -251,7 +251,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                     showDialog(
                         context: context,
                         builder: (context) => ConfirmationDialog(
-                            icon: 'logo',
+                            icon: 'black_logo',
                             description: '${'change_phone'.tr} $getPhoneNumber \n${'and'.tr} ${'email'.tr} $email',
                             onYesPressed:()=>
                                 authProvider.updateProfile(context,
@@ -269,7 +269,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                     showDialog(
                         context: context,
                         builder: (context) => ConfirmationDialog(
-                            icon: 'logo',
+                            icon: 'black_logo',
                             description: '${'change_phone'.tr} $getPhoneNumber',
                             onYesPressed:()=>
                                 authProvider.updateProfile(context,
@@ -287,7 +287,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                     showDialog(
                         context: context,
                         builder: (context) => ConfirmationDialog(
-                            icon: 'logo',
+                            icon: 'black_logo',
                             description: '${'change_email'.tr} $email',
                             onYesPressed:()=>
                                 authProvider.updateProfile(context,
