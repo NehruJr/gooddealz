@@ -1,6 +1,8 @@
+import 'dart:io';
+
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:goodealz/core/constants/app_colors.dart';
 import 'package:goodealz/core/constants/app_routes.dart';
 import 'package:goodealz/core/helper/extensions/assetss_widgets.dart';
@@ -28,7 +30,6 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-
   final _fistNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -39,7 +40,6 @@ class _SignupPageState extends State<SignupPage> {
   String? nationality;
 
   CountryCode? _countryCode;
-
 
   final formKey = GlobalKey<FormState>();
   bool isAccept = false;
@@ -118,17 +118,15 @@ class _SignupPageState extends State<SignupPage> {
                       unfocusWhenTapOutside: true,
                       controller: _emailController,
                       prefixIcon: const RoundedSquare(icon: 'Message'),
-                     validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'enter_email'.tr;
-                              } 
-                              else if (!(value ?? '').isValidEmail) {
-                                return 'invalid_email'.tr;
-                              } 
-                              else {
-                                return null;
-                              }
-                            },
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'enter_email'.tr;
+                        } else if (!(value ?? '').isValidEmail) {
+                          return 'invalid_email'.tr;
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
                     12.sSize,
                     CustomDropDown(
@@ -138,7 +136,7 @@ class _SignupPageState extends State<SignupPage> {
                       unfocusWhenTapOutside: true,
                       // controller: _phoneController,
                       prefixIcon: const RoundedSquare(icon: 'gender'),
-                      onChange: (value){
+                      onChange: (value) {
                         gender = value;
                       },
                       validator: (value) {
@@ -152,14 +150,17 @@ class _SignupPageState extends State<SignupPage> {
                     12.sSize,
                     CustomDropDown(
                       hint: 'nationality'.tr,
-                      list: Provider.of<AuthProvider>(context).nationalities.map((e) => e.name!).toList(),
+                      list: Provider.of<AuthProvider>(context)
+                          .nationalities
+                          .map((e) => e.name!)
+                          .toList(),
                       item: nationality,
                       unfocusWhenTapOutside: true,
                       prefixIcon: const RoundedSquare(icon: 'nationality'),
-
-                      onChange: (value){
+                      onChange: (value) {
                         nationality = value;
-                        Provider.of<AuthProvider>(context, listen: false).changeCountryCode(value);
+                        Provider.of<AuthProvider>(context, listen: false)
+                            .changeCountryCode(value);
                       },
                       validator: (value) {
                         if (value == null) {
@@ -177,7 +178,7 @@ class _SignupPageState extends State<SignupPage> {
                       prefixIcon: const RoundedSquare(icon: 'Calling'),
                       keyboardType: TextInputType.phone,
                       isPhone: true,
-                      onCounteryCodeChange: (code){
+                      onCounteryCodeChange: (code) {
                         _countryCode = code;
                         print(_countryCode?.dialCode);
                       },
@@ -209,17 +210,16 @@ class _SignupPageState extends State<SignupPage> {
                       controller: _passwordController,
                       prefixIcon: const RoundedSquare(icon: 'Lock'),
                       obscureText: true,
-                       isPassword: true,
-                       validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'enter_password'.tr;
-                              } else if(!(value ?? '').isValidPassword) {
-                                return 'invalid_password'.tr;
-                              }
-                              else {
-                                return null;
-                              }
-                            },
+                      isPassword: true,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'enter_password'.tr;
+                        } else if (!(value ?? '').isValidPassword) {
+                          return 'invalid_password'.tr;
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
                     12.sSize,
                     MainTextField(
@@ -230,11 +230,10 @@ class _SignupPageState extends State<SignupPage> {
                       isPassword: true,
                       validator: (value) {
                         if (value!.isEmpty) {
-                                return 'enter_password'.tr;
-                              } else if (value != _passwordController.text) {
+                          return 'enter_password'.tr;
+                        } else if (value != _passwordController.text) {
                           return 'doesnot_match'.tr;
-                        }
-                        else {
+                        } else {
                           return null;
                         }
                       },
@@ -254,7 +253,9 @@ class _SignupPageState extends State<SignupPage> {
                             children: [
                               Checkbox(
                                 value: isAccept,
-                                fillColor: WidgetStatePropertyAll(isAccept? AppColors.yPrimaryColor : AppColors.yBGColor),
+                                fillColor: WidgetStatePropertyAll(isAccept
+                                    ? AppColors.yPrimaryColor
+                                    : AppColors.yBGColor),
                                 onChanged: (value) {
                                   setState(() {
                                     isAccept = value ?? false;
@@ -268,7 +269,7 @@ class _SignupPageState extends State<SignupPage> {
                                 color: Colors.black.withOpacity(0.5),
                               ),
                               GestureDetector(
-                                onTap: (){
+                                onTap: () {
                                   AppRoutes.routeTo(context, const TermsPage());
                                 },
                                 child: MainText(
@@ -284,41 +285,44 @@ class _SignupPageState extends State<SignupPage> {
                       ],
                     ),
                     32.sSize,
-                    Consumer<AuthProvider>(
-                        builder: (context, authProvider, _) {
-                        return MainButton(
-                          width: 170,
-                          radius: 28,
+                    Consumer<AuthProvider>(builder: (context, authProvider, _) {
+                      return MainButton(
+                        width: 170,
+                        radius: 28,
                         color: authProvider.signupLoader
                             ? AppColors.ySecondryColor
                             : AppColors.yPrimaryColor,
-                        onPressed: authProvider.signupLoader ? (){} : () async {
-                            if (formKey.currentState!.validate()) {
-                              if(isAccept != true){
-                                GlobalMethods.errorDialog(title:'', subtitle: 'accept_terms'.tr, context: context);
-                                return;
-                              }
+                        onPressed: authProvider.signupLoader
+                            ? () {}
+                            : () async {
+                                if (formKey.currentState!.validate()) {
+                                  if (isAccept != true) {
+                                    GlobalMethods.errorDialog(
+                                        title: '',
+                                        subtitle: 'accept_terms'.tr,
+                                        context: context);
+                                    return;
+                                  }
 
-                              authProvider.signup(context,
-                                  firstName: _fistNameController.text.trim(),
-                                  lastName: _lastNameController.text.trim(),
-                                  email: _emailController.text.trim(),
-                                gender: gender!,
-                                nationality: nationality!,
-                                phone: getPhoneNumber,
-                                password: _passwordController.text
-                              );
-                            }
-                          },
-                          child: MainText(
-                            authProvider.signupLoader ? 'wait'.tr : 'signup'.tr,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white,
-                          ),
-                        );
-                      }
-                    ),
+                                  authProvider.signup(context,
+                                      firstName:
+                                          _fistNameController.text.trim(),
+                                      lastName: _lastNameController.text.trim(),
+                                      email: _emailController.text.trim(),
+                                      gender: gender!,
+                                      nationality: nationality!,
+                                      phone: getPhoneNumber,
+                                      password: _passwordController.text);
+                                }
+                              },
+                        child: MainText(
+                          authProvider.signupLoader ? 'wait'.tr : 'signup'.tr,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -395,7 +399,110 @@ class _SignupPageState extends State<SignupPage> {
               //     ],
               //   ),
               // ),
-              16.sSize,
+
+              SizedBox(
+                width: 220,
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: Divider(
+                      color: Colors.black.withOpacity(0.6),
+                    )),
+                    Padding(
+                      padding: 12.aEdge,
+                      child: MainText(
+                        'or'.tr,
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Expanded(
+                        child: Divider(
+                      color: Colors.black.withOpacity(0.6),
+                    )),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 220,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Provider.of<AuthProvider>(context, listen: false)
+                            .loginWithFaceBook(context);
+                      },
+                      child: Container(
+                        height: 60,
+                        width: 60,
+                        padding: 16.aEdge,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 5,
+                              offset: const Offset(2, 2),
+                              color: Colors.black.withOpacity(0.12),
+                            ),
+                          ],
+                        ),
+                        child: SvgPicture.asset(getSvgAsset('facebook')),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Provider.of<AuthProvider>(context, listen: false)
+                            .loginWithGoogle(context);
+                      },
+                      child: Container(
+                        height: 60,
+                        width: 60,
+                        padding: 16.aEdge,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              blurRadius: 5,
+                              offset: const Offset(2, 2),
+                              color: Colors.black.withOpacity(0.12),
+                            ),
+                          ],
+                        ),
+                        child: SvgPicture.asset(getSvgAsset('google')),
+                      ),
+                    ),
+                    if (Platform.isIOS)
+                      GestureDetector(
+                        onTap: () {
+                          Provider.of<AuthProvider>(context, listen: false)
+                              .loginWithApple(context);
+                        },
+                        child: Container(
+                          height: 60,
+                          width: 60,
+                          padding: 16.aEdge,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 5,
+                                offset: const Offset(2, 2),
+                                color: Colors.black.withOpacity(0.12),
+                              ),
+                            ],
+                          ),
+                          child: const Icon(Icons.apple),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              32.sSize,
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -428,7 +535,7 @@ class _SignupPageState extends State<SignupPage> {
   String get getPhoneNumber {
     String code = _countryCode == null ? "+20" : _countryCode!.dialCode!;
     String phone = _phoneController.text.trim();
-    if(code == "+20" && phone.startsWith("0")){
+    if (code == "+20" && phone.startsWith("0")) {
       phone = phone.substring(1);
     }
     return code + phone;
