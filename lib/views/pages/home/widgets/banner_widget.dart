@@ -165,6 +165,8 @@ class _BannerWidgetState extends State<BannerWidget> {
     }
 
     return Container(
+      height: 250,
+      width: MediaQuery.sizeOf(context).width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(widget.borderRadius),
         boxShadow: [
@@ -200,9 +202,7 @@ class _BannerWidgetState extends State<BannerWidget> {
                   },
                 ),
                 if (widget.showGradient)
-                  Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: _buildGradientOverlay()),
+                  _buildGradientOverlay(),
                 if (widget.showIndicator && widget.bannerModels.length > 1)
                   _buildIndicatorWithText(),
               ],
@@ -318,7 +318,7 @@ class _BannerWidgetState extends State<BannerWidget> {
                 boxShadow: [
                   if (currentIndex == index)
                     BoxShadow(
-                      color: AppColors.yPrimaryColor..withValues(alpha: 0.5),
+                      color: AppColors.yPrimaryColor.withValues(alpha: 0.5),
                       blurRadius: 4,
                       offset: const Offset(0, 1),
                     ),
@@ -352,7 +352,8 @@ class _BannerWidgetState extends State<BannerWidget> {
 
   Widget _buildGradientOverlay() {
     return Positioned.fill(
-      child: DecoratedBox(
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(widget.borderRadius),
           gradient: LinearGradient(

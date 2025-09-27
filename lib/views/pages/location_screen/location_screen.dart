@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -221,7 +222,8 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   Future<void> _searchPlaces(String query) async {
-    final locale = Provider.of<YsLocalizationsProvider>(context);
+    log("_searchPlaces ${query}");
+    final locale = Provider.of<YsLocalizationsProvider>(context, listen: false);
     bool isArabicLocale = locale.languageCode == 'ar';
 
     try {
@@ -229,6 +231,7 @@ class _LocationScreenState extends State<LocationScreen> {
           'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$query&language=${locale.languageCode}&key=$kGoogleApiKey';
 
       final response = await http.get(Uri.parse(url));
+      log("responssee ${response}");
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -260,7 +263,7 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   Future<void> _selectSuggestion(Map<String, dynamic> suggestion) async {
-    final locale = Provider.of<YsLocalizationsProvider>(context);
+    final locale = Provider.of<YsLocalizationsProvider>(context, listen: false);
 
     try {
       final String placeId = suggestion['place_id'];
@@ -384,13 +387,11 @@ class _LocationScreenState extends State<LocationScreen> {
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                               borderSide: const BorderSide(
-                                  color: AppColors.yOrangeColor, width: 2),
+                                  color: AppColors.ySecondryColor, width: 2),
                             ),
                           ),
                         ),
                       ),
-
-                      // Loading indicator or Suggestions List
                       if (_showSuggestions && _suggestions.isNotEmpty)
                         Container(
                           margin: const EdgeInsets.only(top: 8),
@@ -415,7 +416,7 @@ class _LocationScreenState extends State<LocationScreen> {
                               final suggestion = _suggestions[index];
                               return ListTile(
                                 leading: const Icon(Icons.location_on,
-                                    color: AppColors.yOrangeColor),
+                                    color: AppColors.ySecondryColor),
                                 title: Text(
                                   suggestion['main_text'],
                                   style: const TextStyle(
@@ -463,7 +464,7 @@ class _LocationScreenState extends State<LocationScreen> {
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
                                     valueColor: AlwaysStoppedAnimation<Color>(
-                                        AppColors.yOrangeColor),
+                                        AppColors.ySecondryColor),
                                   ),
                                 ),
                                 12.wSize,
@@ -493,7 +494,7 @@ class _LocationScreenState extends State<LocationScreen> {
                           onPressed: _getCurrentLocation,
                           backgroundColor: Colors.white,
                           child: const Icon(Icons.my_location,
-                              color: AppColors.yOrangeColor),
+                              color: AppColors.ySecondryColor),
                         ),
                         12.hSize,
                         Container(
@@ -513,7 +514,7 @@ class _LocationScreenState extends State<LocationScreen> {
                             children: [
                               const Icon(
                                 Icons.location_on,
-                                color: AppColors.yOrangeColor,
+                                color: AppColors.ySecondryColor,
                                 size: 24,
                               ),
                               const SizedBox(width: 12),
@@ -552,8 +553,6 @@ class _LocationScreenState extends State<LocationScreen> {
                   ),
               ],
             ),
-
-      // Confirm Button
       bottomNavigationBar: SafeArea(
         child: Container(
           padding: const EdgeInsets.all(16),
@@ -592,7 +591,7 @@ class _LocationScreenState extends State<LocationScreen> {
                     ),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: _pickedPosition != null
-                          ? AppColors.yOrangeColor
+                          ? AppColors.ySecondryColor
                           : Colors.grey[400],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
