@@ -168,7 +168,7 @@
   "delivery_details": "تفاصيل التسليم",
   "order_summary": "ملخص الطلب",
   "order_status": "حالة الطلب",
-  "win": "اكسب",
+  "win": "اربح",
   "quantity" : "الكمية",
   "change_phone": "انت على وشك تغيير رقم الموبايل الى ",
   "change_email": "انت على وشك تغيير الايميل الى ",
@@ -191,5 +191,10 @@
   "show_video": "مشاهدة الفيديو",
   "no_video": "لا يوجد فيديو",
     "selected_location":"الموقع المحدد",
-      "Searching":"جاري البحث"
+      "Searching":"جاري البحث",
+  "Draw will take place once entries are filled.": "سيتم إجراء السحب بمجرد اكتمال المشاركات.",
+  "SOLD": "تم بيع",
+  "OUT OF" : "من أصل",
+  "Buy": "اشترِ",
+  "for": "مقابل"
 }
