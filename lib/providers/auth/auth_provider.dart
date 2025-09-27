@@ -126,22 +126,28 @@ class AuthProvider extends ChangeNotifier {
       await GoogleSignIn.instance.signOut();
 
       await GoogleSignIn.instance.initialize(
-        serverClientId:
-            "336224681714-2ol6inejkogngjkjitgcf40j71h8fmcv.apps.googleusercontent.com",
-      );
+          // serverClientId:
+          //     "336224681714-2ol6inejkogngjkjitgcf40j71h8fmcv.apps.googleusercontent.com",
+          );
 
       final GoogleSignIn googleSignIn = GoogleSignIn.instance;
+      log("auth: ---- ${googleSignIn}");
 
-      final GoogleSignInAccount? googleUser = await googleSignIn.authenticate();
+      final GoogleSignInAccount? googleUser =
+          await googleSignIn.authenticate().then(
+        (value) {
+          print("value: $value");
+          return value; // Important: return the value
+        },
+      );
+      final GoogleSignInAuthentication? googleAuth = googleUser?.authentication;
 
+      log("auth: ${googleUser} -- ${googleAuth}");
       if (googleUser == null) {
         socialLoginLoader = false;
         notifyListeners();
         return;
       }
-
-      googleUser.authentication;
-
       log("Google user email: ${googleUser.email}");
       log("Google user displayName: ${googleUser.displayName}");
       log("Google user photoUrl: ${googleUser.photoUrl}");
@@ -201,6 +207,7 @@ class AuthProvider extends ChangeNotifier {
         showSnackbar(error, error: true);
       }
     } catch (e) {
+      log("errr: $e");
       socialLoginLoader = false;
       notifyListeners();
       showSnackbar("Google Sign-In failed: ${e.toString()}", error: true);
@@ -286,7 +293,7 @@ class AuthProvider extends ChangeNotifier {
       print('loginResult.message');
       print(loginResult.message);
       print(loginResult.status);
- 
+
       if (loginResult.status == LoginStatus.success) {
         final OAuthCredential facebookAuthCredential =
             FacebookAuthProvider.credential(

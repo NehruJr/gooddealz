@@ -14,27 +14,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "336224681714-146i09ql23dg97p8te7o50gir4716c57.apps.googleusercontent.com",
+          "client_id": "336224681714-m6os5rk59hqp7as8m1bev3ct5sd95vgg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.goods.goodealz",
-            "certificate_hash": "f81d7c691610ea1a5bae74077a3b973c63874a94"
+            "certificate_hash": "a904e43c1d76f2018d2fd01ea1a383d2cb0cb44e"
           }
         },
         {
-          "client_id": "336224681714-267ra5sam58t3564hvpa6brkb1a98qa6.apps.googleusercontent.com",
+          "client_id": "336224681714-sdv2a44k76pr93nqrftk9k8jvcfkbvgl.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.goods.goodealz",
-            "certificate_hash": "102885d38272dd217a22a1c81efaf2c5cbc43aeb"
-          }
-        },
-        {
-          "client_id": "336224681714-8pkj9baevs6fp77b699po1akd10hun6m.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.goods.goodealz",
-            "certificate_hash": "7ff48e2166a8dc4666f59e97add5aab49867acb9"
+            "certificate_hash": "dc10e4e706ca6a05c87d96bd3dc04178944eff91"
           }
         },
         {
