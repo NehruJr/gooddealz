@@ -31,14 +31,15 @@ class PrizeWidget extends StatelessWidget {
       AppRoutes.routeTo(context, SellingFastDetailsPage(prizeSlug: prize.slug!,));
       },
       child: Container(
-        padding: 4.aEdge,
-        margin: 8.vEdge,
+        // padding: 4.aEdge,
+        margin: const EdgeInsetsDirectional.symmetric(vertical: 8, horizontal: 4),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: 22.cBorder,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.1),
+              offset: const Offset(2, 2),
+              color: Colors.black.withOpacity(0.3),
               blurRadius: 5,
             ),
           ],
@@ -54,8 +55,8 @@ class PrizeWidget extends StatelessWidget {
                 child: FancyShimmerImage(
                   imageUrl: prize.image ?? '',
                   // height: 240,
-                  width: context.width - 32,
-                  boxFit: BoxFit.contain,
+                  // width: context.width - 32,
+                  boxFit: BoxFit.fill,
                   errorWidget: Image.asset(
                     getPngAsset('product'),
                     fit: BoxFit.cover,
@@ -69,36 +70,49 @@ class PrizeWidget extends StatelessWidget {
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                     colors: [
-                      Colors.black.withOpacity(0),
-                      Colors.black.withOpacity(0.6),
+                      AppColors.yBlackColor.withOpacity(0.0),
+                      AppColors.yBlackColor.withOpacity(0.1),
+                      AppColors.yBlackColor.withOpacity(0.3),
+                      AppColors.yBlackColor.withOpacity(0.5),
                     ],
                   ),
                 ),
               ),
               Padding(
-                padding: 24.aEdge,
+                padding: 8.aEdge,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-        
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        MainText(
-                          'win'.tr,
-                          fontSize: 32,
-                          color: AppColors.yPrimaryColor,
+                    ShaderMask(
+                      shaderCallback: (bounds) => const LinearGradient(
+                        colors: [Color(0xFFFFD54F), Color(0xFFFF9800), Color(0xFFEF040D), Color(0xFFE91E63)],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      ).createShader(bounds),
+                      child: Text(
+                        'win'.tr,
+                        style: const TextStyle(
+                          fontSize: 65,
                           fontWeight: FontWeight.w900,
-                          fontStyle: FontStyle.italic,
-                        ),
-                        MainText(
-                          prize.title ?? '',
-                          fontSize: 20,
                           color: Colors.white,
-                          fontWeight: FontWeight.w700,
+                          height: 1,
                         ),
-                      ],
+                      ),
+                    ),
+                    Text(
+                      prize.title ?? '',
+                      style: const TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.yBGColor,
+                        shadows: [
+                          Shadow(
+                              color: Colors.black54,
+                              offset: Offset(1, 1),
+                              blurRadius: 2)
+                        ],
+                      ),
                     ),
                   ],
                 ),

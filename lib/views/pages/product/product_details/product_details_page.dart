@@ -75,7 +75,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       lineWidth: 5,
                       // default: 15, bar width
                       circularStrokeCap: CircularStrokeCap.round,
-                      progressColor: const Color(0xFF17BADA),
+                      progressColor: AppColors.yPrimaryColor,
                       // default: blue, main bar color
                       backgroundColor: const Color(0xFFE6E6E6),
                   center: Center(
@@ -87,14 +87,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             children: [
                               MainText(
                                 'sold'.tr,
-                                fontSize: 10,
+                                fontSize: 12,
                                 color: AppColors.ySecondry2Color,
                                 fontWeight: FontWeight.w500,
                               ),
                               2.sSize,
                               MainText(
                                 '${widget.productDetails.quantitySold ?? ''}',
-                                fontSize: 9,
+                                fontSize: 10,
                                 color: Colors.black,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -113,14 +113,14 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             children: [
                               MainText(
                                 'out_of'.tr,
-                                fontSize: 10,
+                                fontSize: 12,
                                 color: AppColors.ySecondry2Color,
                                 fontWeight: FontWeight.w500,
                               ),
                               2.sSize,
                               MainText(
                                 '${widget.productDetails.quantity ?? ''}',
-                                fontSize: 9,
+                                fontSize: 10,
                                 color: Colors.black,
                                 fontWeight: FontWeight.w700,
                               ),
@@ -202,32 +202,49 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.black.withOpacity(0),
-                  Colors.black.withOpacity(0.6),
+                  AppColors.yBlackColor.withOpacity(0.0),
+                  AppColors.yBlackColor.withOpacity(0.1),
+                  AppColors.yBlackColor.withOpacity(0.3),
+                  AppColors.yBlackColor.withOpacity(0.5),
                 ],
               ),
             ),
             child: Padding(
-              padding: 16.aEdge,
+              padding: 8.aEdge,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                //  10.sSize,
-                  MainText(
-                    'win'.tr,
-                    fontSize: 32,
-                    color: AppColors.yPrimaryColor,
-                    fontWeight: FontWeight.w900,
-                    fontStyle: FontStyle.italic,
+                  ShaderMask(
+                    shaderCallback: (bounds) => const LinearGradient(
+                      colors: [Color(0xFFFFD54F), Color(0xFFFF9800), Color(0xFFEF040D), Color(0xFFE91E63)],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                    ).createShader(bounds),
+                    child: Text(
+                      'win'.tr,
+                      style: const TextStyle(
+                        fontSize: 65,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
+                        height: 1,
+                      ),
+                    ),
                   ),
-                  MainText(
+                  Text(
                     widget.productDetails.prize?.title ?? '',
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w700,
+                    style: const TextStyle(
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.yBGColor,
+                      shadows: [
+                        Shadow(
+                            color: Colors.black54,
+                            offset: Offset(1, 1),
+                            blurRadius: 2)
+                      ],
+                    ),
                   ),
-                  32.sSize,
                 ],
               ),
             ),
@@ -235,7 +252,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              padding: 32.hvEdge,
+              padding: 24.hvEdge,
               height: context.height - context.width - 30,
               width: context.width,
               decoration: const BoxDecoration(
@@ -245,223 +262,223 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   topRight: Radius.circular(45),
                 ),
               ),
-              child: ListView(
-                // padding: 38.hvEdge,
+              child: Column(
                 children: [
-                  16.sSize,
-                  Row(
-                    children: [
-                      Expanded(
-                        child: MainText(
-                          widget.productDetails.title ?? '',
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      16.sSize,
-                      Row(
-                        children: [
-                          MainText(
-                            YsLocalizationsProvider.listenFalse(NavigationService.currentContext)
-                                .languageCode == 'en' ? '${widget.productDetails.price ?? ''} ' : '${widget.productDetails.currency ?? ''} ',
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700,
-                          ),
-                          MainText(
-                            YsLocalizationsProvider.listenFalse(NavigationService.currentContext)
-                                .languageCode == 'en' ?  widget.productDetails.currency ?? '' : widget.productDetails.price ?? '' ,
-                            fontSize: 16,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  // 8.sSize,
-                  // Row(
-                  //   children: [
-                  //     MainText(
-                  //       'by ',
-                  //       overflow: TextOverflow.ellipsis,
-                  //       fontSize: 12,
-                  //       color: Colors.black.withOpacity(0.4),
-                  //     ),
-                  //     const MainText(
-                  //       'James Ruth',
-                  //       fontSize: 12,
-                  //       color: AppColors.yPrimaryColor,
-                  //     ),
-                  //   ],
-                  // ),
-                  16.sSize,
-                  SizedBox(
-                    width: context.width - 32,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  Expanded(
+                    child: ListView(
+                      padding: 16.vEdge,
                       children: [
-                        MainText(
-                          'description'.tr,
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black.withOpacity(0.7),
-                        ),
-                        8.sSize,
-                        if(widget.productDetails.description != null)
-                        MainText(
-                          widget.productDetails.description ?? '',
-                          maxLines: widget.productDetails.description!.length > AppConstants.descriptionMaxLength && !showMore ? 3 : null,
-                          overflow: widget.productDetails.description!.length > AppConstants.descriptionMaxLength && !showMore ? TextOverflow.ellipsis : null,
-                          fontSize: 14,
-                          color: Colors.black.withOpacity(0.4),
-                        ),
-                        2.sSize,
-                        if(widget.productDetails.description != null && widget.productDetails.description!.length > AppConstants.descriptionMaxLength)
-                      GestureDetector(
-                        
-                        onTap: (){
-                            showMore = !showMore;
-                            setState(() {});
-                          },
-                          child: MainText(
-                            showMore ? 'show_less'.tr : 'show_more'.tr,
-                          
-                            fontSize: 12,
-                            color: AppColors.ySecondry2Color,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  32.sSize,
-                  SizedBox(
-                    width: context.width,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: Column(
-                            children: [
-                              MainText(
+                        Row(
+                          children: [
+                            Expanded(
+                              child: MainText(
                                 widget.productDetails.title ?? '',
-                                maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                fontSize: 16,
-                                color: Colors.black,
+                                fontSize: 20,
+                                color: AppColors.yBlackColor,
                                 fontWeight: FontWeight.w700,
                               ),
-                              8.sSize,
-                              if(widget.productDetails.withdrawalStartTime != null)MainText(
-                                '${'draw_date'.tr} ${DateConverter.containTAndZToUTCFormat(drawDate.toString())}.',
-                                maxLines: 3,
+                            ),
+                            16.sSize,
+                            Row(
+                              children: [
+                                MainText(
+                                  YsLocalizationsProvider.listenFalse(NavigationService.currentContext)
+                                      .languageCode == 'en' ? '${widget.productDetails.price ?? ''} ' : '${widget.productDetails.currency ?? ''} ',
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                MainText(
+                                  YsLocalizationsProvider.listenFalse(NavigationService.currentContext)
+                                      .languageCode == 'en' ?  widget.productDetails.currency ?? '' : widget.productDetails.price ?? '' ,
+                                  fontSize: 16,
+                                  color: AppColors.ySecondry2Color,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        // 8.sSize,
+                        // Row(
+                        //   children: [
+                        //     MainText(
+                        //       'by ',
+                        //       overflow: TextOverflow.ellipsis,
+                        //       fontSize: 12,
+                        //       color: Colors.black.withOpacity(0.4),
+                        //     ),
+                        //     const MainText(
+                        //       'James Ruth',
+                        //       fontSize: 12,
+                        //       color: AppColors.yPrimaryColor,
+                        //     ),
+                        //   ],
+                        // ),
+                        24.sSize,
+                        SizedBox(
+                          width: context.width - 32,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              MainText(
+                                'description'.tr,
                                 overflow: TextOverflow.ellipsis,
-                                fontSize: 12,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black.withOpacity(0.7),
+                              ),
+                              8.sSize,
+                              if(widget.productDetails.description != null)
+                              MainText(
+                                widget.productDetails.description ?? '',
+                                maxLines: widget.productDetails.description!.length > AppConstants.descriptionMaxLength && !showMore ? 3 : null,
+                                overflow: widget.productDetails.description!.length > AppConstants.descriptionMaxLength && !showMore ? TextOverflow.ellipsis : null,
+                                fontSize: 14,
                                 color: Colors.black.withOpacity(0.5),
+                              ),
+                              2.sSize,
+                              if(widget.productDetails.description != null && widget.productDetails.description!.length > AppConstants.descriptionMaxLength)
+                            GestureDetector(
+
+                              onTap: (){
+                                  showMore = !showMore;
+                                  setState(() {});
+                                },
+                                child: MainText(
+                                  showMore ? 'show_less'.tr : 'show_more'.tr,
+
+                                  fontSize: 12,
+                                  color: AppColors.ySecondry2Color,
+                                ),
                               ),
                             ],
                           ),
                         ),
-                        8.sSize,
-                        // Expanded(
-                        //   flex: 2,
-                        //   child: FancyShimmerImage(
-                        //     imageUrl: widget.productDetails.image ?? '',
-                        //     height: 100,
-                        //     width: 100 ,
-                        //     boxFit: BoxFit.contain,
-                        //     errorWidget: Image.asset(
-                        //       getPngAsset('product'),
-                        //       fit: BoxFit.cover,
-                        //     ),
-                        //   ),
-                        // ),
-
-                        Expanded(
-                          flex: 3,
-                          child: CarousalWidget(images: _productImages,),
+                        Padding(
+                          padding: const EdgeInsetsDirectional.only(start: 8.0, end: 4, top: 24.0, bottom: 18),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      widget.productDetails.title ?? '',
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(color: AppColors.yBlackColor, fontSize: 20, fontWeight: FontWeight.bold),
+                                    ),
+                                    8.sSize,
+                                    if(widget.productDetails.withdrawalStartTime != null) MainText(
+                                      '${'draw_date'.tr} ${DateConverter.containTAndZToUTCFormat(drawDate.toString())}.',
+                                      maxLines: 3,
+                                      overflow: TextOverflow.ellipsis,
+                                      fontSize: 12,
+                                      color: Colors.black.withOpacity(0.5),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              6.sSize,
+                              Container(
+                                padding: 6.aEdge,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                        color: AppColors.yBlackColor,
+                                        width: 0.5
+                                    )
+                                ),
+                                child: Container(
+                                  width: 100,
+                                  height: 90,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: CarousalWidget(images: _productImages,),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
 
+                        if(widget.productDetails.prize?.winner != null )
+                        MainText(
+                          'winner'.tr,
+                          fontSize: 18,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
+                        ),
+
+                        if(widget.productDetails.prize?.winner != null )
+                          Card(
+                            surfaceTintColor: Colors.white,
+                            elevation: 3,
+                            child: ListTile(
+                              minVerticalPadding: 16,
+                              leading: CircleAvatar(
+                                child: FancyShimmerImage(
+                                  imageUrl: widget.productDetails.prize?.winner!.avatar??'',
+                                  // height: size.width * 0.21,
+                                  // width: size.width * 0.2,
+                                  boxFit: BoxFit.fill,
+                                  errorWidget: Image.asset(
+                                    getPngAsset('person'),
+                                  ),
+                                ),
+                              ),
+                              title: MainText(
+                                '${widget.productDetails.prize?.winner!.lastName} ${widget.productDetails.prize?.winner!.lastName}',
+                                overflow: TextOverflow.ellipsis,
+                                fontSize: 16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              subtitle: MainText(
+                                '${'winner'.tr} : # ${widget.productDetails.prize?.winner!.id}',
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
+                                fontSize: 14,
+                                color: Colors.black.withOpacity(0.6),
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          )
                       ],
                     ),
                   ),
-                  32.sSize,
+                  12.sSize,
                   widget.productDetails.quantity != widget.productDetails.quantitySold
                       ? Consumer<CartProvider>(
-                          builder: (context, cartProvider, _) {
-                          return MainButton(
-                            onPressed: cartProvider.addProductLoader &&
-                                    cartProvider.addProductId ==
-                                        widget.productDetails.prizeId
-                                ? () {}
-                                : () {
-                                    cartProvider.addProduct(context,
-                                        prizeId: widget.productDetails.prizeId!,
-                                      productId: widget.productDetails.id!,
-                                    );
-                                  },
-                            color: cartProvider.addProductLoader
-                                ? AppColors.ySecondryColor
-                                : AppColors.yPrimaryColor,
-                            width: 150,
-                            radius: 28,
-                            child: MainText(
-                              cartProvider.addProductLoader
-                                  ? 'wait'.tr
-                                  : 'add_cart'.tr,
-                              fontSize: 15,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          );
-                        })
-                      : 0.sSize,
-              
-                  if(widget.productDetails.prize?.winner != null )
-                  MainText(
-                    'winner'.tr,
-                    fontSize: 18,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w700,
-                  ),
-              
-                  if(widget.productDetails.prize?.winner != null )
-                    Card(
-                      surfaceTintColor: Colors.white,
-                      elevation: 3,
-                      child: ListTile(
-                        minVerticalPadding: 16,
-                        leading: CircleAvatar(
-                          child: FancyShimmerImage(
-                            imageUrl: widget.productDetails.prize?.winner!.avatar??'',
-                            // height: size.width * 0.21,
-                            // width: size.width * 0.2,
-                            boxFit: BoxFit.fill,
-                            errorWidget: Image.asset(
-                              getPngAsset('person'),
-                            ),
+                      builder: (context, cartProvider, _) {
+                        return MainButton(
+                          onPressed: cartProvider.addProductLoader &&
+                              cartProvider.addProductId ==
+                                  widget.productDetails.prizeId
+                              ? () {}
+                              : () {
+                            cartProvider.addProduct(context,
+                              prizeId: widget.productDetails.prizeId!,
+                              productId: widget.productDetails.id!,
+                            );
+                          },
+                          color: cartProvider.addProductLoader
+                              ? AppColors.ySecondryColor
+                              : AppColors.yPrimaryColor,
+                          child: MainText(
+                            cartProvider.addProductLoader
+                                ? 'wait'.tr
+                                : 'add_cart'.tr,
+                            fontSize: 15,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
                           ),
-                        ),
-                        title: MainText(
-                          '${widget.productDetails.prize?.winner!.lastName} ${widget.productDetails.prize?.winner!.lastName}',
-                          overflow: TextOverflow.ellipsis,
-                          fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        subtitle: MainText(
-                          '${'winner'.tr} : # ${widget.productDetails.prize?.winner!.id}',
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          fontSize: 14,
-                          color: Colors.black.withOpacity(0.6),
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    )
+                        );
+                      })
+                      : 0.sSize,
                 ],
               ),
             ),
