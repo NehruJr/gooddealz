@@ -10,6 +10,7 @@ import 'package:goodealz/views/pages/auth/login/login_page.dart';
 import 'package:goodealz/views/pages/home/home_page.dart';
 import 'package:goodealz/views/pages/welcome/onboarding/onboarding_page.dart';
 import 'package:goodealz/views/widgets/main_page.dart';
+import 'package:video_player/video_player.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -19,46 +20,64 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  late VideoPlayerController _controller;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 4), () async {
-      // _setGoogleMapApiKey("AIzaSyBLelj-m_yNs9NZTYfyo7aN7oVAJTugkHs");
+    // شغّل الفيديو من النت
+    _controller = VideoPlayerController.networkUrl(
+      Uri.parse('https://drive.google.com/uc?export=download&id=18x7emeduv0jIMv-zD6cYjgf2gwOcaD9b'),
+    )
+      ..initialize().then((_) {
+        setState(() {});
+        _controller.play();
+      });
 
-      if(!LocalData.openedOnBoarding) {
-        AppRoutes.routeRemoveAllTo(context, const OnboardingPage());
-        return;
-      }
+    // روح للهوم بعد مدة الفيديو
+    _controller.addListener(() {
+      if (_controller.value.position >= _controller.value.duration &&
+          _controller.value.isInitialized) {
+        // _setGoogleMapApiKey("AIzaSyBLelj-m_yNs9NZTYfyo7aN7oVAJTugkHs");
 
-      if(LocalData.isLogin){
-        Provider.of<AuthProvider>(context, listen: false).getUserData();
-        Provider.of<AuthProvider>(context, listen: false).updateFCM();
-        Provider.of<CartProvider>(context, listen: false).getCartCount(context);
-        AppRoutes.routeRemoveAllTo(context, const HomePage());
-      }else{
-        AppRoutes.routeRemoveAllTo(context, const LoginPage());
+        if(!LocalData.openedOnBoarding) {
+          AppRoutes.routeRemoveAllTo(context, const OnboardingPage());
+          return;
+        }
+
+        if(LocalData.isLogin){
+          Provider.of<AuthProvider>(context, listen: false).getUserData();
+          Provider.of<AuthProvider>(context, listen: false).updateFCM();
+          Provider.of<CartProvider>(context, listen: false).getCartCount(context);
+          AppRoutes.routeRemoveAllTo(context, const HomePage());
+        }else{
+          AppRoutes.routeRemoveAllTo(context, const LoginPage());
+        }
       }
     });
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MainPage(
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SizedBox(
-              height: 200,
-              child: Image.asset(
-                getPngAsset('black_logo'),
-              ),
-            ),
-            const SizedBox(height: 80),
-          ],
+    return Scaffold(
+      body: _controller.value.isInitialized
+          ? SizedBox.expand(
+        child: FittedBox(
+          fit: BoxFit.fill,
+          child: SizedBox(
+            width: _controller.value.size.width,
+            height: _controller.value.size.height,
+            child: VideoPlayer(_controller),
+          ),
         ),
-      ),
+      )
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 

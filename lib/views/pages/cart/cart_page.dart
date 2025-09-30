@@ -84,7 +84,7 @@ class _CartPageState extends State<CartPage> {
                           );
                   }
                 }),
-            
+
               ],
             ),
           ),
@@ -108,7 +108,7 @@ class _CartPageState extends State<CartPage> {
                   );
                 }
               ),
-            
+
         ],
       ),
     );

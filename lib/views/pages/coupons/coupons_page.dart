@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:goodealz/core/constants/app_colors.dart';
 import 'package:goodealz/core/helper/extensions/assetss_widgets.dart';
 import 'package:goodealz/core/helper/extensions/context_size.dart';
 import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
@@ -88,8 +89,9 @@ class CouponCard extends StatelessWidget {
         Clipboard.setData(ClipboardData(text: coupon.code!));
       },
       child: Card(
-        surfaceTintColor: Colors.white,
-        elevation: 2,
+        color: AppColors.yBGColor,
+        elevation: 4,
+        shadowColor: AppColors.yBlackColor,
         child: Padding(
           padding: 16.aEdge,
           child: Row(

@@ -46,7 +46,9 @@ class _WalletsPageState extends State<WalletsPage> {
                 child: CircularProgressIndicator(),
               )
                   : Card(
-                  surfaceTintColor: Colors.white,
+                  color: AppColors.yBGColor,
+                  shadowColor: AppColors.yBlackColor,
+                  elevation: 4,
                   child: Padding(
                     padding: 32.hvEdge,
                     child: Row(
@@ -69,43 +71,33 @@ class _WalletsPageState extends State<WalletsPage> {
                 );
               }
             ),
-            16.sSize,
-            Card(
-              surfaceTintColor: Colors.white,
-              child: Padding(
-                padding: 16.aEdge,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+            24.sSize,
+            Align(
+              alignment: AlignmentDirectional.bottomCenter,
+              child: MainButton(
+                onPressed: () {
+                  // AppRoutes.routeTo(context, const PaymentDonePage());
+                  // Provider.of<PaymentProvider>(context, listen: false).walletPay(context, price: 1);
+                  showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      builder: (context) {
+                        return _bottomSheet();
+                      });
+                  // Provider.of<SettingsProvider>(context, listen: false).chargeWallet(context, 100);
+                },
 
-                    12.sSize,
-                    MainButton(
-                          onPressed: () {
-                            // AppRoutes.routeTo(context, const PaymentDonePage());
-                            // Provider.of<PaymentProvider>(context, listen: false).walletPay(context, price: 1);
-                            showModalBottomSheet(
-                                context: context,
-                                isScrollControlled: true,
-                                builder: (context) {
-                                  return _bottomSheet();
-                                });
-                            // Provider.of<SettingsProvider>(context, listen: false).chargeWallet(context, 100);
-                          },
-
-                          color: AppColors.yPrimaryColor,
-                          width: 100,
-                          verticalPadding: 8,
-                          radius: 8,
-                          child: FittedBox(
-                            child: MainText(
-                              'charge'.tr,
-                              fontSize: 14,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        )
-                  ],
+                color: AppColors.yPrimaryColor,
+                // width: 100,
+                verticalPadding: 16,
+                radius: 8,
+                child: FittedBox(
+                  child: MainText(
+                    'charge'.tr,
+                    fontSize: 14,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
             ),

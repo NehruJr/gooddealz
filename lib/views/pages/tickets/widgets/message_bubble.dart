@@ -65,7 +65,7 @@ class MessageBubble extends StatelessWidget {
                 (reply.message != null && reply.message!.isNotEmpty) ? Flexible(
                   child: Container(
                     decoration: const BoxDecoration(
-                      color: AppColors.ySecondry2Color,
+                      color: AppColors.yPrimaryColor,
                       borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(15),
                         bottomRight: Radius.circular(15),

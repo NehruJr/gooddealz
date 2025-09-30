@@ -38,13 +38,13 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return MainPage(
       isAppBar: false,
       subAppBar: Padding(
-        padding: 16.hEdge,
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             MainText(
               'favorites'.tr,
-              fontSize: 19,
+              fontSize: 26,
               color: Colors.black,
               fontWeight: FontWeight.w500,
             ),

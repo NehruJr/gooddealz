@@ -59,7 +59,7 @@ final double? appBarHeight;
                 MainText(
                   title ?? '',
                   color: Colors.black,
-                  fontSize: 20,
+                  fontSize: 22,
                   fontWeight: FontWeight.w500,
                 ),
             Row(

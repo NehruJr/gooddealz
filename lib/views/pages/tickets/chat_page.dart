@@ -75,7 +75,7 @@ class _ChatScreenState extends State<ChatScreen> {
               icon: const Icon(Icons.arrow_back_ios, color: Colors.white,),
             ),
             title: MainText(widget.ticket?.title??'', color: Colors.white,),
-            backgroundColor: AppColors.ySecondry2Color,
+            backgroundColor: AppColors.yPrimaryColor,
 
           )) as PreferredSizeWidget?,
 

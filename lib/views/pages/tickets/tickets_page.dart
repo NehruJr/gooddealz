@@ -90,8 +90,9 @@ class TicketsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      surfaceTintColor: Colors.white,
-      elevation: 2,
+      color: AppColors.yBGColor,
+      shadowColor: AppColors.yBlackColor,
+      elevation: 4,
       child: Padding(
         padding: 16.aEdge,
         child: Row(
