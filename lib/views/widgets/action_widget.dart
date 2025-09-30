@@ -97,37 +97,49 @@ class ActionWidget extends StatelessWidget {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
                         colors: [
-                          Colors.black.withOpacity(0.6),
-                          Colors.black.withOpacity(0),
+                          AppColors.yBlackColor.withOpacity(0.0),
+                          AppColors.yBlackColor.withOpacity(0.1),
+                          AppColors.yBlackColor.withOpacity(0.3),
+                          AppColors.yBlackColor.withOpacity(0.5),
                         ],
                       ),
                     ),
                   ),
                   Padding(
-                    padding: 24.aEdge,
+                    padding: 8.aEdge,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            MainText(
-                              'win'.tr,
-                              fontSize: 32,
-                              color: AppColors.yPrimaryColor,
+                        ShaderMask(
+                          shaderCallback: (bounds) => const LinearGradient(
+                            colors: [Color(0xFFFFD54F), Color(0xFFFF9800), Color(0xFFEF040D), Color(0xFFE91E63)],
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                          ).createShader(bounds),
+                          child: Text(
+                            'win'.tr,
+                            style: const TextStyle(
+                              fontSize: 65,
                               fontWeight: FontWeight.w900,
-                              fontStyle: FontStyle.italic,
-                            ),
-                            MainText(
-                              action.title ?? '',
-                              fontSize: 20,
                               color: Colors.white,
-                              fontWeight: FontWeight.w700,
+                              height: 1,
                             ),
-                            32.sSize,
-                          ],
+                          ),
+                        ),
+                        Text(
+                          action.title ?? '',
+                          style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.yBGColor,
+                            shadows: [
+                              Shadow(
+                                  color: Colors.black54,
+                                  offset: Offset(1, 1),
+                                  blurRadius: 2)
+                            ],
+                          ),
                         ),
                       ],
                     ),

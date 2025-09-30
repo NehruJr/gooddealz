@@ -1,5 +1,6 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
+import 'package:goodealz/core/constants/app_colors.dart';
 import 'package:goodealz/core/helper/functions/get_asset.dart';
 import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
 import 'package:goodealz/views/widgets/main_text.dart';
@@ -15,8 +16,9 @@ class WinnerPrizeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      surfaceTintColor: Colors.white,
-      elevation: 3,
+      color: AppColors.yBGColor,
+      elevation: 5,
+      shadowColor: AppColors.yBlackColor,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -28,7 +30,7 @@ class WinnerPrizeWidget extends StatelessWidget {
               // Replace with your actual prize object
               height: 150,
               width: double.infinity,
-              boxFit: BoxFit.cover,
+              boxFit: BoxFit.fill,
               errorWidget: Image.asset(
                 getPngAsset('placeholder'), // your placeholder image
                 fit: BoxFit.cover,
@@ -43,18 +45,24 @@ class WinnerPrizeWidget extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: MainText(
               prize.title ?? '', // Replace with actual prize title
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+              fontSize: 24,
+              fontWeight: FontWeight.w900,
+              color: AppColors.yBlackColor,
             ),
           ),
 
           const SizedBox(height: 8),
           ListTile(
             minVerticalPadding: 16,
-            leading: CircleAvatar(
+            leading: Container(
+              decoration: const BoxDecoration(
+                  shape: BoxShape.circle
+              ),
+              width: 50,
+              height: 50,
+              clipBehavior: Clip.antiAlias,
               child: FancyShimmerImage(
-                imageUrl: prize.winner?.avatar ?? '',
+                imageUrl: prize.winner!.avatar??'',
                 // height: size.width * 0.21,
                 // width: size.width * 0.2,
                 boxFit: BoxFit.fill,
@@ -64,17 +72,16 @@ class WinnerPrizeWidget extends StatelessWidget {
               ),
             ),
             title: MainText(
-              prize.winner?.firstName == null || prize.winner?.firstName == ''
-                  ? prize.winner?.name ?? ''
-                  : '${prize.winner?.firstName ?? ""} ${prize.winner?.lastName ?? ""}',
+              prize.winner!.firstName == null || prize.winner!.firstName == ''? prize.winner!.name??'':
+              '${prize.winner!.firstName??""} ${prize.winner!.lastName??""}',
               // '${winner.lastName} ${winner.lastName}',
               overflow: TextOverflow.ellipsis,
-              fontSize: 16,
-              color: Colors.black,
-              fontWeight: FontWeight.w500,
+              fontSize: 18,
+              color: AppColors.yBlackColor,
+              fontWeight: FontWeight.w700,
             ),
             subtitle: MainText(
-              '${'winner'.tr} : # ${prize.winner?.id}',
+              '${'winner'.tr} : # ${prize.winner!.id}',
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
               fontSize: 14,
@@ -82,6 +89,7 @@ class WinnerPrizeWidget extends StatelessWidget {
               fontWeight: FontWeight.w400,
             ),
           ),
+
 
           prize.video != null
               ? Center(

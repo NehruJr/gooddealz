@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:goodealz/core/constants/app_colors.dart';
 import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
 import 'package:goodealz/core/ys_localizations/ys_localizations_provider.dart';
 import 'package:goodealz/views/widgets/main_page.dart';
@@ -43,11 +44,12 @@ class _FAQPageState extends State<FAQPage> {
                       itemBuilder: (context, index) {
                         return Card(
                           margin: const EdgeInsets.symmetric(vertical: 8),
-                          surfaceTintColor: Colors.white,
-                          elevation: 3,
+                          color: AppColors.yBGColor,
+                          shadowColor: AppColors.yBlackColor,
+                          elevation: 4,
                           shape: OutlineInputBorder(
                             borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(22),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                           child: InkWell(
                             borderRadius: BorderRadius.circular(22),
