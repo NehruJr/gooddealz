@@ -198,5 +198,10 @@
   "SOLD": "SOLD",
   "OUT OF": "OUT OF",
   "Buy": "Buy",
-  "for": "for"
+  "for": "for",
+  "items": "items",
+"loading_cart": "Loading your cart...",
+"empty_cart": "Your Cart is Empty",
+"empty_cart_message": "Looks like you haven't added anything to your cart yet",
+"proceed_to_checkout": "Proceed to Checkout"
 }
