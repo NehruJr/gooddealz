@@ -21,12 +21,18 @@ class YsMaterialApp extends StatelessWidget {
     final locale = YsLocalizationsProvider.get(context);
     return MaterialApp(
       navigatorKey: NavigationService.navigatorKey,
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context)
+              .copyWith(textScaler: const TextScaler.linear(1.0)),
+          child: child!,
+        );
+      },
       debugShowCheckedModeBanner: false,
       locale: Locale(locale.languageCode),
       supportedLocales: YsLocalizations.supportedLocale,
       localizationsDelegates: YsLocalizations.localizationsDelegates,
       localeResolutionCallback: YsLocalizations.localeResolutionCallback,
-
       title: title,
       theme: theme,
       darkTheme: darkTheme,
