@@ -51,6 +51,7 @@ class _SellingFastDetailsPageState extends State<SellingFastDetailsPage> {
           );
         } else {
           return Stack(
+            alignment: Alignment.topCenter,
             children: [
               ClipRRect(
                 // borderRadius: const BorderRadius.only(
@@ -125,6 +126,7 @@ class _SellingFastDetailsPageState extends State<SellingFastDetailsPage> {
                           ],
                         ),
                       ),
+                      8.sSize,
                     ],
                   ),
                 ),

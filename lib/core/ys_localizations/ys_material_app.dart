@@ -24,7 +24,7 @@ class YsMaterialApp extends StatelessWidget {
       builder: (context, child) {
         return MediaQuery(
           data: MediaQuery.of(context)
-              .copyWith(textScaler: const TextScaler.linear(0.8)),
+              .copyWith(textScaler: const TextScaler.linear(0.75),),
           child: child!,
         );
       },
