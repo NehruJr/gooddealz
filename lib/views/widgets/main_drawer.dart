@@ -142,9 +142,9 @@ class MainDrawer extends StatelessWidget {
                   GestureDetector(
                       onTap: () async {
                         if (await canLaunchUrl(
-                            Uri.parse('https://www.facebook.com/TqniaIT'))) {
+                            Uri.parse('https://www.facebook.com/share/1B9WXVQANj/'))) {
                           await launchUrl(
-                              Uri.parse('https://www.facebook.com/TqniaIT'));
+                              Uri.parse('https://www.facebook.com/share/1B9WXVQANj/'));
                         } else {
                           showSnackbar('Could not launch Facebook page',
                               error: true);
@@ -155,9 +155,9 @@ class MainDrawer extends StatelessWidget {
                   GestureDetector(
                       onTap: () async {
                         if (await canLaunchUrl(
-                            Uri.parse('https://www.instagram.com/tqniait9'))) {
+                            Uri.parse('https://www.instagram.com/gooddeals.eg?igsh=MXVtM202dWh3eGlqaQ=='))) {
                           await launchUrl(
-                            Uri.parse('https://www.instagram.com/tqniait9'),
+                            Uri.parse('https://www.instagram.com/gooddeals.eg?igsh=MXVtM202dWh3eGlqaQ=='),
                           );
                         } else {
                           showSnackbar('Could not launch instagram page',
@@ -169,9 +169,9 @@ class MainDrawer extends StatelessWidget {
                   GestureDetector(
                       onTap: () async {
                         if (await canLaunchUrl(
-                            Uri.parse('https://twitter.com/TqniaIT'))) {
+                            Uri.parse('https://x.com/GoodealzE72535?t=_z1SAAb711UB93J7F6n_-A&s=09'))) {
                           await launchUrl(
-                              Uri.parse('https://twitter.com/TqniaIT'));
+                              Uri.parse('https://x.com/GoodealzE72535?t=_z1SAAb711UB93J7F6n_-A&s=09'));
                         } else {
                           showSnackbar('Could not launch twitter page',
                               error: true);
