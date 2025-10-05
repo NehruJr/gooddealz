@@ -135,7 +135,7 @@ class MainDrawer extends StatelessWidget {
                   },
                 ),
               ),
-              32.sSize,
+              16.sSize,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -181,7 +181,7 @@ class MainDrawer extends StatelessWidget {
                           getSvgAsset('teenyicons_twitter-outline'))),
                 ],
               ),
-              16.sSize,
+              // 6.sSize,
             ],
           ),
         ),
