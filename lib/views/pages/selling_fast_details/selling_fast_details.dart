@@ -105,7 +105,7 @@ class _SellingFastDetailsPageState extends State<SellingFastDetailsPage> {
                         child: Text(
                           'win'.tr,
                           style: const TextStyle(
-                            fontSize: 65,
+                            fontSize: 55,
                             fontWeight: FontWeight.w900,
                             color: Colors.white,
                             height: 1,
@@ -115,7 +115,7 @@ class _SellingFastDetailsPageState extends State<SellingFastDetailsPage> {
                       Text(
                         prizeDetails?.title ?? '',
                         style: const TextStyle(
-                          fontSize: 35,
+                          fontSize: 30,
                           fontWeight: FontWeight.bold,
                           color: AppColors.yBGColor,
                           shadows: [
