@@ -62,7 +62,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       appBarHeight: 125,
       titleWidget: widget.productDetails.salesPercentage != "100" && date == null || date!.isNegative
           ? Container(
-
               margin: 16.hEdge,
               child: Container(
                 padding: 12.aEdge,
@@ -87,9 +86,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             children: [
                               MainText(
                                 'sold'.tr,
-                                fontSize: 12,
+                                fontSize: 8,
                                 color: AppColors.ySecondry2Color,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.w700,
                               ),
                               2.sSize,
                               MainText(
@@ -113,9 +112,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             children: [
                               MainText(
                                 'out_of'.tr,
-                                fontSize: 12,
+                                fontSize: 8,
                                 color: AppColors.ySecondry2Color,
-                                fontWeight: FontWeight.w500,
+                                fontWeight: FontWeight.w700,
                               ),
                               2.sSize,
                               MainText(
@@ -224,7 +223,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     child: Text(
                       'win'.tr,
                       style: const TextStyle(
-                        fontSize: 65,
+                        fontSize: 55,
                         fontWeight: FontWeight.w900,
                         color: Colors.white,
                         height: 1,
@@ -234,7 +233,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   Text(
                     widget.productDetails.prize?.title ?? '',
                     style: const TextStyle(
-                      fontSize: 35,
+                      fontSize: 30,
                       fontWeight: FontWeight.bold,
                       color: AppColors.yBGColor,
                       shadows: [
@@ -245,6 +244,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       ],
                     ),
                   ),
+                  8.sSize
                 ],
               ),
             ),
@@ -269,34 +269,39 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       padding: 16.vEdge,
                       children: [
                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Expanded(
                               child: MainText(
                                 widget.productDetails.title ?? '',
                                 overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
                                 fontSize: 20,
                                 color: AppColors.yBlackColor,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                             16.sSize,
-                            Row(
-                              children: [
-                                MainText(
-                                  YsLocalizationsProvider.listenFalse(NavigationService.currentContext)
-                                      .languageCode == 'en' ? '${widget.productDetails.price ?? ''} ' : '${widget.productDetails.currency ?? ''} ',
-                                  fontSize: 16,
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                MainText(
-                                  YsLocalizationsProvider.listenFalse(NavigationService.currentContext)
-                                      .languageCode == 'en' ?  widget.productDetails.currency ?? '' : widget.productDetails.price ?? '' ,
-                                  fontSize: 16,
-                                  color: AppColors.ySecondry2Color,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ],
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4),
+                              child: Row(
+                                children: [
+                                  MainText(
+                                    YsLocalizationsProvider.listenFalse(NavigationService.currentContext)
+                                        .languageCode == 'en' ? '${widget.productDetails.price ?? ''} ' : '${widget.productDetails.currency ?? ''} ',
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  MainText(
+                                    YsLocalizationsProvider.listenFalse(NavigationService.currentContext)
+                                        .languageCode == 'en' ?  widget.productDetails.currency ?? '' : widget.productDetails.price ?? '' ,
+                                    fontSize: 16,
+                                    color: AppColors.ySecondry2Color,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ],
+                              ),
                             ),
                           ],
                         ),

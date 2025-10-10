@@ -93,7 +93,7 @@ class PrizeWidget extends StatelessWidget {
                       child: Text(
                         'win'.tr,
                         style: const TextStyle(
-                          fontSize: 65,
+                          fontSize: 55,
                           fontWeight: FontWeight.w900,
                           color: Colors.white,
                           height: 1,
@@ -102,8 +102,10 @@ class PrizeWidget extends StatelessWidget {
                     ),
                     Text(
                       prize.title ?? '',
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 2,
                       style: const TextStyle(
-                        fontSize: 35,
+                        fontSize: 25,
                         fontWeight: FontWeight.bold,
                         color: AppColors.yBGColor,
                         shadows: [

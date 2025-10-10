@@ -43,7 +43,7 @@ class ProductWidget extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: 520,
+            height: 540,
             width: context.width,
             padding: const EdgeInsetsDirectional.only(start: 12, end: 12, top: 12, bottom: 9),
             margin: 16.vEdge,
@@ -176,7 +176,7 @@ class ProductWidget extends StatelessWidget {
                               child: Text(
                                   'win'.tr,
                                 style: const TextStyle(
-                                  fontSize: 65,
+                                  fontSize: 55,
                                   fontWeight: FontWeight.w900,
                                   color: Colors.white,
                                   height: 1,
@@ -185,8 +185,10 @@ class ProductWidget extends StatelessWidget {
                             ),
                             Text(
                                 productDetails.prize!.title!,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
                               style: const TextStyle(
-                                fontSize: 35,
+                                fontSize: 30,
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.yBGColor,
                                 shadows: [
