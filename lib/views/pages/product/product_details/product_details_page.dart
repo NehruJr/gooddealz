@@ -21,6 +21,7 @@ import '../../../../core/ys_localizations/ys_localizations_provider.dart';
 import '../../../../providers/cart/cart_provider.dart';
 import '../../../../providers/product/product_provider.dart';
 import '../../../widgets/carousal_widget.dart';
+import '../../../widgets/sales_progress.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   const ProductDetailsPage({super.key, required this.productDetails});
@@ -61,77 +62,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
     return MainPage(
       appBarHeight: 125,
       titleWidget: widget.productDetails.salesPercentage != "100" && date == null || date!.isNegative
-          ? Container(
-              margin: 16.hEdge,
-              child: Container(
-                padding: 12.aEdge,
-                alignment: Alignment.center,
-                child: CircularPercentIndicator(
-                      radius: 42,
-                      // default: max available space
-                      percent:
-                        (  widget.productDetails.salesPercentage.toDoubleNum <= 100 ? widget.productDetails.salesPercentage.toDoubleNum : 100) / 100,
-                      lineWidth: 5,
-                      // default: 15, bar width
-                      circularStrokeCap: CircularStrokeCap.round,
-                      progressColor: AppColors.yPrimaryColor,
-                      // default: blue, main bar color
-                      backgroundColor: const Color(0xFFE6E6E6),
-                  center: Center(
-                    child: FittedBox(
-                      child: Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              MainText(
-                                'sold'.tr,
-                                fontSize: 8,
-                                color: AppColors.ySecondry2Color,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              2.sSize,
-                              MainText(
-                                '${widget.productDetails.quantitySold ?? ''}',
-                                fontSize: 10,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 35,
-                            child: VerticalDivider(
-                              thickness: 1.5,
-                              color: Colors.black.withOpacity(0.5),
-                              width: 8,
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              MainText(
-                                'out_of'.tr,
-                                fontSize: 8,
-                                color: AppColors.ySecondry2Color,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              2.sSize,
-                              MainText(
-                                '${widget.productDetails.quantity ?? ''}',
-                                fontSize: 10,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            )
+          ? SalesProgress(
+        sold: widget.productDetails.quantitySold ?? 0,
+        total: widget.productDetails.quantity ?? 0,
+      )
           : Column(
               children: [
                if(!date.isNegative) Text('Winner_announced'.tr),
