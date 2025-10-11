@@ -1,129 +1,137 @@
 import 'package:flutter/material.dart';
+import 'package:goodealz/core/constants/app_colors.dart';
+import 'package:goodealz/core/helper/extensions/assetss_widgets.dart';
+import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
 
-class SalesProgressPage extends StatelessWidget {
-  const SalesProgressPage({super.key});
+class SalesProgress extends StatelessWidget {
+  final int sold;
+  final int total;
+
+  const SalesProgress({
+    super.key,
+    required this.sold,
+    required this.total,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // بياناتك:
-    const int sold = 491;
-    const int total = 1200;
-    final double progress = sold / total; // النسبة المئوية
+    double progress = sold / total;
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: SalesProgressIndicator(
-          sold: sold,
-          total: total,
-          progress: progress,
+    return CustomPaint(
+      painter: RectProgressPainter(progress),
+      child: SizedBox(
+        width: 148,
+        height: 70,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 14),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '$sold',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 12,
+                        color: AppColors.yBlackColor,
+                      ),
+                    ),
+                    Text(
+                      'SOLD'.tr,
+                      style: const TextStyle(
+                        fontSize: 9,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 14, horizontal: 4),
+                width: 2,
+                color: Colors.grey.shade300,
+              ),
+              Expanded(
+                flex: 3,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'OUT OF'.tr,
+                      style: const TextStyle(
+                        fontSize: 9,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    Text(
+                      '$total',
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w900,
+                        color: AppColors.yBlackColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class SalesProgressIndicator extends StatelessWidget {
-  final int sold;
-  final int total;
+class RectProgressPainter extends CustomPainter {
   final double progress;
-
-  const SalesProgressIndicator({
-    super.key,
-    required this.sold,
-    required this.total,
-    required this.progress,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        // الخلفية الرمادية
-        CustomPaint(
-          size: const Size(150, 100),
-          painter: HalfCirclePainter(
-            progress: 1.0,
-            color: Colors.grey.shade300,
-          ),
-        ),
-        // الجزء الأصفر حسب النسبة
-        CustomPaint(
-          size: const Size(220, 100),
-          painter: HalfCirclePainter(
-            progress: progress,
-            color: Colors.amber,
-          ),
-        ),
-        // النصوص فوق الشكل
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  "$sold",
-                  style: const TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const Text(
-                  "SOLD",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-                ),
-              ],
-            ),
-            const SizedBox(width: 10),
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  "OUT OF",
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  "$total",
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-// الرسام المسؤول عن الخط المنحني
-class HalfCirclePainter extends CustomPainter {
-  final double progress; // من 0 إلى 1
-  final Color color;
-
-  HalfCirclePainter({required this.progress, required this.color});
+  RectProgressPainter(this.progress);
 
   @override
   void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..color = color
-      ..strokeWidth = 16
+    final strokeWidth = 10.0;
+    final radius = 25.0;
+
+    final rect = Rect.fromLTWH(
+      strokeWidth / 2,
+      strokeWidth / 2,
+      size.width - strokeWidth,
+      size.height - strokeWidth,
+    );
+
+    final backgroundPaint = Paint()
+      ..color = Colors.grey.shade300
       ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth
       ..strokeCap = StrokeCap.round;
 
-    final Rect rect = Rect.fromLTWH(0, 0, size.width, size.height * 2);
-    final double startAngle = -3.14 / 2; // بداية من اليسار
-    final double sweepAngle = 3.14 * progress; // نصف دائرة مضروبة في النسبة
+    final progressPaint = Paint()
+      ..shader = const LinearGradient(
+        colors: [AppColors.yPrimaryColor, AppColors.ySecondry2Color],
+      ).createShader(rect)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = strokeWidth
+      ..strokeCap = StrokeCap.round;
 
-    canvas.drawArc(rect, startAngle, sweepAngle, false, paint);
+    // الخلفية الرمادية
+    final path = Path()..addRRect(RRect.fromRectAndRadius(rect, Radius.circular(radius)));
+    canvas.drawPath(path, backgroundPaint);
+
+    // مسار الإطار
+    final pathMetrics = path.computeMetrics().toList();
+    if (pathMetrics.isNotEmpty) {
+      final metric = pathMetrics.first;
+      final length = metric.length * progress;
+      final progressPath = metric.extractPath(0, length);
+      canvas.drawPath(progressPath, progressPaint);
+    }
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => true;
+  bool shouldRepaint(RectProgressPainter oldDelegate) {
+    return oldDelegate.progress != progress;
+  }
 }

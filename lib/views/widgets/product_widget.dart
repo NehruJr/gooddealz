@@ -14,6 +14,7 @@ import 'package:goodealz/providers/product/product_provider.dart';
 import 'package:goodealz/views/pages/product/product_details/product_details_page.dart';
 import 'package:goodealz/views/widgets/main_button.dart';
 import 'package:goodealz/views/widgets/main_text.dart';
+import 'package:goodealz/views/widgets/sales_progress.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../providers/cart/cart_provider.dart';
@@ -43,7 +44,7 @@ class ProductWidget extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: 540,
+            height: 575,
             width: context.width,
             padding: const EdgeInsetsDirectional.only(start: 12, end: 12, top: 12, bottom: 9),
             margin: 16.vEdge,
@@ -61,65 +62,17 @@ class ProductWidget extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Container(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  alignment: AlignmentDirectional.topStart,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        "${productDetails.quantitySold!} ${'SOLD'.tr}",
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 14),
-                      ),
-                      const SizedBox(width: 6),
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            width: 70,
-                            height: 10,
-                            decoration: BoxDecoration(
-                              color: Colors.grey.shade300,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          Container(
-                            width: 70 * (productDetails.salesPercentage.toDoubleNum <= 100 ? productDetails.salesPercentage.toDoubleNum  : 100) / 100,
-                            height: 10,
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [
-                                  Color(0xFFE91E63),
-                                  Color(0xFFEF040D),
-                                  Color(0xFFFF9800),
-                                  Color(0xFFFFD54F),
-                                  Color(0xFFFF9800),
-                                  Color(0xFFEF040D),
-                                  Color(0xFFE91E63),
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        "${'OUT OF'.tr} ${productDetails.quantity}",
-                        style: const TextStyle(fontSize: 12),
-                      ),
-                    ],
+                Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Padding(
+                    padding: const EdgeInsetsDirectional.only(start: 12),
+                    child: SalesProgress(
+                      sold: productDetails.quantitySold ?? 0,
+                      total: productDetails.quantity ?? 0,
+                    ),
                   ),
                 ),
-                8.sSize,
+                12.sSize,
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
