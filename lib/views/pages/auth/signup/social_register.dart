@@ -150,25 +150,25 @@ class _SocialRegisterPageState extends State<SocialRegisterPage> {
                             }
                           },
                   ),
-                  12.sSize,
-                  CustomDropDown(
-                    hint: 'gender'.tr,
-                    list: const ['male', 'female'],
-                    item: gender,
-                    unfocusWhenTapOutside: true,
-                    controller: _phoneController,
-                    prefixIcon: const RoundedSquare(icon: 'gender'),
-                    onChange: (value){
-                      gender = value;
-                    },
-                    validator: (value) {
-                      if (value == null) {
-                        return '';
-                      } else {
-                        return null;
-                      }
-                    },
-                  ),
+                  // 12.sSize,
+                  // CustomDropDown(
+                  //   hint: 'gender'.tr,
+                  //   list: const ['male', 'female'],
+                  //   item: gender,
+                  //   unfocusWhenTapOutside: true,
+                  //   controller: _phoneController,
+                  //   prefixIcon: const RoundedSquare(icon: 'gender'),
+                  //   onChange: (value){
+                  //     gender = value;
+                  //   },
+                  //   validator: (value) {
+                  //     if (value == null) {
+                  //       return '';
+                  //     } else {
+                  //       return null;
+                  //     }
+                  //   },
+                  // ),
                   12.sSize,
                         MainTextField(
                           hint: 'phone'.tr,
@@ -225,7 +225,7 @@ class _SocialRegisterPageState extends State<SocialRegisterPage> {
                            email: widget.email,
                            firstName: _fistNameController.text,
                            lastName: _lastNameController.text,
-                           gender: gender!,
+                           gender: "male", // gender!,
                            photoUrl: widget.photoUrl,
                            );
 

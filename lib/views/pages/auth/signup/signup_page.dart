@@ -128,25 +128,25 @@ class _SignupPageState extends State<SignupPage> {
                         }
                       },
                     ),
-                    12.sSize,
-                    CustomDropDown(
-                      hint: 'gender'.tr,
-                      list: ['male'.tr, 'female'.tr],
-                      item: gender,
-                      unfocusWhenTapOutside: true,
-                      // controller: _phoneController,
-                      prefixIcon: const RoundedSquare(icon: 'gender'),
-                      onChange: (value) {
-                        gender = value;
-                      },
-                      validator: (value) {
-                        if (value == null) {
-                          return '';
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
+                    // 12.sSize,
+                    // CustomDropDown(
+                    //   hint: 'gender'.tr,
+                    //   list: ['male'.tr, 'female'.tr],
+                    //   item: gender,
+                    //   unfocusWhenTapOutside: true,
+                    //   // controller: _phoneController,
+                    //   prefixIcon: const RoundedSquare(icon: 'gender'),
+                    //   onChange: (value) {
+                    //     gender = value;
+                    //   },
+                    //   validator: (value) {
+                    //     if (value == null) {
+                    //       return '';
+                    //     } else {
+                    //       return null;
+                    //     }
+                    //   },
+                    // ),
                     12.sSize,
                     CustomDropDown(
                       hint: 'nationality'.tr,
@@ -181,6 +181,10 @@ class _SignupPageState extends State<SignupPage> {
                       onCounteryCodeChange: (code) {
                         _countryCode = code;
                         print(_countryCode?.dialCode);
+                        // nationality = _countryCode?.name;
+                        //     Provider.of<AuthProvider>(context, listen: false)
+                        //         .changeCountryCode(_countryCode!.name!);
+                        // print(_countryCode?.name);
                       },
                       // suffixIcon: Padding(
                       //   padding: 18.vhEdge,
@@ -309,7 +313,7 @@ class _SignupPageState extends State<SignupPage> {
                                           _fistNameController.text.trim(),
                                       lastName: _lastNameController.text.trim(),
                                       email: _emailController.text.trim(),
-                                      gender: gender!,
+                                      gender: "male", // gender!,
                                       nationality: nationality!,
                                       phone: getPhoneNumber,
                                       password: _passwordController.text);
