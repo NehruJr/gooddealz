@@ -194,7 +194,7 @@ class _CartPageState extends State<CartPage> {
                           ),
                           MainText(
                             '${cartProvider.totalPrice.toStringAsFixed(2)} EGP',
-                            fontSize: 24,
+                            fontSize: 22,
                             color: AppColors.yBlackColor,
                             fontWeight: FontWeight.w700,
                           ),

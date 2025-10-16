@@ -123,7 +123,7 @@ class _CheckoutPageState extends State<CheckoutPage>
             16.wSize,
             MainText(
               'checkout'.tr,
-              fontSize: 22,
+              fontSize: 20,
               color: Colors.black87,
               fontWeight: FontWeight.w600,
             ),
@@ -244,7 +244,7 @@ class _CheckoutPageState extends State<CheckoutPage>
                 12.wSize,
                 MainText(
                   title,
-                  fontSize: 18,
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: Colors.black87,
                 ),
