@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:goodealz/core/constants/app_colors.dart';
-import 'package:goodealz/core/helper/extensions/assetss_widgets.dart';
 import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
 
 class SalesProgress extends StatelessWidget {
@@ -117,7 +116,8 @@ class RectProgressPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round;
 
     // الخلفية الرمادية
-    final path = Path()..addRRect(RRect.fromRectAndRadius(rect, Radius.circular(radius)));
+    final path = Path()
+      ..addRRect(RRect.fromRectAndRadius(rect, Radius.circular(radius)));
     canvas.drawPath(path, backgroundPaint);
 
     // مسار الإطار

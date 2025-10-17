@@ -203,5 +203,6 @@
   "loading_cart": "جاري تحميل سلة التسوق...",
   "empty_cart": "سلة التسوق فارغة",
   "empty_cart_message": "يبدو أنك لم تضف أي منتجات إلى سلة التسوق بعد",
-  "proceed_to_checkout": "متابعة إلى الدفع"
+  "proceed_to_checkout": "متابعة إلى الدفع",
+  "offers_sold":"العروض المباعة"
 }
