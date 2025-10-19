@@ -42,7 +42,228 @@ class _SellingFastDetailsPageState extends State<SellingFastDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return MainPage(
+    return Scaffold(
+      backgroundColor: AppColors.yBGColor,
+      body: Consumer<PrizesProvider>(builder: (context, prizesProvider, _) {
+        final prizeDetails = prizesProvider.prizeDetails;
+        if (prizesProvider.sellingDetailsLoader) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                expandedHeight: context.width * 0.8,
+                pinned: true,
+                floating: false,
+                elevation: 0,
+                backgroundColor: AppColors.yPrimaryColor.withAlpha(5),
+                leading: Container(
+                  margin: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.1),
+                        blurRadius: 8,
+                        spreadRadius: 0,
+                      )
+                    ],
+                  ),
+                  child: IconButton(
+                    icon: const Icon(Icons.arrow_back, color: Colors.black),
+                    onPressed: () => Navigator.pop(context),
+                  ),
+                ),
+                centerTitle: true,
+                actions: [],
+                flexibleSpace: FlexibleSpaceBar(
+                  background: Stack(
+                    children: [
+                      FancyShimmerImage(
+                        imageUrl: prizeDetails?.cover ?? '',
+                        width: context.width,
+                        height: context.width * 0.9,
+                        boxFit: BoxFit.cover,
+                        errorWidget: Image.asset(
+                          getPngAsset('product'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      Container(
+                        width: context.width,
+                        height: context.width * 0.9,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.transparent,
+                              Colors.transparent,
+                              AppColors.yBlackColor.withValues(alpha: 0.4),
+                              AppColors.yBlackColor.withValues(alpha: 0.7),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 16,
+                        left: 16,
+                        right: 16,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            ShaderMask(
+                              shaderCallback: (bounds) => const LinearGradient(
+                                colors: [
+                                  Color(0xFFFFD54F),
+                                  Color(0xFFFF9800),
+                                  Color(0xFFEF040D),
+                                  Color(0xFFE91E63)
+                                ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ).createShader(bounds),
+                              child: Text(
+                                'win'.tr,
+                                style: const TextStyle(
+                                  fontSize: 48,
+                                  fontWeight: FontWeight.w900,
+                                  color: Colors.white,
+                                  height: 0.9,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            MainText(
+                              prizeDetails?.title ?? '',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SliverToBoxAdapter(
+                child: Column(
+                  children: [
+                    16.sSize,
+                    SizedBox(
+                      width: context.width - 32,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          MainText(
+                            'description'.tr,
+                            overflow: TextOverflow.ellipsis,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black.withOpacity(0.7),
+                          ),
+                          8.sSize,
+                          if (prizeDetails?.description != null)
+                            MainText(
+                              prizeDetails?.description ?? '',
+                              maxLines: prizeDetails!.description!.length >
+                                  AppConstants.descriptionMaxLength &&
+                                  !showMore
+                                  ? 3
+                                  : null,
+                              overflow: prizeDetails.description!.length >
+                                  AppConstants.descriptionMaxLength &&
+                                  !showMore
+                                  ? TextOverflow.ellipsis
+                                  : null,
+                              fontSize: 14,
+                              color: Colors.black.withOpacity(0.5),
+                            ),
+                          2.sSize,
+                          if (prizeDetails?.description != null &&
+                              prizeDetails!.description!.length >
+                                  AppConstants.descriptionMaxLength)
+                            GestureDetector(
+                              onTap: () {
+                                showMore = !showMore;
+                                setState(() {});
+                              },
+                              child: MainText(
+                                showMore ? 'show_less'.tr : 'show_more'.tr,
+                                fontSize: 12,
+                                color: AppColors.ySecondry2Color,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    32.sSize,
+
+                    SizedBox(
+                      height: 240,
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        // physics: const NeverScrollableScrollPhysics(),
+                        separatorBuilder: (context, index) => const SizedBox(
+                          width: 5,
+                        ),
+                        itemCount: prizeDetails?.products?.length ?? 0,
+                        itemBuilder: (context, index) {
+                          return productPrizeWidget(context,
+                              productDetails: prizeDetails!.products![index]);
+                        },
+                      ),
+                    ),
+                    if (prizeDetails!.tags!.isNotEmpty) 8.sSize,
+                    if (prizeDetails.tags!.isNotEmpty)
+                      MainText(
+                        'tags'.tr,
+                        overflow: TextOverflow.ellipsis,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black.withOpacity(0.7),
+                      ),
+                    8.sSize,
+                    SizedBox(
+                      height: 100,
+                      child: ListView.separated(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: prizeDetails.tags?.length ?? 0,
+                        separatorBuilder: (context, index) => const SizedBox(
+                          width: 20,
+                        ),
+                        itemBuilder: (context, index) => FancyShimmerImage(
+                          imageUrl: prizeDetails.tags?[index].image ?? '',
+                          width: 100,
+                          height: context.width,
+                          boxFit: BoxFit.contain,
+                          errorWidget: Image.asset(
+                            getPngAsset('product'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    // 32.sSize,
+                  ],
+                ),
+              )
+            ],
+          );
+        }
+      })
+    );
+
+
+      MainPage(
       body: Consumer<PrizesProvider>(builder: (context, prizesProvider, _) {
         final prizeDetails = prizesProvider.prizeDetails;
         if (prizesProvider.sellingDetailsLoader) {

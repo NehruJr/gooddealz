@@ -120,7 +120,7 @@ class ActionWidget extends StatelessWidget {
                           child: Text(
                             'win'.tr,
                             style: const TextStyle(
-                              fontSize: 65,
+                              fontSize: 48,
                               fontWeight: FontWeight.w900,
                               color: Colors.white,
                               height: 1,
@@ -130,7 +130,7 @@ class ActionWidget extends StatelessWidget {
                         Text(
                           action.title ?? '',
                           style: const TextStyle(
-                            fontSize: 35,
+                            fontSize: 24,
                             fontWeight: FontWeight.bold,
                             color: AppColors.yBGColor,
                             shadows: [
