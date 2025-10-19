@@ -81,6 +81,7 @@ class _WalletsPageState extends State<WalletsPage> {
                   showModalBottomSheet(
                       context: context,
                       isScrollControlled: true,
+                      backgroundColor: AppColors.yBGColor,
                       builder: (context) {
                         return _bottomSheet();
                       });
@@ -112,6 +113,7 @@ class _WalletsPageState extends State<WalletsPage> {
       // height: 100.0,
       width: MediaQuery.of(context).size.width,
       padding: MediaQuery.of(context).viewInsets,
+      color: AppColors.yBGColor,
       margin: const EdgeInsets.symmetric(
         horizontal: 20,
         vertical: 20,

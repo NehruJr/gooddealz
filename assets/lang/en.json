@@ -204,5 +204,6 @@
 "empty_cart": "Your Cart is Empty",
 "empty_cart_message": "Looks like you haven't added anything to your cart yet",
 "proceed_to_checkout": "Proceed to Checkout",
-  "offers_sold":"Offers Sold"
+  "offers_sold":"Offers Sold",
+  "product_images":"Product Images"
 }

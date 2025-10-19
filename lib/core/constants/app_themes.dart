@@ -6,6 +6,7 @@ class AppThemes {
     return ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: AppColors.yPrimaryColor),
       useMaterial3: true,
+      fontFamily: 'Poppins',
     );
   }
 }

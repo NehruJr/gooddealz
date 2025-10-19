@@ -89,17 +89,17 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               ),
             ),
             centerTitle: true,
-            title: Container(
-              width: 130,
-              height: 56,
-              decoration: BoxDecoration(
-                  color: AppColors.yWhiteColor.withAlpha(160),
-                  borderRadius: BorderRadius.circular(30)),
-              child: SalesProgress(
-                sold: widget.productDetails.quantitySold ?? 0,
-                total: widget.productDetails.quantity ?? 0,
-              ),
-            ),
+            // title: Container(
+            //   width: 130,
+            //   height: 56,
+            //   decoration: BoxDecoration(
+            //       color: AppColors.yWhiteColor.withAlpha(160),
+            //       borderRadius: BorderRadius.circular(30)),
+            //   child: SalesProgress(
+            //     sold: widget.productDetails.quantitySold ?? 0,
+            //     total: widget.productDetails.quantity ?? 0,
+            //   ),
+            // ),
             actions: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -215,31 +215,31 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       ],
                     ),
                   ),
-                  if (!isSoldOut &&
-                      widget.productDetails.salesPercentage != "100")
-                    Positioned(
-                      top: 16,
-                      right: 16,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Colors.black.withValues(alpha: .7),
-                          borderRadius: BorderRadius.circular(24),
-                          border: Border.all(
-                            color: Colors.white.withAlpha(3),
-                          ),
-                        ),
-                        child: MainText(
-                          '${widget.productDetails.salesPercentage}% ${'sold'.tr}',
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                  // if (!isSoldOut &&
+                  //     widget.productDetails.salesPercentage != "100")
+                  //   Positioned(
+                  //     top: 16,
+                  //     right: 16,
+                  //     child: Container(
+                  //       padding: const EdgeInsets.symmetric(
+                  //         horizontal: 12,
+                  //         vertical: 8,
+                  //       ),
+                  //       decoration: BoxDecoration(
+                  //         color: Colors.black.withValues(alpha: .7),
+                  //         borderRadius: BorderRadius.circular(24),
+                  //         border: Border.all(
+                  //           color: Colors.white.withAlpha(3),
+                  //         ),
+                  //       ),
+                  //       child: MainText(
+                  //         '${widget.productDetails.salesPercentage}% ${'sold'.tr}',
+                  //         fontSize: 12,
+                  //         fontWeight: FontWeight.w600,
+                  //         color: Colors.white,
+                  //       ),
+                  //     ),
+                  //   ),
                 ],
               ),
             ),
@@ -522,21 +522,23 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                           color: Colors.black.withValues(alpha: 0.8),
                         ),
                         const SizedBox(height: 12),
-                        Container(
-                          height: 140,
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: Colors.grey[300]!,
-                            ),
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.05),
-                                blurRadius: 4,
+                        Center(
+                          child: Container(
+                            height: 140,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.grey[300]!,
                               ),
-                            ],
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.05),
+                                  blurRadius: 4,
+                                ),
+                              ],
+                            ),
+                            child: CarousalWidget(images: _productImages),
                           ),
-                          child: CarousalWidget(images: _productImages),
                         ),
                       ],
                     ),
