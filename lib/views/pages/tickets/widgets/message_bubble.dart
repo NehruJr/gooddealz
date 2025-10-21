@@ -94,7 +94,7 @@ class MessageBubble extends StatelessWidget {
 
           Text(
             DateConverter.convertTodayYesterdayFormat(reply.createdAt!),
-
+            style: const TextStyle(fontSize: 10),
           ),
           16.sSize
 

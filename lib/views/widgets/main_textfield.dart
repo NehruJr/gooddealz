@@ -136,20 +136,20 @@ class MainTextFieldState extends State<MainTextField> {
             // countryFilter: ["SA"],
             onChanged: widget.onCounteryCodeChange,
             initialSelection: widget.initialCode ?? 'EG',
-            flagWidth: 20,
+            // flagWidth: 20,
             padding: EdgeInsets.zero,
-            flagDecoration: const BoxDecoration(
-                shape: BoxShape.circle
-            ),
+            // flagDecoration: const BoxDecoration(
+            //     shape: BoxShape.circle
+            // ),
             textStyle: const TextStyle(
                 color: Colors.black,
                 fontSize: 16,
                 fontWeight: FontWeight.w400),
             // favorite: const ['+91', 'IN'],
             showCountryOnly: false,
-            showFlag: true,
-            showFlagDialog: true,
-            showDropDownButton: true,
+            showFlag: false,
+            showFlagDialog: false,
+            showDropDownButton: false,
             showOnlyCountryWhenClosed: false,
             alignLeft: false,
           ),
@@ -159,7 +159,7 @@ class MainTextFieldState extends State<MainTextField> {
         hintText: widget.hint.isNotEmpty ? widget.hint : null,
         hintStyle: const TextStyle(
           fontSize: 13,
-          color: AppColors.yGreyColor,
+          color: AppColors.yBlackColor,
           fontWeight: FontWeight.w400,
         ),
         border: _border(color: widget.borderColor ?? AppColors.yWhiteColor),

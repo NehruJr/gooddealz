@@ -117,7 +117,7 @@ class TicketsCard extends StatelessWidget {
                 ],
               ),
             ),
-            Image.asset(getPngAsset('ticket-icon'), width: 30, color: AppColors.yPrimaryColor,),
+            Image.asset(getPngAsset('ticket-icon'), width: 40, color: AppColors.yDarkColor,),
           ],
         ),
       ),

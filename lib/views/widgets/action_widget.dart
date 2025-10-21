@@ -65,7 +65,7 @@ class ActionWidget extends StatelessWidget {
                 style: const TextStyle(color: Colors.black),
                 decoration: BoxDecoration(
                     border: Border.all(
-                      color: Colors.red,
+                      color: AppColors.yPrimaryColor,
                     ),
                     color: Colors.transparent,
                     borderRadius: BorderRadius.circular(7)),

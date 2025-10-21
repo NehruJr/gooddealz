@@ -31,7 +31,7 @@ class RoundedSquare extends StatelessWidget {
         margin: 8.aEdge,
         padding: padding ?? 10.aEdge,
         decoration: BoxDecoration(
-          color: bgColor ?? AppColors.yPrimaryColor.withOpacity(0.1),
+          color: bgColor ?? AppColors.yDarkColor.withOpacity(0.1),
           borderRadius: 8.cBorder,
           boxShadow: bgColor == Colors.white
               ? [
@@ -43,7 +43,7 @@ class RoundedSquare extends StatelessWidget {
         child: child ??
             SvgPicture.asset(
               getSvgAsset(icon ?? ''),
-              color: AppColors.yPrimaryColor
+              color: AppColors.yDarkColor
             ),
       ),
     );

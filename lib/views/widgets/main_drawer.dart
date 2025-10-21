@@ -118,15 +118,17 @@ class MainDrawer extends StatelessWidget {
                             child: SvgPicture.asset(
                               getSvgAsset(drawer(context, isGuest)[i].icon),
                               color: drawer(context, isGuest)[i].icon ==
-                                      'Info Square'
-                                  ? null
-                                  : AppColors.yPrimaryColor,
+                                      'deleteAccount'
+                                  ? AppColors.yPrimaryColor
+                                  : AppColors.yDarkColor,
                             ),
                           ),
                           8.sSize,
                           MainText(
                             drawer(context, isGuest)[i].title,
-                            color: Colors.black.withOpacity(i == 0 ? 1 : 0.9),
+                            color: drawer(context, isGuest)[i].icon ==
+                                'deleteAccount'
+                                ? AppColors.yPrimaryColor : Colors.black.withOpacity(i == 0 ? 1 : 0.9),
                             fontWeight: i == 0 ? FontWeight.w600 : null,
                           ),
                         ],
@@ -151,7 +153,7 @@ class MainDrawer extends StatelessWidget {
                         }
                       },
                       child: SvgPicture.asset(
-                          getSvgAsset('mingcute_facebook-line'))),
+                          getSvgAsset('mingcute_facebook-line'), colorFilter: const ColorFilter.mode(AppColors.yDarkColor, BlendMode.srcIn),)),
                   GestureDetector(
                       onTap: () async {
                         if (await canLaunchUrl(
@@ -165,7 +167,7 @@ class MainDrawer extends StatelessWidget {
                         }
                       },
                       child:
-                          SvgPicture.asset(getSvgAsset('iconoir_instagram'))),
+                          SvgPicture.asset(getSvgAsset('iconoir_instagram'), colorFilter: const ColorFilter.mode(AppColors.yDarkColor, BlendMode.srcIn))),
                   GestureDetector(
                       onTap: () async {
                         if (await canLaunchUrl(
@@ -178,7 +180,7 @@ class MainDrawer extends StatelessWidget {
                         }
                       },
                       child: SvgPicture.asset(
-                          getSvgAsset('teenyicons_twitter-outline'))),
+                          getSvgAsset('teenyicons_twitter-outline'), colorFilter: const ColorFilter.mode(AppColors.yDarkColor, BlendMode.srcIn),)),
                 ],
               ),
               // 6.sSize,
