@@ -73,7 +73,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                       unfocusWhenTapOutside: true,
                       borderColor: AppColors.yGreyColor,
                       controller: _titleController,
-                      prefixIcon: const Icon(Icons.title, color: AppColors.yPrimaryColor,),
+                      prefixIcon: const Icon(Icons.title, color: AppColors.yDarkColor,),
                       validator: (value) {
                         if ((value ?? '').isEmpty) {
                           return 'enter_title'.tr;
@@ -89,7 +89,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                       borderColor: AppColors.yGreyColor,
                       maxLines: 3,
                       controller: _descriptionController,
-                      prefixIcon: const Icon(Icons.title, color: AppColors.yPrimaryColor,),
+                      prefixIcon: const Icon(Icons.title, color: AppColors.yDarkColor,),
                       validator: (value) {
                         if ((value ?? '').isEmpty) {
                           return 'enter_description'.tr;
@@ -109,7 +109,7 @@ class _AddTicketPageState extends State<AddTicketPage> {
                           list: ticketProvider.purchaseCodes,
                           item: purchaseCode,
                           unfocusWhenTapOutside: true,
-                          prefixIcon: const Icon(Icons.code),
+                          prefixIcon: const Icon(Icons.code, color: AppColors.yDarkColor,),
                           onChange: (value){
                             purchaseCode = value;
                           },

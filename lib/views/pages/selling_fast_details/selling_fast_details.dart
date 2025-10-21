@@ -588,7 +588,7 @@ class _SellingFastDetailsPageState extends State<SellingFastDetailsPage> {
                                         productDetails.id
                                 ? 'wait'.tr
                                 : 'add_cart'.tr,
-                            fontSize: 16,
+                            fontSize: 12,
                             color: AppColors.yBGColor,
                             fontWeight: FontWeight.w500,
                           ),

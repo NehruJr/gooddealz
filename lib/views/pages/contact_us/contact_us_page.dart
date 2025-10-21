@@ -50,7 +50,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           CircleAvatar(
-                            backgroundColor: AppColors.yPrimaryColor,
+                            backgroundColor: AppColors.yDarkColor,
                             child: SvgPicture.asset(
                               getSvgAsset(contacts[i].image),
                               height: 22,
@@ -80,7 +80,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
                   child: MainMultiLinesTextField(
                     hint: 'type_message'.tr,
                     maxLines: 5,
-                    borderColor: Colors.red,
+                    borderColor: AppColors.yDarkColor,
                     controller: _messageController,
                     validator: (value){
                       if(!(value ?? '').isValidName){

@@ -122,8 +122,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
                           },
                           child: CircleAvatar(
                             radius: 16,
-                            backgroundColor: AppColors.yPrimaryColor,
-                            child: SvgPicture.asset(getSvgAsset('Edit2')),
+                            backgroundColor: AppColors.yDarkColor,
+                            child: SvgPicture.asset(getSvgAsset('Edit2'), colorFilter: const ColorFilter.mode(AppColors.yBGColor, BlendMode.srcIn),),
                           ),
                         )
                       ],
@@ -135,11 +135,11 @@ class _MyAccountPageState extends State<MyAccountPage> {
                       controller: _fistNameController,
                       prefixIcon: Padding(
                         padding: 12.aEdge,
-                        child: SvgPicture.asset(getSvgAsset('Profile_p')),
+                        child: SvgPicture.asset(getSvgAsset('Profile_p'), colorFilter: const ColorFilter.mode(AppColors.yDarkColor, BlendMode.srcIn),),
                       ),
                       suffixIcon: Padding(
                         padding: 10.aEdge,
-                        child: SvgPicture.asset(getSvgAsset('Edit Square2')),
+                        child: SvgPicture.asset(getSvgAsset('Edit Square2'), colorFilter: const ColorFilter.mode(AppColors.yDarkColor, BlendMode.srcIn),),
                       ),
                       validator: (value) {
                         if (!(value ?? '').isValidName) {
@@ -156,11 +156,11 @@ class _MyAccountPageState extends State<MyAccountPage> {
                       controller: _lastNameController,
                       prefixIcon: Padding(
                         padding: 12.aEdge,
-                        child: SvgPicture.asset(getSvgAsset('Profile_p')),
+                        child: SvgPicture.asset(getSvgAsset('Profile_p'), colorFilter: const ColorFilter.mode(AppColors.yDarkColor, BlendMode.srcIn),),
                       ),
                       suffixIcon: Padding(
                         padding: 10.aEdge,
-                        child: SvgPicture.asset(getSvgAsset('Edit Square2')),
+                        child: SvgPicture.asset(getSvgAsset('Edit Square2'), colorFilter: const ColorFilter.mode(AppColors.yDarkColor, BlendMode.srcIn),),
                       ),
                       validator: (value) {
                         if (!(value ?? '').isValidName) {
@@ -177,11 +177,11 @@ class _MyAccountPageState extends State<MyAccountPage> {
                       controller: _emailController,
                       prefixIcon: Padding(
                         padding: 12.aEdge,
-                        child: SvgPicture.asset(getSvgAsset('mail_p')),
+                        child: SvgPicture.asset(getSvgAsset('mail_p'), colorFilter: const ColorFilter.mode(AppColors.yDarkColor, BlendMode.srcIn),),
                       ),
                       suffixIcon: Padding(
                         padding: 10.aEdge,
-                        child: SvgPicture.asset(getSvgAsset('Edit Square2')),
+                        child: SvgPicture.asset(getSvgAsset('Edit Square2'), colorFilter: const ColorFilter.mode(AppColors.yDarkColor, BlendMode.srcIn),),
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {

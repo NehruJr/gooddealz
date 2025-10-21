@@ -13,6 +13,8 @@ import 'package:goodealz/views/pages/my_orders/my_orders_page.dart';
 import 'package:goodealz/views/widgets/main_page.dart';
 import 'package:goodealz/views/widgets/main_text.dart';
 
+import '../../../core/constants/app_colors.dart';
+
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
@@ -270,7 +272,7 @@ class ProfileInfoCard extends StatelessWidget {
       child: GestureDetector(
         onTap: () => onTap(),
         child: Card(
-          surfaceTintColor: Colors.white,
+          color: AppColors.yBGColor,
           elevation: 3,
           margin: 0.aEdge,
           child: Padding(

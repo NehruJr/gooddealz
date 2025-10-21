@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:goodealz/core/constants/app_routes.dart';
 import 'package:goodealz/core/helper/extensions/assetss_widgets.dart';
 import 'package:goodealz/core/helper/extensions/context_size.dart';
@@ -34,11 +37,72 @@ class _LoginPageState extends State<LoginPage> {
 
   final formKey = GlobalKey<FormState>();
 
+  CountryCode? _countryCode;
+  String? nationality;
+
   @override
   void initState() {
     super.initState();
 
+    _detectCountry();
+
     _emailController.text = LocalData.rememberedEmail ?? '';
+  }
+
+
+  Future<void> _detectCountry() async {
+    try {
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied ||
+          permission == LocationPermission.deniedForever) {
+        permission = await Geolocator.requestPermission();
+      }
+
+      if (permission == LocationPermission.always ||
+          permission == LocationPermission.whileInUse) {
+        Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.low);
+
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+          position.latitude,
+          position.longitude,
+        );
+
+        if (placemarks.isNotEmpty) {
+          String? isoCountryCode = placemarks.first.isoCountryCode;
+          String? countryName = placemarks.first.country;
+
+          if (isoCountryCode != null) {
+            setState(() {
+              _countryCode = CountryCode.fromCountryCode(isoCountryCode);
+              nationality = countryName;
+
+              print(_countryCode!.code);
+              print(nationality);
+            });
+
+            // لو عندك Provider مسؤول عن الكود ممكن تحدثه هنا
+            Provider.of<AuthProvider>(context, listen: false)
+                .changeCountryCode(countryName!);
+          }
+        }
+      } else {
+        // المستخدم رفض الصلاحية → مصر افتراضيًا
+        _setDefaultEgypt();
+      }
+    } catch (e) {
+      print("❌ Location error: $e");
+      _setDefaultEgypt();
+    }
+  }
+
+  void _setDefaultEgypt() {
+    setState(() {
+      _countryCode = CountryCode.fromCountryCode('EG');
+      nationality = 'Egypt';
+    });
+    Provider.of<AuthProvider>(context, listen: false)
+        .changeCountryCode('Egypt');
   }
 
   @override
@@ -338,7 +402,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           InkWell(
                             onTap: () {
-                              AppRoutes.routeTo(context, const SignupPage());
+                              AppRoutes.routeTo(context, SignupPage(countryCode: _countryCode!, nationality: nationality!,));
                             },
                             child: MainText(
                               'signup'.tr,
