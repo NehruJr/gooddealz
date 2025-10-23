@@ -82,9 +82,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 8.sSize,
                 MainText(
-                  currentUser?.firstName == null || currentUser?.firstName == ''
+                  currentUser?.fullName == null || currentUser?.fullName == ''
                       ? currentUser?.name ?? ''
-                      : '${currentUser?.firstName ?? ""} ${currentUser?.lastName ?? ""}',
+                      : currentUser?.fullName ?? "",
                   overflow: TextOverflow.ellipsis,
                   fontSize: 24,
                   color: Colors.black,

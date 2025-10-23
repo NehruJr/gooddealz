@@ -48,8 +48,8 @@ class Data {
 class User {
   int? id;
   int? verified;
-  String? firstName;
-  String? lastName;
+  String? fullName;
+  // String? lastName;
   String? name;
   String? email;
   String? phone;
@@ -62,8 +62,8 @@ class User {
   User(
       {this.id,
         this.verified,
-        this.firstName,
-        this.lastName,
+        this.fullName,
+        // this.lastName,
         this.name,
         this.email,
         this.phone,
@@ -75,8 +75,8 @@ class User {
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    firstName = json['first_name'];
-    lastName = json['last_name'];
+    fullName = json['full_name'];
+    // lastName = json['last_name'];
     name = json['name'];
     email = json['email'];
     phone = json['phone'];
@@ -95,8 +95,8 @@ class User {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['first_name'] = firstName;
-    data['last_name'] = lastName;
+    data['full_name'] = fullName;
+    // data['last_name'] = lastName;
     data['name'] = name;
     data['email'] = email;
     data['phone'] = phone;

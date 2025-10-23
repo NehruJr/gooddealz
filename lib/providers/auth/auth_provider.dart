@@ -402,9 +402,9 @@ class AuthProvider extends ChangeNotifier {
   Future<void> socialRegister(
     context, {
     required String name,
-    required String firstName,
-    required String lastName,
-    required String gender,
+    required String fullName,
+    // required String lastName,
+    // required String gender,
     required String email,
     required String phone,
     required String photoUrl,
@@ -417,11 +417,11 @@ class AuthProvider extends ChangeNotifier {
 
       final data = {
         'name': name,
-        'given_name': firstName,
-        'family_name': lastName,
+        'full_name': fullName,
+        // 'family_name': lastName,
         'email': email,
         'phone': phone,
-        'gender': gender,
+        // 'gender': gender,
         'photoUrl': photoUrl,
         'fcm_token': dToken
         // 'locale': 'en-GB',
@@ -468,11 +468,11 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> signup(
     context, {
-    required String firstName,
-    required String lastName,
+    required String fullName,
+    // required String lastName,
     required String email,
     required String phone,
-    required String gender,
+    // required String gender,
     required String nationality,
     required String password,
   }) async {
@@ -482,10 +482,10 @@ class AuthProvider extends ChangeNotifier {
 
       final response = await CallApi.post(AppEndpoints.register,
           data: jsonEncode({
-            'first_name': firstName,
-            'last_name': lastName,
+            'full_name': fullName,
+            // 'last_name': lastName,
             'email': email,
-            'gender': gender,
+            // 'gender': gender,
             'nationality': nationality,
             'phone': phone,
             'password': password,
@@ -528,8 +528,8 @@ class AuthProvider extends ChangeNotifier {
   }
 
   Future<void> updateProfile(context,
-      {required String? firstName,
-      required String? lastName,
+      {required String? fullName,
+      // required String? lastName,
       required String? email,
       required File? avatar,
       required String? phone,
@@ -543,8 +543,8 @@ class AuthProvider extends ChangeNotifier {
           fileName: 'avatar',
           file: avatar,
           data: {
-            if (firstName != null) 'first_name': firstName,
-            if (lastName != null) 'last_name': lastName,
+            if (fullName != null) 'full_name': fullName,
+            // if (lastName != null) 'last_name': lastName,
             if (email != null) 'email': email,
             if (phone != null) 'phone': phone,
             if (password != null) 'password': password,

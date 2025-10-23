@@ -28,8 +28,8 @@ class LocalData {
 
   static setUserData(User user){
     if(user.id != null) setString(LocalKeys.id, user.id.toString());
-    setString(LocalKeys.firstName, user.firstName?? '');
-    setString(LocalKeys.lastName, user.lastName?? '');
+    setString(LocalKeys.fullName, user.fullName?? '');
+    // setString(LocalKeys.lastName, user.lastName?? '');
     setString(LocalKeys.name, user.name?? '');
     setString(LocalKeys.email, user.email?? '');
     setString(LocalKeys.phone, user.phone?? '');
@@ -65,8 +65,8 @@ class LocalData {
 
   static removeUserData(){
     remove(LocalKeys.id);
-    remove(LocalKeys.firstName);
-    remove(LocalKeys.lastName);
+    remove(LocalKeys.fullName);
+    // remove(LocalKeys.lastName);
     remove(LocalKeys.name);
     remove(LocalKeys.email);
     remove(LocalKeys.phone);
@@ -89,8 +89,8 @@ class LocalData {
   static User getUserData(){
     User user = User(
       id: getString(LocalKeys.id) != null ? int.parse(getString(LocalKeys.id)!): null,
-      firstName: getString(LocalKeys.firstName),
-      lastName: getString(LocalKeys.lastName),
+      fullName: getString(LocalKeys.fullName),
+      // lastName: getString(LocalKeys.lastName),
       name: getString(LocalKeys.name),
       email: getString(LocalKeys.email),
       phone: getString(LocalKeys.phone),
@@ -123,8 +123,8 @@ class LocalData {
 class LocalKeys {
   static const String isRememberMe = 'IS_REMEMBER_ME';
   static String id = 'id';
-  static String firstName = 'first_name';
-  static String lastName = 'last_name';
+  static String fullName = 'full_name';
+  // static String lastName = 'last_name';
   static String name = 'name';
   static String email = 'email';
   static String phone = 'phone';

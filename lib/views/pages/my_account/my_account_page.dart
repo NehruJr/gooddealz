@@ -31,8 +31,8 @@ class MyAccountPage extends StatefulWidget {
 }
 
 class _MyAccountPageState extends State<MyAccountPage> {
-  final _fistNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
+  final _nameController = TextEditingController();
+  // final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -53,8 +53,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
     super.initState();
     user = Provider.of<AuthProvider>(context, listen: false).currentUser;
 
-    _fistNameController.text = user!.firstName ?? '';
-    _lastNameController.text = user!.lastName ?? '';
+    _nameController.text = user!.fullName ?? '';
+    // _lastNameController.text = user!.lastName ?? '';
     _emailController.text = user!.email ?? '';
     // _phoneController.text =user?.phone != null && user!.phone!.contains('+') ? user!.phone!.substring(2) : user!.phone ?? '';
 
@@ -130,30 +130,9 @@ class _MyAccountPageState extends State<MyAccountPage> {
                     ),
                     64.sSize,
                     MainTextField(
-                      hint: 'first_name'.tr,
+                      hint: 'name'.tr,
                       unfocusWhenTapOutside: true,
-                      controller: _fistNameController,
-                      prefixIcon: Padding(
-                        padding: 12.aEdge,
-                        child: SvgPicture.asset(getSvgAsset('Profile_p'), colorFilter: const ColorFilter.mode(AppColors.yDarkColor, BlendMode.srcIn),),
-                      ),
-                      suffixIcon: Padding(
-                        padding: 10.aEdge,
-                        child: SvgPicture.asset(getSvgAsset('Edit Square2'), colorFilter: const ColorFilter.mode(AppColors.yDarkColor, BlendMode.srcIn),),
-                      ),
-                      validator: (value) {
-                        if (!(value ?? '').isValidName) {
-                          return '';
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                    16.sSize,
-                    MainTextField(
-                      hint: 'last_name'.tr,
-                      unfocusWhenTapOutside: true,
-                      controller: _lastNameController,
+                      controller: _nameController,
                       prefixIcon: Padding(
                         padding: 12.aEdge,
                         child: SvgPicture.asset(getSvgAsset('Profile_p'), colorFilter: const ColorFilter.mode(AppColors.yDarkColor, BlendMode.srcIn),),
@@ -231,12 +210,12 @@ class _MyAccountPageState extends State<MyAccountPage> {
               onPressed: authProvider.updateProfileLoader
                   ? (){} : () async {
                 if (formKey.currentState!.validate()) {
-                  String? firstName = _fistNameController.text.isEmpty
+                  String? fullName = _nameController.text.isEmpty
                       ? null
-                      : _fistNameController.text.trim();
-                  String? lastName = _lastNameController.text.isEmpty
-                      ? null
-                      : _lastNameController.text.trim();
+                      : _nameController.text.trim();
+                  // String? lastName = _lastNameController.text.isEmpty
+                  //     ? null
+                  //     : _lastNameController.text.trim();
                   String? email = _emailController.text.isEmpty
                       ? null
                       : _emailController.text.trim();
@@ -255,8 +234,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
                             description: '${'change_phone'.tr} $getPhoneNumber \n${'and'.tr} ${'email'.tr} $email',
                             onYesPressed:()=>
                                 authProvider.updateProfile(context,
-                                    firstName: firstName,
-                                    lastName: lastName,
+                                    fullName: fullName,
+                                    // lastName: lastName,
                                     email: email,
                                     avatar: _imageFile,
                                     phone: getPhoneNumber,
@@ -273,8 +252,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
                             description: '${'change_phone'.tr} $getPhoneNumber',
                             onYesPressed:()=>
                                 authProvider.updateProfile(context,
-                                    firstName: firstName,
-                                    lastName: lastName,
+                                    fullName: fullName,
+                                    // lastName: lastName,
                                     email: email,
                                     avatar: _imageFile,
                                     phone: getPhoneNumber,
@@ -291,8 +270,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
                             description: '${'change_email'.tr} $email',
                             onYesPressed:()=>
                                 authProvider.updateProfile(context,
-                                    firstName: firstName,
-                                    lastName: lastName,
+                                    fullName: fullName,
+                                    // lastName: lastName,
                                     email: email,
                                     avatar: _imageFile,
                                     phone: phone,
@@ -303,8 +282,8 @@ class _MyAccountPageState extends State<MyAccountPage> {
                   }
                   else {
                     authProvider.updateProfile(context,
-                        firstName: firstName,
-                        lastName: lastName,
+                        fullName: fullName,
+                        // lastName: lastName,
                         email: email,
                         avatar: _imageFile,
                         phone: getPhoneNumber,

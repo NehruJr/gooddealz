@@ -101,7 +101,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
                           onPressed: () async {
                             if (formKey.currentState!.validate()) {
                               await settingsProvider.contactUs(context,
-                                  name: user?.firstName == null || user?.firstName == ''? user?.name??'': '${user!.firstName} ${user.lastName}',
+                                  name: user?.fullName == null || user?.fullName == ''? user?.name??'': '${user!.fullName}',
                                   email: user!.email??'',
                                   message: _messageController.text
                               );
