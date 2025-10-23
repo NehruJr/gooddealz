@@ -27,8 +27,8 @@ class SocialRegisterPage extends StatefulWidget {
 
 class _SocialRegisterPageState extends State<SocialRegisterPage> {
   final formKey = GlobalKey<FormState>();
-  final _fistNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
+  final _fullNameController = TextEditingController();
+  // final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
 
@@ -223,9 +223,9 @@ class _SocialRegisterPageState extends State<SocialRegisterPage> {
                          phone: getPhoneNumber,
                           name: widget.name,
                            email: widget.email,
-                           firstName: _fistNameController.text,
-                           lastName: _lastNameController.text,
-                           gender: "male", // gender!,
+                           fullName: _fullNameController.text,
+                           // lastName: _lastNameController.text,
+                           // gender: "male", // gender!,
                            photoUrl: widget.photoUrl,
                            );
 

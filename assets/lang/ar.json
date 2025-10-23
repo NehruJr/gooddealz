@@ -205,5 +205,6 @@
   "empty_cart_message": "يبدو أنك لم تضف أي منتجات إلى سلة التسوق بعد",
   "proceed_to_checkout": "متابعة إلى الدفع",
   "offers_sold":"العروض المباعة",
-  "product_images":"صورة المنتج"
+  "product_images":"صورة المنتج",
+  "Select Country/Region": "اختر البلد/المنطقة"
 }

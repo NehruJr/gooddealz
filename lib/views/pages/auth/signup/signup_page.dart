@@ -30,8 +30,8 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  final _fistNameController = TextEditingController();
-  final _lastNameController = TextEditingController();
+  final _fullNameController = TextEditingController();
+  // final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -72,19 +72,11 @@ class _SignupPageState extends State<SignupPage> {
                 child: Column(
                   children: [
                     MainTextField(
-                      hint: 'first_name'.tr,
-                      controller: _fistNameController,
+                      hint: 'name'.tr,
+                      controller: _fullNameController,
                       prefixIcon: const RoundedSquare(icon: 'Profile'),
                       validator: (value) =>
                       !(value ?? '').isValidName ? 'enter_first_name'.tr : null,
-                    ),
-                    12.sSize,
-                    MainTextField(
-                      hint: 'last_name'.tr,
-                      controller: _lastNameController,
-                      prefixIcon: const RoundedSquare(icon: 'Profile'),
-                      validator: (value) =>
-                      !(value ?? '').isValidName ? 'enter_last_name'.tr : null,
                     ),
                     12.sSize,
                     MainTextField(
@@ -185,10 +177,10 @@ class _SignupPageState extends State<SignupPage> {
                                 return;
                               }
                               authProvider.signup(context,
-                                  firstName: _fistNameController.text,
-                                  lastName: _lastNameController.text,
+                                  fullName: _fullNameController.text,
+                                  // lastName: _lastNameController.text,
                                   email: _emailController.text,
-                                  gender: "male",
+                                  // gender: "male",
                                   nationality: widget.nationality,
                                   phone: getPhoneNumber,
                                   password: _passwordController.text);

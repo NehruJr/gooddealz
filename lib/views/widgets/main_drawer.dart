@@ -80,10 +80,10 @@ class MainDrawer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         MainText(
-                          currentUser?.firstName == null ||
-                                  currentUser?.firstName == ''
+                          currentUser?.fullName == null ||
+                                  currentUser?.fullName == ''
                               ? currentUser?.name ?? ''
-                              : '${currentUser?.firstName ?? ""} ${currentUser?.lastName ?? ""}',
+                              : currentUser?.fullName ?? "",
                           overflow: TextOverflow.ellipsis,
                           fontSize: 16,
                           color: Colors.black,
