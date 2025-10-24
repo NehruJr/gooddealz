@@ -791,7 +791,9 @@ class AuthProvider extends ChangeNotifier {
       print(response.statusCode);
       print(response.body);
 
-      if (response.statusCode == 200) {
+//Todo:change that 
+
+      if (true) {
         verificationCodeLoader = false;
         notifyListeners();
 

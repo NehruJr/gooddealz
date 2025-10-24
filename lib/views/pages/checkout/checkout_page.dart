@@ -30,7 +30,6 @@ class CheckoutPage extends StatefulWidget {
 
 class _CheckoutPageState extends State<CheckoutPage>
     with TickerProviderStateMixin {
-  final _couponController = TextEditingController();
   final _addressController = TextEditingController();
 
   double? lat;
@@ -80,182 +79,125 @@ class _CheckoutPageState extends State<CheckoutPage>
   @override
   Widget build(BuildContext context) {
     return MainPage(
-      actionWidgets: [
-        Container(
-          height: 90,
-          width: 110,
-          padding: const EdgeInsets.only(top: 6.0),
-          child: Hero(
-            tag: 'logo',
-            child: Image.asset(
-              getPngAsset('black_logo'),
-              fit: BoxFit.cover,
-            ),
-          ),
-        )
-      ],
+      isAppBar: false,
       subAppBar: Container(
-        padding: 16.vhEdge,
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
+              color: Colors.black.withValues(alpha: .04),
               blurRadius: 10,
               offset: const Offset(0, 2),
             ),
           ],
         ),
-        child: Row(
-          children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: AppColors.ySecondryColor.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Icon(
-                Icons.shopping_cart_checkout,
-                color: AppColors.ySecondryColor,
-                size: 22,
-              ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            child: Row(
+              children: [
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.yLightGreyColor,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(
+                      Icons.arrow_back_ios_new,
+                      size: 20,
+                      color: AppColors.yBlackColor,
+                    ),
+                  ),
+                ),
+                16.wSize,
+                MainText(
+                  'checkout'.tr,
+                  fontSize: 22,
+                  color: AppColors.yBlackColor,
+                  fontWeight: FontWeight.w700,
+                ),
+              ],
             ),
-            16.wSize,
-            MainText(
-              'checkout'.tr,
-              fontSize: 20,
-              color: Colors.black87,
-              fontWeight: FontWeight.w600,
-            ),
-          ],
+          ),
         ),
       ),
       body: FadeTransition(
         opacity: _fadeAnimation,
-        child: SingleChildScrollView(
-          padding: 16.aEdge,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildSectionCard(
-                icon: Icons.location_on,
-                title: 'delivery_address'.tr,
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(20),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Delivery Address Section
+                    MainText(
+                      'delivery_address'.tr,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.yBlackColor,
+                    ),
                     16.sSize,
                     _buildMapContainer(),
                     20.sSize,
                     _buildCityDropdown(),
                     16.sSize,
                     _buildAddressField(),
-                  ],
-                ),
-              ),
-              24.sSize,
-              _buildSectionCard(
-                icon: Icons.payment,
-                title: 'payment_method'.tr,
-                child: Column(
-                  children: [
-                    12.sSize,
+                    32.sSize,
+
+                    // Payment Method Section
+                    MainText(
+                      'payment_method'.tr,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.yBlackColor,
+                    ),
+                    16.sSize,
                     _buildPaymentOption(
                         'card', 'digital_payment'.tr, Icons.credit_card),
+                    12.sSize,
                     _buildPaymentOption(
                         'wallet', 'wallet'.tr, Icons.account_balance_wallet),
+                    12.sSize,
                     _buildPaymentOption('cash', 'cash'.tr, Icons.money),
-                  ],
-                ),
-              ),
-              24.sSize,
-              _buildSectionCard(
-                icon: Icons.discount,
-                title: 'coupon_code'.tr,
-                child: Column(
-                  children: [
-                    16.sSize,
-                    _buildCouponField(),
-                  ],
-                ),
-              ),
-              24.sSize,
-              _buildSectionCard(
-                icon: Icons.receipt_long,
-                title: 'order_summary'.tr,
-                child: Column(
-                  children: [
+                    32.sSize,
+
+                    MainText(
+                      'order_summary'.tr,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.yBlackColor,
+                    ),
                     16.sSize,
                     _buildOrderSummary(),
+                    32.sSize,
                   ],
                 ),
               ),
-              32.sSize,
-              _buildPlaceOrderButton(),
-              32.sSize,
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+            ),
 
-  Widget _buildSectionCard({
-    required IconData icon,
-    required String title,
-    required Widget child,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.ySecondryColor.withValues(alpha: 0.05),
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(16),
-                topRight: Radius.circular(16),
+            // Place Order Button
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: .06),
+                    blurRadius: 20,
+                    offset: const Offset(0, -4),
+                  ),
+                ],
+              ),
+              child: SafeArea(
+                child: _buildPlaceOrderButton(),
               ),
             ),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: AppColors.ySecondryColor,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Icon(
-                    icon,
-                    color: Colors.white,
-                    size: 18,
-                  ),
-                ),
-                12.wSize,
-                MainText(
-                  title,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black87,
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: child,
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -263,20 +205,13 @@ class _CheckoutPageState extends State<CheckoutPage>
   Widget _buildMapContainer() {
     return Consumer<CheckoutProvider>(builder: (context, checkoutProvider, _) {
       return Container(
-        height: 200,
+        height: 180,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            width: 2,
-            color: AppColors.ySecondryColor.withValues(alpha: 0.3),
+            width: 1.5,
+            color: AppColors.yLightGreyColor,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.1),
-              blurRadius: 8,
-              offset: const Offset(0, 2),
-            ),
-          ],
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(14),
@@ -300,18 +235,6 @@ class _CheckoutPageState extends State<CheckoutPage>
                   _controller.complete(controller);
                 },
               ),
-              Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black.withValues(alpha: 0.1),
-                    ],
-                  ),
-                ),
-              ),
               Positioned(
                 top: 12,
                 right: 12,
@@ -326,58 +249,6 @@ class _CheckoutPageState extends State<CheckoutPage>
                 child: _buildMapButton(
                   icon: Icons.my_location,
                   onTap: () => _determinePosition(),
-                ),
-              ),
-              Positioned.fill(
-                child: Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    onTap: () => _navigateToLocationScreen(checkoutProvider),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: Colors.transparent,
-                        ),
-                      ),
-                      child: Center(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.9),
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.1),
-                                blurRadius: 8,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Icons.touch_app,
-                                size: 16,
-                                color: AppColors.ySecondryColor,
-                              ),
-                              8.wSize,
-                              MainText(
-                                'tap_to_select_location'.tr,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.ySecondryColor,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                 ),
               ),
             ],
@@ -395,7 +266,7 @@ class _CheckoutPageState extends State<CheckoutPage>
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.15),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -410,7 +281,7 @@ class _CheckoutPageState extends State<CheckoutPage>
             padding: const EdgeInsets.all(10),
             child: Icon(
               icon,
-              color: AppColors.ySecondryColor,
+              color: AppColors.yPrimaryColor,
               size: 20,
             ),
           ),
@@ -423,10 +294,10 @@ class _CheckoutPageState extends State<CheckoutPage>
     return Consumer<CheckoutProvider>(builder: (context, checkoutProvider, _) {
       return Container(
         decoration: BoxDecoration(
-          color: Colors.grey[50],
-          borderRadius: BorderRadius.circular(12),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: AppColors.ySecondryColor.withValues(alpha: 0.3),
+            color: AppColors.yLightGreyColor,
             width: 1.5,
           ),
         ),
@@ -457,10 +328,10 @@ class _CheckoutPageState extends State<CheckoutPage>
       builder: (context, address, _) {
         return Container(
           decoration: BoxDecoration(
-            color: Colors.grey[50],
-            borderRadius: BorderRadius.circular(12),
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(
-              color: AppColors.ySecondryColor.withValues(alpha: 0.3),
+              color: AppColors.yLightGreyColor,
               width: 1.5,
             ),
           ),
@@ -476,53 +347,67 @@ class _CheckoutPageState extends State<CheckoutPage>
   }
 
   Widget _buildPaymentOption(String value, String title, IconData icon) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8),
-      decoration: BoxDecoration(
-        color: paymentMethod == value
-            ? AppColors.ySecondryColor.withValues(alpha: 0.1)
-            : Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: paymentMethod == value
-              ? AppColors.ySecondryColor
-              : Colors.grey[300]!,
-          width: paymentMethod == value ? 2 : 1,
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          paymentMethod = value;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: paymentMethod == value
+                ? AppColors.yPrimaryColor
+                : AppColors.yLightGreyColor,
+            width: paymentMethod == value ? 2 : 1.5,
+          ),
         ),
-      ),
-      child: RadioListTile(
-        value: value,
-        activeColor: AppColors.ySecondryColor,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        onChanged: (selectedValue) {
-          setState(() {
-            paymentMethod = selectedValue ?? '';
-          });
-        },
-        title: Row(
+        child: Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(4),
+              width: 24,
+              height: 24,
               decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: paymentMethod == value
+                      ? AppColors.yPrimaryColor
+                      : AppColors.yGreyColor,
+                  width: 2,
+                ),
                 color: paymentMethod == value
-                    ? AppColors.ySecondryColor
-                    : Colors.grey[400],
-                borderRadius: BorderRadius.circular(8),
+                    ? AppColors.yPrimaryColor
+                    : Colors.transparent,
               ),
-              child: Icon(
-                icon,
-                color: Colors.white,
-                size: 20,
-              ),
+              child: paymentMethod == value
+                  ? const Center(
+                      child: Icon(
+                        Icons.circle,
+                        size: 12,
+                        color: Colors.white,
+                      ),
+                    )
+                  : null,
+            ),
+            16.wSize,
+            Icon(
+              icon,
+              color: paymentMethod == value
+                  ? AppColors.yPrimaryColor
+                  : AppColors.yGreyColor,
+              size: 22,
             ),
             12.wSize,
             MainText(
               title,
-              fontSize: 16,
+              fontSize: 15,
               fontWeight: FontWeight.w500,
               color: paymentMethod == value
-                  ? AppColors.ySecondryColor
-                  : Colors.black87,
+                  ? AppColors.yBlackColor
+                  : AppColors.yGreyColor,
             ),
           ],
         ),
@@ -530,121 +415,48 @@ class _CheckoutPageState extends State<CheckoutPage>
     );
   }
 
-  Widget _buildCouponField() {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: AppColors.ySecondryColor.withValues(alpha: 0.3),
-          width: 1.5,
-        ),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: MainTextField(
-              controller: _couponController,
-              hint: 'have_coupon'.tr,
-              borderColor: Colors.transparent,
-            ),
-          ),
-          Consumer<DiscountProvider>(
-            builder: (context, discountProvider, _) {
-              if (discountProvider.couponLoader) {
-                return const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        AppColors.ySecondryColor,
-                      ),
-                    ),
-                  ),
-                );
-              }
-
-              return Container(
-                margin: const EdgeInsets.all(4),
-                child: ElevatedButton(
-                  onPressed: () {
-                    FocusScope.of(context).unfocus();
-                    if (_couponController.text.isNotEmpty) {
-                      discountProvider
-                          .applyCoupon(_couponController.text)
-                          .then((value) {
-                        Provider.of<CartProvider>(context, listen: false)
-                            .setCoupon(discountProvider.discountCoupon);
-                      });
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.ySecondryColor,
-                    foregroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 12),
-                  ),
-                  child: MainText(
-                    'apply'.tr,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildOrderSummary() {
     return Consumer<CartProvider>(builder: (context, cartProvider, _) {
-      return Column(
-        children: [
-          _buildSummaryRow('sub_total'.tr,
-              '${cartProvider.subTotalPrice} ${cartProvider.currency}'),
-          12.sSize,
-          _buildSummaryRow('delivery_charge'.tr,
-              '${cartProvider.deliveryCost} ${cartProvider.currency}'),
-          12.sSize,
-          _buildSummaryRow('discount'.tr,
-              '${cartProvider.discount.toStringAsFixed(2)} ${cartProvider.currency}',
-              isDiscount: true),
-          20.sSize,
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppColors.ySecondryColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
+      return Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: AppColors.yLightGreyColor,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          children: [
+            _buildSummaryRow('sub_total'.tr,
+                '\$${cartProvider.subTotalPrice.toStringAsFixed(2)}'),
+            12.sSize,
+            _buildSummaryRow('delivery_charge'.tr,
+                '\$${cartProvider.deliveryCost.toStringAsFixed(2)}'),
+            12.sSize,
+            _buildSummaryRow(
+                'discount'.tr, '-\$${cartProvider.discount.toStringAsFixed(2)}',
+                isDiscount: true),
+            16.sSize,
+            Divider(color: AppColors.yGreyColor.withOpacity(0.3), thickness: 1),
+            16.sSize,
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 MainText(
                   'total'.tr,
-                  fontSize: 20,
+                  fontSize: 18,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.ySecondryColor,
+                  color: AppColors.yBlackColor,
                 ),
                 MainText(
-                  '${cartProvider.totalPrice} ${cartProvider.currency}',
+                  '\$${cartProvider.totalPrice.toStringAsFixed(2)}',
                   fontSize: 20,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.ySecondryColor,
+                  color: AppColors.yBlackColor,
                   textDirection: TextDirection.ltr,
                 ),
               ],
             ),
-          ),
-        ],
+          ],
+        ),
       );
     });
   }
@@ -656,15 +468,14 @@ class _CheckoutPageState extends State<CheckoutPage>
       children: [
         MainText(
           label,
-          fontSize: 16,
-          color: Colors.black.withValues(alpha: 0.7),
+          fontSize: 15,
+          color: AppColors.yGreyColor,
           fontWeight: FontWeight.w500,
         ),
         MainText(
           value,
-          fontSize: 16,
-          color:
-              isDiscount ? Colors.green : Colors.black.withValues(alpha: 0.7),
+          fontSize: 15,
+          color: isDiscount ? AppColors.yGreenColor : AppColors.yBlackColor,
           fontWeight: FontWeight.w600,
           textDirection: TextDirection.ltr,
         ),
@@ -681,21 +492,26 @@ class _CheckoutPageState extends State<CheckoutPage>
           borderRadius: BorderRadius.circular(16),
           gradient: checkoutProvider.checkoutLoader
               ? LinearGradient(
-                  colors: [Colors.grey[300]!, Colors.grey[400]!],
-                )
-              : LinearGradient(
                   colors: [
-                    AppColors.ySecondryColor,
-                    AppColors.ySecondryColor.withValues(alpha: 0.8),
+                    AppColors.yGreyColor.withOpacity(0.5),
+                    AppColors.yGreyColor.withOpacity(0.7)
                   ],
+                )
+              : const LinearGradient(
+                  colors: [
+                    AppColors.yPrimaryColor,
+                    AppColors.ySecondryColor,
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
                 ),
           boxShadow: [
             BoxShadow(
               color: checkoutProvider.checkoutLoader
                   ? Colors.grey.withValues(alpha: 0.3)
-                  : AppColors.ySecondryColor.withValues(alpha: 0.4),
+                  : AppColors.yPrimaryColor.withValues(alpha: 0.4),
               blurRadius: 12,
-              offset: const Offset(0, 6),
+              offset: const Offset(0, 4),
             ),
           ],
         ),
@@ -748,22 +564,11 @@ class _CheckoutPageState extends State<CheckoutPage>
                     ),
                   ],
                 )
-              : Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.shopping_bag_outlined,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    12.wSize,
-                    MainText(
-                      'place_order'.tr,
-                      fontSize: 16,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ],
+              : MainText(
+                  'place_order'.tr,
+                  fontSize: 16,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
                 ),
         ),
       );

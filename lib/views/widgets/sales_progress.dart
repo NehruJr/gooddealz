@@ -20,7 +20,7 @@ class SalesProgress extends StatelessWidget {
       painter: RectProgressPainter(progress),
       child: SizedBox(
         width: 148,
-        height: 70,
+        height: 60,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 14),
           child: Row(

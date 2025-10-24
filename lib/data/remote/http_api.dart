@@ -21,13 +21,14 @@ class CallApi {
     uri = uri.replace(queryParameters: params);
 
     final token = LocalData.token;
-print(token);
-print(uri);
+    print("token: ${token}");
+    print(uri);
     Map<String, String> headers = {
       'Content-type': 'application/json',
       'Accept': 'application/json',
-      'Accept-Language':YsLocalizationsProvider.listenFalse(NavigationService.currentContext)
-            .languageCode,
+      'Accept-Language':
+          YsLocalizationsProvider.listenFalse(NavigationService.currentContext)
+              .languageCode,
       'Authorization': 'Bearer $token',
     };
 
@@ -39,7 +40,9 @@ print(uri);
       LocalData.changeIsLogin(false);
       AppRoutes.routeRemoveAllTo(
           NavigationService.currentContext, const LoginPage());
-    }else if(jsonDecode(response.body)['error'] != null && jsonDecode(response.body)['error'].contains('Your account is not active')){
+    } else if (jsonDecode(response.body)['error'] != null &&
+        jsonDecode(response.body)['error']
+            .contains('Your account is not active')) {
       // showSnackbar(jsonDecode(response.body)['error'], error: true);
       AppRoutes.routeRemoveAllTo(
           NavigationService.currentContext, const LoginPage());
@@ -49,15 +52,17 @@ print(uri);
   }
 
   static Future<http.Response> post(String url,
-      {data, bool isLogin = false, String? locale }) async {
+      {data, bool isLogin = false, String? locale}) async {
     var uri = Uri.parse(AppEndpoints.baseUrl + url);
 
     final token = LocalData.token;
+    print("token: ${token}");
     Map<String, String> headers = {
       'Content-type': 'application/json',
       'Accept': 'application/json',
-      'Accept-Language': locale??YsLocalizationsProvider.listenFalse(NavigationService.currentContext)
-            .languageCode,
+      'Accept-Language': locale ??
+          YsLocalizationsProvider.listenFalse(NavigationService.currentContext)
+              .languageCode,
       'Authorization': 'Bearer $token',
     };
 
@@ -70,8 +75,9 @@ print(uri);
       LocalData.changeIsLogin(false);
       AppRoutes.routeRemoveAllTo(
           NavigationService.currentContext, const LoginPage());
-    }
-    else if(jsonDecode(response.body)['error'] != null && jsonDecode(response.body)['error'].contains('Your account is not active')){
+    } else if (jsonDecode(response.body)['error'] != null &&
+        jsonDecode(response.body)['error']
+            .contains('Your account is not active')) {
       // showSnackbar(jsonDecode(response.body)['error'], error: true);
       AppRoutes.routeRemoveAllTo(
           NavigationService.currentContext, const LoginPage());
@@ -80,7 +86,7 @@ print(uri);
   }
 
   static Future<http.Response> postPay(String url,
-      {data, bool isLogin = false, Map<String, String>? params }) async {
+      {data, bool isLogin = false, Map<String, String>? params}) async {
     var uri = Uri.parse(AppEndpoints.paymentUrl + url);
     uri = uri.replace(queryParameters: params);
 
@@ -107,8 +113,9 @@ print(uri);
       'Content-type': 'application/json',
       'Accept': 'application/json',
       'Authorization': 'Bearer $token',
-      'Accept-Language': YsLocalizationsProvider.listenFalse(NavigationService.currentContext)
-          .languageCode,
+      'Accept-Language':
+          YsLocalizationsProvider.listenFalse(NavigationService.currentContext)
+              .languageCode,
     };
 
     var request = http.MultipartRequest('POST', uri);

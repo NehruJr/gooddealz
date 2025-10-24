@@ -46,15 +46,15 @@ class ProductWidget extends StatelessWidget {
           Container(
             height: 575,
             width: context.width,
-            padding: const EdgeInsetsDirectional.only(start: 12, end: 12, top: 12, bottom: 9),
+            padding: const EdgeInsetsDirectional.only(top: 12, bottom: 9),
             margin: 16.vEdge,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(52),
               color: AppColors.yWhiteColor,
               boxShadow: [
                 BoxShadow(
                   offset: const Offset(-2, 2),
-                  color: AppColors.yBlackColor.withOpacity(0.5),
+                  color: AppColors.yBlackColor.withOpacity(0.2),
                   blurRadius: 5,
                   spreadRadius: 0,
                 )
@@ -65,17 +65,20 @@ class ProductWidget extends StatelessWidget {
                 Align(
                   alignment: AlignmentDirectional.centerStart,
                   child: Padding(
-                    padding: const EdgeInsetsDirectional.only(start: 12),
+                    padding:
+                        const EdgeInsetsDirectional.only(start: 24, top: 4),
                     child: SalesProgress(
                       sold: productDetails.quantitySold ?? 0,
                       total: productDetails.quantity ?? 0,
                     ),
                   ),
                 ),
-                12.sSize,
+                4.sSize,
                 Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(40),
+
                     // boxShadow: [
                     //   BoxShadow(
                     //     offset: const Offset(-2, 2),
@@ -86,15 +89,18 @@ class ProductWidget extends StatelessWidget {
                     // ],
                   ),
                   clipBehavior: Clip.antiAlias,
-                  width: context.width - 60,
+                  width: context.width,
                   height: 250,
                   child: Stack(
                     alignment: AlignmentDirectional.bottomStart,
                     children: [
                       FancyShimmerImage(
+                        boxDecoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
                         imageUrl: productDetails.prize!.image!,
                         boxFit: BoxFit.fill,
-                        width: context.width - 60,
+                        width: context.width,
                         errorWidget: Image.asset(
                           getPngAsset('product'),
                           fit: BoxFit.cover,
@@ -102,6 +108,7 @@ class ProductWidget extends StatelessWidget {
                       ),
                       Container(
                         decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(40),
                           gradient: LinearGradient(
                             begin: Alignment.topCenter,
                             end: Alignment.bottomCenter,
@@ -115,19 +122,24 @@ class ProductWidget extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: 8.aEdge,
+                        padding: 12.aEdge,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ShaderMask(
                               shaderCallback: (bounds) => const LinearGradient(
-                                colors: [Color(0xFFFFD54F), Color(0xFFFF9800), Color(0xFFEF040D), Color(0xFFE91E63)],
+                                colors: [
+                                  Color(0xFFFFD54F),
+                                  Color(0xFFFF9800),
+                                  Color(0xFFEF040D),
+                                  Color(0xFFE91E63)
+                                ],
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
                               ).createShader(bounds),
                               child: Text(
-                                  'win'.tr,
+                                'win'.tr,
                                 style: const TextStyle(
                                   fontSize: 48,
                                   fontWeight: FontWeight.w900,
@@ -137,7 +149,7 @@ class ProductWidget extends StatelessWidget {
                               ),
                             ),
                             Text(
-                                productDetails.prize!.title!,
+                              productDetails.prize!.title!,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 2,
                               style: const TextStyle(
@@ -161,27 +173,29 @@ class ProductWidget extends StatelessWidget {
                           alignment: AlignmentDirectional.topEnd,
                           child: Consumer<ProductProvider>(
                               builder: (context, productProvider, _) {
-                                return productProvider.toggleLoader && productProvider.toggleId == productDetails.id
-                                    ? const SizedBox(
+                            return productProvider.toggleLoader &&
+                                    productProvider.toggleId ==
+                                        productDetails.id
+                                ? const SizedBox(
                                     width: 30,
                                     child: CircularProgressIndicator())
-                                    : InkWell(
-                                  onTap: () {
-                                    productProvider.toggleFavorite(
-                                        context, productDetails);
-                                  },
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    child: SvgPicture.asset(
-                                      productProvider
-                                          .isInFavorite(productDetails)
-                                          ? getSvgAsset('Heart')
-                                          : getSvgAsset('Heart-selected'),
-                                      height: 22,
+                                : InkWell(
+                                    onTap: () {
+                                      productProvider.toggleFavorite(
+                                          context, productDetails);
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.white,
+                                      child: SvgPicture.asset(
+                                        productProvider
+                                                .isInFavorite(productDetails)
+                                            ? getSvgAsset('Heart')
+                                            : getSvgAsset('Heart-selected'),
+                                        height: 22,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              }),
+                                  );
+                          }),
                         ),
                       )
                     ],
@@ -189,7 +203,8 @@ class ProductWidget extends StatelessWidget {
                 ),
                 8.sSize,
                 Padding(
-                  padding: const EdgeInsetsDirectional.only(start: 16.0, end: 4, top: 12.0, bottom: 12),
+                  padding: const EdgeInsetsDirectional.only(
+                      start: 16.0, end: 4, top: 12.0, bottom: 12),
                   child: Row(
                     children: [
                       Expanded(
@@ -197,12 +212,14 @@ class ProductWidget extends StatelessWidget {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           text: TextSpan(
-                            style: const TextStyle(color: AppColors.yBlackColor, fontSize: 20),
+                            style: const TextStyle(
+                                color: AppColors.yBlackColor, fontSize: 20),
                             children: [
                               TextSpan(text: "${'Buy'.tr}: "),
                               TextSpan(
                                 text: productDetails.title,
-                                style: const TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
                               TextSpan(
                                 text: " ${"for".tr} ",
@@ -210,7 +227,8 @@ class ProductWidget extends StatelessWidget {
                               TextSpan(
                                 text: "\$${productDetails.price}",
                                 style: const TextStyle(
-                                    color: AppColors.yPrimaryColor, fontWeight: FontWeight.bold),
+                                    color: AppColors.yPrimaryColor,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -220,12 +238,9 @@ class ProductWidget extends StatelessWidget {
                       Container(
                         padding: 6.aEdge,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: AppColors.yBlackColor,
-                            width: 0.5
-                          )
-                        ),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                                color: AppColors.yBlackColor, width: 0.5)),
                         child: Container(
                           width: 70,
                           height: 70,
@@ -251,50 +266,63 @@ class ProductWidget extends StatelessWidget {
                 isDone
                     ? 0.sSize
                     : Consumer<CartProvider>(
-                    builder: (context, cartProvider, _) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.only(top: 14),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ).copyWith(
-                            backgroundColor: MaterialStateProperty.all(Colors.transparent),
-                            shadowColor: MaterialStateProperty.all(Colors.transparent),
-                          ),
-                          onPressed: cartProvider.addProductLoader && cartProvider.addProductId == productDetails.id
-                              ? () {}
-                              : () {
-                            cartProvider.addProduct(context,
-                              prizeId: productDetails.prizeId!,
-                              productId: productDetails.id!,
-                            );
-                          },
-                          child: Ink(
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFFFFD54F), Color(0xFFFF9800), Color(0xFFEF040D), Color(0xFFE91E63)],
-                                begin: Alignment.centerRight,
-                                end: Alignment.centerLeft,
+                        builder: (context, cartProvider, _) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.only(top: 14),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              borderRadius: BorderRadius.circular(12),
+                            ).copyWith(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.transparent),
+                              shadowColor:
+                                  MaterialStateProperty.all(Colors.transparent),
                             ),
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 50,
-                              child: Text(
-                                cartProvider.addProductLoader && cartProvider.addProductId == productDetails.id
-                                    ? 'wait'.tr
-                                    : 'add_cart'.tr,
-                                style: const TextStyle(fontSize: 20, color: AppColors.yBGColor),
+                            onPressed: cartProvider.addProductLoader &&
+                                    cartProvider.addProductId ==
+                                        productDetails.id
+                                ? () {}
+                                : () {
+                                    cartProvider.addProduct(
+                                      context,
+                                      prizeId: productDetails.prizeId!,
+                                      productId: productDetails.id!,
+                                    );
+                                  },
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  colors: [
+                                    Color(0xFFFFD54F),
+                                    Color(0xFFFF9800),
+                                    Color(0xFFEF040D),
+                                    Color(0xFFE91E63)
+                                  ],
+                                  begin: Alignment.centerRight,
+                                  end: Alignment.centerLeft,
+                                ),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 50,
+                                child: Text(
+                                  cartProvider.addProductLoader &&
+                                          cartProvider.addProductId ==
+                                              productDetails.id
+                                      ? 'wait'.tr
+                                      : 'add_cart'.tr,
+                                  style: const TextStyle(
+                                      fontSize: 20, color: AppColors.yBGColor),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    }),
+                        );
+                      }),
                 Padding(
                   padding: const EdgeInsets.only(top: 16),
                   child: Center(
