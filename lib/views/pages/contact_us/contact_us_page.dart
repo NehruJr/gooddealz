@@ -138,9 +138,9 @@ class ContactItem {
 }
 
 List<ContactItem> contacts = [
-  ContactItem(image: 'Message2', text: 'Example @ gmail.com'),
-  ContactItem(image: 'Calling2', text: '+20 1032316164'),
-  ContactItem(image: 'whatsapp', text: '+20 1032316164'),
+  ContactItem(image: 'Message2', text: 'info@goodealz.net'),
+  ContactItem(image: 'Calling2', text: '+20 1500969600'),
+  ContactItem(image: 'whatsapp', text: '+20 1500979700'),
   ContactItem(
-      image: 'Location2', text: '1901 Thornridge Cir. Shiloh, Hawaii 81063'),
+      image: 'Location2', text: 'القاهره - مدينه نصر - شارع عباس العقاد الرئيسي بنايه 94 الطابق 2'),
 ];

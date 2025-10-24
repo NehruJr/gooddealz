@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:goodealz/core/constants/app_endpoints.dart';
@@ -403,8 +404,6 @@ class AuthProvider extends ChangeNotifier {
     context, {
     required String name,
     required String fullName,
-    // required String lastName,
-    // required String gender,
     required String email,
     required String phone,
     required String photoUrl,
@@ -423,7 +422,7 @@ class AuthProvider extends ChangeNotifier {
         'phone': phone,
         // 'gender': gender,
         'photoUrl': photoUrl,
-        'fcm_token': dToken
+        'fcm_token': dToken,
         // 'locale': 'en-GB',
       };
       final response = await CallApi.post(AppEndpoints.socialRegister,
@@ -480,6 +479,8 @@ class AuthProvider extends ChangeNotifier {
       signupLoader = true;
       notifyListeners();
 
+      String dToken = await MyNotification.getFcmToken();
+
       final response = await CallApi.post(AppEndpoints.register,
           data: jsonEncode({
             'full_name': fullName,
@@ -490,6 +491,7 @@ class AuthProvider extends ChangeNotifier {
             'phone': phone,
             'password': password,
             'password_confirmation': password,
+            'fcm_token': dToken
           }));
 
       if (response.statusCode == 200) {
@@ -1038,9 +1040,14 @@ class AuthProvider extends ChangeNotifier {
   }
 
   void changeCountryCode(String nationality) {
-    _countryCode = _nationalities
-        .firstWhere((element) => element.name == nationality)
-        .code;
+    final match = _nationalities.firstWhere(
+          (element) =>
+      element.name?.toLowerCase() == nationality.toLowerCase() ||
+          element.code == nationality,
+      orElse: () => _nationalities.first,
+    );
+
+    _countryCode = match.code;
     notifyListeners();
   }
 
