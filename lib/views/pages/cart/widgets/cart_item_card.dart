@@ -4,14 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:goodealz/core/constants/app_colors.dart';
 import 'package:goodealz/core/constants/enums.dart';
 import 'package:goodealz/core/helper/extensions/assetss_widgets.dart';
-import 'package:goodealz/core/helper/extensions/context_size.dart';
 import 'package:goodealz/core/helper/functions/show_snackbar.dart';
 import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
 import 'package:goodealz/core/ys_localizations/ys_localizations_provider.dart';
 import 'package:goodealz/providers/cart/cart_provider.dart';
 import 'package:goodealz/views/widgets/dialog/confirmation_dialog.dart';
 import 'package:goodealz/views/widgets/main_text.dart';
-
 import '../../../../core/helper/functions/get_asset.dart';
 import '../../../../data/models/cart/cart_model.dart';
 
@@ -27,281 +25,207 @@ class CartItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: context.width,
-      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: .08),
-            blurRadius: 16,
-            offset: const Offset(0, 4),
-          )
-        ],
-      ),
-      child: Consumer<CartProvider>(
-        builder: (context, cartProvider, _) {
-          final currency = cart.product?.currency ?? 'EGP';
-          final price = double.tryParse(cart.price ?? '0') ?? 0;
-          final totalPrice = price * (cart.quantity ?? 1);
+    return Consumer<CartProvider>(
+      builder: (context, cartProvider, _) {
+        final price = double.tryParse(cart.price ?? '0') ?? 0;
+        final isUpdating =
+            cartProvider.updateLoader && cartProvider.updateCartId == cart.id;
 
-          return Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 120,
-                          width: 120,
-                          decoration: BoxDecoration(
-                            color: AppColors.yLightGreyColor,
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(
-                              color: AppColors.yGreyColor.withValues(alpha: .1),
-                              width: 1,
-                            ),
-                          ),
-                          padding: const EdgeInsets.all(8),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: FancyShimmerImage(
-                              imageUrl: cart.product?.image ?? '',
-                              height: 120,
-                              width: 120,
-                              boxFit: BoxFit.cover,
-                              errorWidget: Image.asset(
-                                getPngAsset('product'),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-                        ),
-                        16.wSize,
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              MainText(
-                                cart.product?.title ?? '',
-                                color: AppColors.yBlackColor,
-                                fontSize: 16,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                fontWeight: FontWeight.w700,
-                              ),
-                              10.sSize,
-                              Row(
-                                children: [
-                                  MainText(
-                                    '${price.toStringAsFixed(2)}',
-                                    color: AppColors.yPrimaryColor,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w800,
-                                    textDirection: TextDirection.ltr,
-                                  ),
-                                  6.wSize,
-                                  MainText(
-                                    currency,
-                                    color: AppColors.yPrimaryColor,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    textDirection: TextDirection.ltr,
-                                  ),
-                                ],
-                              ),
-                              12.sSize,
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppColors.yPrimaryColor
-                                      .withValues(alpha: 0.1),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: MainText(
-                                  '${'total'.tr}: ${totalPrice.toStringAsFixed(2)} $currency',
-                                  color: AppColors.yPrimaryColor,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  textDirection: TextDirection.ltr,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    20.sSize,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          height: 44,
-                          decoration: BoxDecoration(
-                            color: AppColors.yLightGreyColor,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  onTap: cartProvider.updateLoader
-                                      ? null
-                                      : () {
-                                          if (cart.quantity! > 1) {
-                                            cartProvider.updateCartQuantity(
-                                              context,
-                                              index: index,
-                                              cart: cart,
-                                              updateType: UpdateType.minus,
-                                            );
-                                          } else {
-                                            showSnackbar(
-                                              'quantity_less_1'.tr,
-                                              error: true,
-                                            );
-                                          }
-                                        },
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Container(
-                                    width: 44,
-                                    height: 44,
-                                    decoration: BoxDecoration(
-                                      color: cartProvider.updateType ==
-                                                  UpdateType.minus &&
-                                              cartProvider.updateLoader &&
-                                              cartProvider.updateCartId ==
-                                                  cart.id
-                                          ? AppColors.yGreyColor
-                                              .withOpacity(0.2)
-                                          : Colors.transparent,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: Icon(
-                                      Icons.remove_rounded,
-                                      size: 22,
-                                      color: cart.quantity! > 1
-                                          ? AppColors.yPrimaryColor
-                                          : AppColors.yGreyColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                constraints: const BoxConstraints(minWidth: 50),
-                                alignment: Alignment.center,
-                                child: MainText(
-                                  '${cart.quantity}',
-                                  color: AppColors.yBlackColor,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                              Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  onTap: cartProvider.updateLoader
-                                      ? null
-                                      : () {
-                                          if (cart.quantity! <
-                                              (cart.product!.quantity! -
-                                                  cart.product!
-                                                      .quantitySold!)) {
-                                            cartProvider.updateCartQuantity(
-                                              context,
-                                              index: index,
-                                              cart: cart,
-                                              updateType: UpdateType.plus,
-                                            );
-                                          } else {
-                                            showSnackbar(
-                                              'no_quantity'.tr,
-                                              error: true,
-                                            );
-                                          }
-                                        },
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: Container(
-                                    width: 44,
-                                    height: 44,
-                                    decoration: BoxDecoration(
-                                      color: cartProvider.updateType ==
-                                                  UpdateType.plus &&
-                                              cartProvider.updateLoader &&
-                                              cartProvider.updateCartId ==
-                                                  cart.id
-                                          ? AppColors.yGreyColor
-                                              .withValues(alpha: .2)
-                                          : Colors.transparent,
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    child: const Icon(
-                                      Icons.add_rounded,
-                                      size: 22,
-                                      color: AppColors.yPrimaryColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => ConfirmationDialog(
-                                  icon: 'black_logo',
-                                  description: 'delete_question'.tr,
-                                  onYesPressed: () =>
-                                      cartProvider.deleteCart(
-                                    context,
-                                    cartId: cart.id!,
-                                    index: index,
-                                  ),
-                                ),
-                              );
-                            },
-                            borderRadius: BorderRadius.circular(12),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 10,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.red.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Icon(
-                                CupertinoIcons.trash,
-                                color: Colors.red.withValues(alpha: 0.7),
-                                size: 22,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+        return Container(
+          margin: const EdgeInsets.only(bottom: 16),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                blurRadius: 12,
+                offset: const Offset(0, 3),
               ),
             ],
-          );
-        },
-      ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 200,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: AppColors.yLightGreyColor,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: FancyShimmerImage(
+                    imageUrl: cart.product?.image ?? '',
+                    height: 200,
+                    width: double.infinity,
+                    boxFit: BoxFit.cover,
+                    errorWidget: Image.asset(
+                      getPngAsset('product'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+              16.sSize,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 60,
+                    width: 60,
+                    decoration: BoxDecoration(
+                      color: AppColors.yLightGreyColor,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: FancyShimmerImage(
+                        imageUrl: cart.product?.image ?? '',
+                        height: 60,
+                        width: 60,
+                        boxFit: BoxFit.cover,
+                        errorWidget: Image.asset(
+                          getPngAsset('product'),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                  12.wSize,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        MainText(
+                          cart.product?.title ?? '',
+                          color: AppColors.yBlackColor,
+                          fontSize: 16,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        8.sSize,
+                        MainText(
+                          '\$${price.toStringAsFixed(2)}',
+                          color: AppColors.yPrimaryColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          textDirection: TextDirection.ltr,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        GestureDetector(
+                          onTap: cartProvider.updateLoader
+                              ? null
+                              : () {
+                                  if (cart.quantity! <
+                                      (cart.product!.quantity! -
+                                          cart.product!.quantitySold!)) {
+                                    cartProvider.updateCartQuantity(
+                                      context,
+                                      index: index,
+                                      cart: cart,
+                                      updateType: UpdateType.plus,
+                                    );
+                                  } else {
+                                    showSnackbar(
+                                      'no_quantity'.tr,
+                                      error: true,
+                                    );
+                                  }
+                                },
+                          child: Container(
+                            width: 28,
+                            height: 28,
+                            decoration: const BoxDecoration(
+                              color: AppColors.yPrimaryColor,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.add,
+                              size: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: isUpdating
+                              ? Padding(
+                                  padding: 6.vEdge,
+                                  child: const SizedBox(
+                                    width: 16,
+                                    height: 16,
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        AppColors.yPrimaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : MainText(
+                                  '${cart.quantity}',
+                                  color: AppColors.yBlackColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                        ),
+                        GestureDetector(
+                          onTap: cartProvider.updateLoader
+                              ? null
+                              : () {
+                                  if (cart.quantity! > 1) {
+                                    cartProvider.updateCartQuantity(
+                                      context,
+                                      index: index,
+                                      cart: cart,
+                                      updateType: UpdateType.minus,
+                                    );
+                                  } else {
+                                    showSnackbar(
+                                      'quantity_less_1'.tr,
+                                      error: true,
+                                    );
+                                  }
+                                },
+                          child: Container(
+                            width: 28,
+                            height: 28,
+                            decoration: BoxDecoration(
+                              color: cart.quantity! > 1
+                                  ? AppColors.yGreyColor
+                                  : AppColors.yGreyColor.withOpacity(0.5),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.remove,
+                              size: 18,
+                              color: cart.quantity! > 1
+                                  ? AppColors.yBlackColor
+                                  : AppColors.yGreyColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
