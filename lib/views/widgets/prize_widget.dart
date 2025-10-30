@@ -55,11 +55,11 @@ class PrizeWidget extends StatelessWidget {
                 child: FancyShimmerImage(
                   imageUrl: prize.image ?? '',
                   // height: 240,
-                  // width: context.width - 32,
+                  width: context.width - 32,
                   boxFit: BoxFit.fill,
                   errorWidget: Image.asset(
                     getPngAsset('product'),
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                   ),
                 ),
               ),

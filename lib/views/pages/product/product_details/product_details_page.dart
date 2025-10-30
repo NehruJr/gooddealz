@@ -337,6 +337,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
+                        flex: 3,
                         child: MainText(
                           widget.productDetails.title ?? '',
                           maxLines: 3,
@@ -347,53 +348,58 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         ),
                       ),
                       const SizedBox(width: 12),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 8,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.yPrimaryColor
-                            ..withValues(alpha: 0.1),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color:
-                                AppColors.yPrimaryColor.withValues(alpha: 0.3),
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
                           ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Row(
-                              children: [
-                                MainText(
-                                  YsLocalizationsProvider.listenFalse(
-                                                  NavigationService
-                                                      .currentContext)
-                                              .languageCode ==
-                                          'en'
-                                      ? widget.productDetails.price ?? ''
-                                      : widget.productDetails.currency ?? '',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.yWhiteColor,
-                                ),
-                                const SizedBox(width: 4),
-                                MainText(
-                                  YsLocalizationsProvider.listenFalse(
-                                                  NavigationService
-                                                      .currentContext)
-                                              .languageCode ==
-                                          'en'
-                                      ? widget.productDetails.currency ?? ''
-                                      : widget.productDetails.price ?? '',
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black,
-                                ),
-                              ],
+                          decoration: BoxDecoration(
+                            color: AppColors.yPrimaryColor
+                              ..withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color:
+                                  AppColors.yPrimaryColor.withValues(alpha: 0.3),
                             ),
-                          ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              FittedBox(
+                                child: Row(
+                                  children: [
+                                    MainText(
+                                      YsLocalizationsProvider.listenFalse(
+                                                      NavigationService
+                                                          .currentContext)
+                                                  .languageCode ==
+                                              'en'
+                                          ? widget.productDetails.price ?? ''
+                                          : widget.productDetails.currency ?? '',
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.yWhiteColor,
+                                    ),
+                                    const SizedBox(width: 4),
+                                    MainText(
+                                      YsLocalizationsProvider.listenFalse(
+                                                      NavigationService
+                                                          .currentContext)
+                                                  .languageCode ==
+                                              'en'
+                                          ? widget.productDetails.currency ?? ''
+                                          : widget.productDetails.price ?? '',
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
