@@ -278,34 +278,39 @@ class _CartPageState extends State<CartPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                cartProvider.updateLoader
-                                    ? const SizedBox(
-                                        height: 24,
-                                        width: 24,
-                                        child: Center(
-                                          child: CircularProgressIndicator(
-                                            color: AppColors.yPrimaryColor,
+                            Expanded(
+                              flex: 3,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  cartProvider.updateLoader
+                                      ? const SizedBox(
+                                          height: 24,
+                                          width: 24,
+                                          child: Center(
+                                            child: CircularProgressIndicator(
+                                              color: AppColors.yPrimaryColor,
+                                            ),
                                           ),
-                                        ),
-                                      )
-                                    : MainText(
-                                        '${"total".tr}: \$${cartProvider.totalPrice.toStringAsFixed(2)}',
-                                        fontSize: 20,
-                                        color: AppColors.yBlackColor,
-                                        fontWeight: FontWeight.w700,
-                                        textDirection: TextDirection.ltr,
+                                        )
+                                      : FittedBox(
+                                        child: MainText(
+                                            '${"total".tr}: \$${cartProvider.totalPrice.toStringAsFixed(2)}',
+                                            fontSize: 20,
+                                            color: AppColors.yBlackColor,
+                                            fontWeight: FontWeight.w700,
+                                            textDirection: TextDirection.ltr,
+                                          ),
                                       ),
-                                4.sSize,
-                                MainText(
-                                  '${"tickets".tr}: ${cartProvider.carts.length}',
-                                  fontSize: 14,
-                                  color: AppColors.yGreyColor,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ],
+                                  4.sSize,
+                                  MainText(
+                                    '${"tickets".tr}: ${cartProvider.carts.length}',
+                                    fontSize: 14,
+                                    color: AppColors.yGreyColor,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ],
+                              ),
                             ),
                             Container(
                               height: 60,

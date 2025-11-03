@@ -31,7 +31,7 @@ class SignupPage extends StatefulWidget {
 
 class _SignupPageState extends State<SignupPage> {
   final _fullNameController = TextEditingController();
-  // final _lastNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -77,6 +77,20 @@ class _SignupPageState extends State<SignupPage> {
                       prefixIcon: const RoundedSquare(icon: 'Profile'),
                       validator: (value) =>
                       !(value ?? '').isValidName ? 'enter_first_name'.tr : null,
+                    ),
+                    12.sSize,
+                    MainTextField(
+                      hint: 'last_name'.tr,
+                      unfocusWhenTapOutside: true,
+                      controller: _lastNameController,
+                      prefixIcon: const RoundedSquare(icon: 'Profile'),
+                      validator: (value) {
+                        if (!(value ?? '').isValidName) {
+                          return 'enter_last_name'.tr;
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
                     12.sSize,
                     MainTextField(
@@ -178,7 +192,7 @@ class _SignupPageState extends State<SignupPage> {
                               }
                               authProvider.signup(context,
                                   fullName: _fullNameController.text,
-                                  // lastName: _lastNameController.text,
+                                  lastName: _lastNameController.text,
                                   email: _emailController.text,
                                   // gender: "male",
                                   nationality: widget.nationality,
