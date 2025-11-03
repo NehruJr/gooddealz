@@ -468,7 +468,7 @@ class AuthProvider extends ChangeNotifier {
   Future<void> signup(
     context, {
     required String fullName,
-    // required String lastName,
+    required String lastName,
     required String email,
     required String phone,
     // required String gender,
@@ -483,7 +483,7 @@ class AuthProvider extends ChangeNotifier {
 
       final response = await CallApi.post(AppEndpoints.register,
           data: jsonEncode({
-            'full_name': fullName,
+            'full_name': '$fullName $lastName',
             // 'last_name': lastName,
             'email': email,
             // 'gender': gender,
@@ -531,7 +531,7 @@ class AuthProvider extends ChangeNotifier {
 
   Future<void> updateProfile(context,
       {required String? fullName,
-      // required String? lastName,
+      required String? lastName,
       required String? email,
       required File? avatar,
       required String? phone,
@@ -545,8 +545,8 @@ class AuthProvider extends ChangeNotifier {
           fileName: 'avatar',
           file: avatar,
           data: {
-            if (fullName != null) 'full_name': fullName,
-            // if (lastName != null) 'last_name': lastName,
+            if (fullName != null || lastName != null) 'full_name': '$fullName $lastName',
+            if (lastName != null) 'last_name': lastName,
             if (email != null) 'email': email,
             if (phone != null) 'phone': phone,
             if (password != null) 'password': password,

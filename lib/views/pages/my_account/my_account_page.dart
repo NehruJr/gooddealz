@@ -32,7 +32,7 @@ class MyAccountPage extends StatefulWidget {
 
 class _MyAccountPageState extends State<MyAccountPage> {
   final _nameController = TextEditingController();
-  // final _lastNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -53,8 +53,10 @@ class _MyAccountPageState extends State<MyAccountPage> {
     super.initState();
     user = Provider.of<AuthProvider>(context, listen: false).currentUser;
 
-    _nameController.text = user!.fullName ?? '';
-    // _lastNameController.text = user!.lastName ?? '';
+    List<String> parts = user!.fullName!.trim().split(" ");
+
+    _nameController.text = parts.isNotEmpty ? parts.first : "";
+    _lastNameController.text = parts.length > 1 ? parts.sublist(1).join(" ") : "";
     _emailController.text = user!.email ?? '';
     // _phoneController.text =user?.phone != null && user!.phone!.contains('+') ? user!.phone!.substring(2) : user!.phone ?? '';
 
@@ -151,6 +153,27 @@ class _MyAccountPageState extends State<MyAccountPage> {
                     ),
                     16.sSize,
                     MainTextField(
+                      hint: 'last_name'.tr,
+                      unfocusWhenTapOutside: true,
+                      controller: _lastNameController,
+                      prefixIcon: Padding(
+                        padding: 12.aEdge,
+                        child: SvgPicture.asset(getSvgAsset('Profile_p'), colorFilter: const ColorFilter.mode(AppColors.yDarkColor, BlendMode.srcIn),),
+                      ),
+                      suffixIcon: Padding(
+                        padding: 10.aEdge,
+                        child: SvgPicture.asset(getSvgAsset('Edit Square2'), colorFilter: const ColorFilter.mode(AppColors.yDarkColor, BlendMode.srcIn),),
+                      ),
+                      validator: (value) {
+                        if (!(value ?? '').isValidName) {
+                          return '';
+                        } else {
+                          return null;
+                        }
+                      },
+                    ),
+                    16.sSize,
+                    MainTextField(
                       hint: 'email'.tr,
                       unfocusWhenTapOutside: true,
                       controller: _emailController,
@@ -213,9 +236,9 @@ class _MyAccountPageState extends State<MyAccountPage> {
                   String? fullName = _nameController.text.isEmpty
                       ? null
                       : _nameController.text.trim();
-                  // String? lastName = _lastNameController.text.isEmpty
-                  //     ? null
-                  //     : _lastNameController.text.trim();
+                  String? lastName = _lastNameController.text.isEmpty
+                      ? null
+                      : _lastNameController.text.trim();
                   String? email = _emailController.text.isEmpty
                       ? null
                       : _emailController.text.trim();
@@ -235,7 +258,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                             onYesPressed:()=>
                                 authProvider.updateProfile(context,
                                     fullName: fullName,
-                                    // lastName: lastName,
+                                    lastName: lastName,
                                     email: email,
                                     avatar: _imageFile,
                                     phone: getPhoneNumber,
@@ -253,7 +276,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                             onYesPressed:()=>
                                 authProvider.updateProfile(context,
                                     fullName: fullName,
-                                    // lastName: lastName,
+                                    lastName: lastName,
                                     email: email,
                                     avatar: _imageFile,
                                     phone: getPhoneNumber,
@@ -271,7 +294,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                             onYesPressed:()=>
                                 authProvider.updateProfile(context,
                                     fullName: fullName,
-                                    // lastName: lastName,
+                                    lastName: lastName,
                                     email: email,
                                     avatar: _imageFile,
                                     phone: phone,
@@ -283,7 +306,7 @@ class _MyAccountPageState extends State<MyAccountPage> {
                   else {
                     authProvider.updateProfile(context,
                         fullName: fullName,
-                        // lastName: lastName,
+                        lastName: lastName,
                         email: email,
                         avatar: _imageFile,
                         phone: getPhoneNumber,
