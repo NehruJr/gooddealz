@@ -15,6 +15,7 @@ class AppEndpoints{
   static String resetPassword = '/api/reset-password';
   static String checkVerificationCode = '/api/check-reset-password-code';
   static String getProfile = '/api/profile';
+  static String getIntroLink = '/api/get_intro_video';
   static String updateProfile = '/api/update_profile';
   static String socialLogin = '/api/social/login';
   static String socialRegister = '/api/social/register';

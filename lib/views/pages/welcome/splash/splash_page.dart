@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -12,6 +13,9 @@ import 'package:goodealz/views/pages/welcome/onboarding/onboarding_page.dart';
 import 'package:goodealz/views/widgets/main_page.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
+import '../../../../core/constants/app_endpoints.dart';
+import '../../../../core/helper/functions/show_snackbar.dart';
+import '../../../../data/remote/http_api.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -21,27 +25,58 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  late VideoPlayerController _controller;
+  VideoPlayerController? _controller;
   bool _isFadingOut = false;
+  bool introLoader = false;
+  String introVideoLink = '';
+
+  Future<void> getIntroVideoLink(context) async {
+    setState(() {
+      introLoader = true;
+    });
+
+    final response = await CallApi.get(AppEndpoints.getIntroLink);
+
+    if (response.statusCode == 200) {
+      final jsonRes = jsonDecode(response.body);
+      introVideoLink = jsonRes['data']['intro_video']['url'];
+      setState(() {
+        introLoader = false;
+      });
+    } else {
+      setState(() {
+        introLoader = false;
+      });
+      final error = jsonDecode(response.body)['message'] ??
+          jsonDecode(response.body)['error'] ??
+          'An error occurred';
+      showSnackbar(error, error: true);
+    }
+  }
+
+  void startIntroVideo() async {
+    await getIntroVideoLink(context);
+    if (!mounted || introVideoLink.isEmpty) return;
+
+    _controller = VideoPlayerController.networkUrl(Uri.parse(introVideoLink))
+      ..initialize().then((_) {
+        if (!mounted) return;
+        setState(() {});
+        _controller?.play();
+      });
+
+    _controller?.addListener(() {
+      if (_controller!.value.isInitialized &&
+          _controller!.value.position >= _controller!.value.duration) {
+        _navigateNext();
+      }
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-
-    _controller = VideoPlayerController.networkUrl(
-      Uri.parse('https://drive.google.com/uc?export=download&id=18x7emeduv0jIMv-zD6cYjgf2gwOcaD9b'),
-    )
-      ..initialize().then((_) {
-        setState(() {});
-        _controller.play();
-      });
-
-    _controller.addListener(() {
-      if (_controller.value.position >= _controller.value.duration &&
-          _controller.value.isInitialized) {
-        _navigateNext();
-      }
-    });
+    startIntroVideo();
   }
 
   void _navigateNext() {
@@ -62,31 +97,35 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final controller = _controller;
+
     return Scaffold(
-      body: _controller.value.isInitialized
+      body: introLoader
+          ? const Center(child: CircularProgressIndicator())
+          : (controller != null && controller.value.isInitialized)
           ? SizedBox.expand(
         child: InkWell(
-          onTap: () async{
-            if (_controller.value.isPlaying) {
+          onTap: () async {
+            if (controller.value.isPlaying) {
               setState(() => _isFadingOut = true);
-              await _controller.setVolume(0);
+              await controller.setVolume(0);
               await Future.delayed(const Duration(milliseconds: 250));
-              await _controller.pause();
+              await controller.pause();
             }
             _navigateNext();
           },
           child: FittedBox(
             fit: BoxFit.fill,
             child: SizedBox(
-              width: _controller.value.size.width,
-              height: _controller.value.size.height,
-              child: VideoPlayer(_controller),
+              width: controller.value.size.width,
+              height: controller.value.size.height,
+              child: VideoPlayer(controller),
             ),
           ),
         ),

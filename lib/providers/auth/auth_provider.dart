@@ -1057,4 +1057,6 @@ class AuthProvider extends ChangeNotifier {
     _rememberMe = val ?? false;
     notifyListeners();
   }
+
+
 }
