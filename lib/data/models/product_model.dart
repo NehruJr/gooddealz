@@ -1,4 +1,5 @@
 import 'package:goodealz/core/constants/app_endpoints.dart';
+import 'package:goodealz/views/widgets/carousal_widget.dart';
 
 import 'tags_model.dart';
 
@@ -94,36 +95,39 @@ class ProductDetails {
   int? prizeId;
   int? quantityInOrder;
   ProductPrize? prize;
-  List<String>? productImages;
+  List<MediaItem>? productImages;
 
-
-  ProductDetails(
-      {this.id,
-        this.title,
-        this.description,
-        this.price,
-        this.currency,
-        this.image,
-        this.salesPercentage,
-        this.withdrawalStartTime,
-        this.withdrawalStartHours,
-        this.withdrawalStartDays,
-        this.prizeId,
-        this.quantity,
-        this.quantitySold,
-        this.prize,
-        this.quantityInOrder,
-        this.productImages,
-
-      });
+  ProductDetails({
+    this.id,
+    this.title,
+    this.description,
+    this.price,
+    this.currency,
+    this.image,
+    this.salesPercentage,
+    this.withdrawalStartTime,
+    this.withdrawalStartHours,
+    this.withdrawalStartDays,
+    this.prizeId,
+    this.quantity,
+    this.quantitySold,
+    this.prize,
+    this.quantityInOrder,
+    this.productImages,
+  });
 
   ProductDetails.fromJson(Map<String, dynamic> json) {
+    print(
+      "logg ${json['product_images']}",
+    );
     id = json['id'];
     title = json['title'];
     description = json['description'];
     price = json['price'];
     currency = json['currency'];
-    image = json['image'] == null ? null : '${AppEndpoints.baseUrl}/' + json['image'];
+    image = json['image'] == null
+        ? null
+        : '${AppEndpoints.baseUrl}/' + json['image'];
     salesPercentage = json['sales_percentage'];
     withdrawalStartTime = json['withdrawal_start_time'];
     withdrawalStartHours = json['withdrawal_start_hours'];
@@ -133,8 +137,22 @@ class ProductDetails {
     prizeId = json['prize_id'];
     quantityInOrder = json['quantity_in_order'];
     prize = json['prize'] != null ? ProductPrize.fromJson(json['prize']) : null;
-    productImages = json['product_images']?.map<String>((e)=> '${AppEndpoints.baseUrl}/Attachments/' + e['image']).toList();
-
+    productImages = [];
+    if (json['product_images'] != null) {
+      productImages = (json['product_images'] as List)
+          .map((item) => MediaItem(
+                url: item['url'] ?? '',
+                isVideo: item['is_video'] == true,
+                thumbnailUrl: item['thumbnail_url'],
+              ))
+          .toList();
+      productImages!.add(MediaItem(
+        url: "https://www.w3schools.com/tags/mov_bbb.mp4",
+        isVideo: true,
+        thumbnailUrl:
+            "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/WhatCarCanYouGetForAGrand.jpg",
+      ));
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -160,11 +178,12 @@ class ProductDetails {
     return data;
   }
 
-
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is ProductDetails && runtimeType == other.runtimeType && id == other.id;
+      other is ProductDetails &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
 
   @override
   int get hashCode => id.hashCode;
@@ -181,25 +200,29 @@ class ProductPrize {
   ProductWinner? winner;
   List<Tags>? tags;
 
-  ProductPrize(
-      {this.id,
-        this.slug,
-        this.title,
-        this.description,
-        this.image,
-        this.cover,
-        this.coverText,
-        this.tags,
-        this.winner,
-      });
+  ProductPrize({
+    this.id,
+    this.slug,
+    this.title,
+    this.description,
+    this.image,
+    this.cover,
+    this.coverText,
+    this.tags,
+    this.winner,
+  });
 
   ProductPrize.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     slug = json['slug'];
     title = json['title'];
     description = json['description'];
-    image = json['image'] == null ? null : '${AppEndpoints.baseUrl}/' + json['image'];
-    cover = json['cover'] == null ? null : '${AppEndpoints.baseUrl}/' + json['cover'];
+    image = json['image'] == null
+        ? null
+        : '${AppEndpoints.baseUrl}/' + json['image'];
+    cover = json['cover'] == null
+        ? null
+        : '${AppEndpoints.baseUrl}/' + json['cover'];
     coverText = json['cover_text'];
     if (json['tags'] != null) {
       tags = <Tags>[];
@@ -207,7 +230,8 @@ class ProductPrize {
         tags!.add(Tags.fromJson(v));
       });
     }
-    winner = json['winner'] != null ? ProductWinner.fromJson(json['winner']) : null;
+    winner =
+        json['winner'] != null ? ProductWinner.fromJson(json['winner']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -244,16 +268,16 @@ class ProductWinner {
 
   ProductWinner(
       {this.id,
-        this.firstName,
-        this.lastName,
-        this.email,
-        this.phone,
-        this.gender,
-        this.avatar,
-        this.birthDate,
-        this.nationality,
-        this.lastLoginAt,
-        this.couponsCount});
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.phone,
+      this.gender,
+      this.avatar,
+      this.birthDate,
+      this.nationality,
+      this.lastLoginAt,
+      this.couponsCount});
 
   ProductWinner.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -286,7 +310,6 @@ class ProductWinner {
   }
 }
 
-
 class Meta {
   int? currentPage;
   int? from;
@@ -298,12 +321,12 @@ class Meta {
 
   Meta(
       {this.currentPage,
-        this.from,
-        this.lastPage,
-        this.path,
-        this.perPage,
-        this.to,
-        this.total});
+      this.from,
+      this.lastPage,
+      this.path,
+      this.perPage,
+      this.to,
+      this.total});
 
   Meta.fromJson(Map<String, dynamic> json) {
     currentPage = json['current_page'];
