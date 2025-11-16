@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Banner;
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:goodealz/core/constants/app_routes.dart';
 import 'package:goodealz/core/helper/extensions/assetss_widgets.dart';
 import 'package:goodealz/core/helper/functions/get_asset.dart';
 import 'package:goodealz/core/helper/functions/show_snackbar.dart';
 import 'package:goodealz/core/ys_localizations/ys_localizations.dart';
+import 'package:goodealz/data/models/banner_model.dart';
 import 'package:goodealz/providers/auth/auth_provider.dart';
 import 'package:goodealz/providers/conectivity_provider.dart';
 import 'package:goodealz/providers/product/product_provider.dart';
@@ -172,16 +173,12 @@ class _HomePageState extends State<HomePage> {
                             bannerModels: settingsProvider.bannerModel != null
                                 ? [
                                     settingsProvider.bannerModel!,
-                                    settingsProvider.bannerModel!,
-                                    settingsProvider.bannerModel!,
-                                    settingsProvider.bannerModel!,
                                   ]
                                 : [],
                             textPosition: TextPosition.topLeft,
                             autoPlay: true,
                             autoPlayInterval: const Duration(seconds: 5),
                             // indicatorStyle: IndicatorStyle.circle,
-                           
                           );
                   },
                 ),

@@ -7,6 +7,7 @@ import 'package:goodealz/core/helper/extensions/assetss_widgets.dart';
 import 'package:goodealz/core/helper/functions/get_asset.dart';
 import 'package:goodealz/data/models/banner_model.dart';
 import 'package:goodealz/views/widgets/main_text.dart';
+import 'package:video_player/video_player.dart';
 
 enum TextPosition {
   topLeft,
@@ -18,6 +19,29 @@ enum TextPosition {
   bottomLeft,
   bottomCenter,
   bottomRight,
+}
+
+enum IndicatorStyle {
+  dotted,
+  line,
+  circle,
+  number,
+}
+
+class BannerMediaItem {
+  final String url;
+  final bool isVideo;
+  final String? thumbnailUrl;
+  final String? text;
+  final String? backgroundImage;
+
+  BannerMediaItem({
+    required this.url,
+    required this.isVideo,
+    this.thumbnailUrl,
+    this.text,
+    this.backgroundImage,
+  });
 }
 
 class BannerWidget extends StatefulWidget {
@@ -52,34 +76,94 @@ class BannerWidget extends StatefulWidget {
   State<BannerWidget> createState() => _BannerWidgetState();
 }
 
-enum IndicatorStyle {
-  dotted,
-  line,
-  circle,
-  number,
-}
-
 class _BannerWidgetState extends State<BannerWidget> {
   late PageController _pageController;
   int currentIndex = 0;
   Timer? _autoPlayTimer;
   bool _isUserSwiping = false;
   double _dragDistance = 0.0;
+  final Map<int, VideoPlayerController> _videoControllers = {};
+  final List<BannerMediaItem> _bannerMedia = [];
 
   @override
   void initState() {
     super.initState();
+    _initializeBannerMedia();
     _pageController = PageController(viewportFraction: widget.viewportFraction);
-    if (widget.autoPlay && widget.bannerModels.isNotEmpty) {
+    _initializeVideoControllers();
+    if (widget.autoPlay && _bannerMedia.isNotEmpty) {
       _startAutoPlay();
+    }
+  }
+
+  void _initializeBannerMedia() {
+    // Convert banner models to media items
+    for (var banner in widget.bannerModels) {
+      final bannerData = banner.data?.banner;
+      if (bannerData != null) {
+        final isVideo = bannerData.isVideo ?? false;
+        _bannerMedia.add(BannerMediaItem(
+          url: isVideo 
+              ? (bannerData.mainSliderVideo ?? '') 
+              : (bannerData.mainSliderImage ?? ''),
+          isVideo: isVideo,
+          text: bannerData.mainSliderText,
+          backgroundImage: bannerData.mainSliderBackgroundImage,
+          thumbnailUrl: bannerData.videoThumbnail,
+        ));
+      }
+    }
+
+    // Add test video (you can remove this in production)
+    _bannerMedia.add(BannerMediaItem(
+      url: 'https://www.w3schools.com/tags/mov_bbb.mp4',
+      isVideo: true,
+      text: 'Sample Video Banner',
+      thumbnailUrl: null,
+    ));
+  }
+
+  void _initializeVideoControllers() {
+    for (int i = 0; i < _bannerMedia.length; i++) {
+      if (_bannerMedia[i].isVideo) {
+        try {
+          final controller = VideoPlayerController.networkUrl(
+            Uri.parse(_bannerMedia[i].url),
+            videoPlayerOptions: VideoPlayerOptions(
+              mixWithOthers: true,
+              allowBackgroundPlayback: false,
+            ),
+          );
+          _videoControllers[i] = controller;
+
+          controller.setLooping(true);
+          controller.setVolume(0); // Mute banner videos
+
+          controller.initialize().then((_) {
+            if (mounted && i == currentIndex) {
+              setState(() {});
+              controller.play();
+            }
+          }).catchError((error) {
+            print('Error initializing banner video at index $i: $error');
+            if (mounted) {
+              setState(() {
+                _videoControllers.remove(i);
+              });
+            }
+          });
+        } catch (e) {
+          print('Error creating banner video controller at index $i: $e');
+        }
+      }
     }
   }
 
   void _startAutoPlay() {
     _autoPlayTimer?.cancel();
     _autoPlayTimer = Timer.periodic(widget.autoPlayInterval, (timer) {
-      if (mounted && widget.bannerModels.isNotEmpty && !_isUserSwiping) {
-        final nextPage = (currentIndex + 1) % widget.bannerModels.length;
+      if (mounted && _bannerMedia.isNotEmpty && !_isUserSwiping) {
+        final nextPage = (currentIndex + 1) % _bannerMedia.length;
         _pageController.animateToPage(
           nextPage,
           duration: const Duration(milliseconds: 500),
@@ -94,14 +178,24 @@ class _BannerWidgetState extends State<BannerWidget> {
   }
 
   void _restartAutoPlay() {
-    if (widget.autoPlay && widget.bannerModels.isNotEmpty) {
+    if (widget.autoPlay && _bannerMedia.isNotEmpty) {
       _startAutoPlay();
     }
   }
 
   void _onPageChanged(int index) {
     setState(() {
+      // Pause previous video
+      if (_videoControllers.containsKey(currentIndex)) {
+        _videoControllers[currentIndex]?.pause();
+      }
+
       currentIndex = index;
+
+      // Play current video
+      if (_videoControllers.containsKey(index)) {
+        _videoControllers[index]?.play();
+      }
     });
     _restartAutoPlay();
   }
@@ -137,9 +231,9 @@ class _BannerWidgetState extends State<BannerWidget> {
   }
 
   void _goToNextPage() {
-    if (widget.bannerModels.isEmpty) return;
+    if (_bannerMedia.isEmpty) return;
 
-    final nextIndex = (currentIndex + 1) % widget.bannerModels.length;
+    final nextIndex = (currentIndex + 1) % _bannerMedia.length;
     _pageController.animateToPage(
       nextIndex,
       duration: const Duration(milliseconds: 300),
@@ -148,11 +242,11 @@ class _BannerWidgetState extends State<BannerWidget> {
   }
 
   void _goToPreviousPage() {
-    if (widget.bannerModels.isEmpty) return;
+    if (_bannerMedia.isEmpty) return;
 
-    final previousIndex = (currentIndex - 1) % widget.bannerModels.length;
+    final previousIndex = (currentIndex - 1) % _bannerMedia.length;
     _pageController.animateToPage(
-      previousIndex >= 0 ? previousIndex : widget.bannerModels.length - 1,
+      previousIndex >= 0 ? previousIndex : _bannerMedia.length - 1,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
@@ -160,7 +254,7 @@ class _BannerWidgetState extends State<BannerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.bannerModels.isEmpty) {
+    if (_bannerMedia.isEmpty) {
       return _buildPlaceholder();
     }
 
@@ -190,21 +284,39 @@ class _BannerWidgetState extends State<BannerWidget> {
                 PageView.builder(
                   controller: _pageController,
                   onPageChanged: _onPageChanged,
-                  itemCount: widget.bannerModels.length,
+                  itemCount: _bannerMedia.length,
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) {
-                    final bannerModel = widget.bannerModels[index];
+                    final mediaItem = _bannerMedia[index];
                     return _buildBannerItem(
                       context,
-                      bannerModel: bannerModel,
+                      mediaItem: mediaItem,
+                      index: index,
                       isActive: index == currentIndex,
                     );
                   },
                 ),
-                if (widget.showGradient)
-                  _buildGradientOverlay(),
-                if (widget.showIndicator && widget.bannerModels.length > 1)
+                if (widget.showGradient) _buildGradientOverlay(),
+                if (widget.showIndicator && _bannerMedia.length > 1)
                   _buildIndicatorWithText(),
+                // Video icon indicator
+                if (_bannerMedia[currentIndex].isVideo)
+                  Positioned(
+                    top: 12,
+                    right: 12,
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.6),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Icon(
+                        Icons.videocam,
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
@@ -213,46 +325,117 @@ class _BannerWidgetState extends State<BannerWidget> {
     );
   }
 
-  Widget _buildBannerItem(BuildContext context,
-      {required BannerModel bannerModel, required bool isActive}) {
+  Widget _buildBannerItem(
+    BuildContext context, {
+    required BannerMediaItem mediaItem,
+    required int index,
+    required bool isActive,
+  }) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       margin: EdgeInsets.all(isActive ? 0 : 4),
       curve: Curves.easeInOut,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(widget.borderRadius),
-        child: Stack(
-          children: [
-            Positioned.fill(
-              child: FancyShimmerImage(
-                imageUrl:
-                    bannerModel.data?.banner?.mainSliderBackgroundImage ?? '',
-                width: double.infinity,
-                height: double.infinity,
-                boxFit: BoxFit.cover,
-                errorWidget: Image.asset(
-                  getPngAsset('product'),
-                  fit: BoxFit.cover,
-                ),
+        child: mediaItem.isVideo
+            ? _buildVideoItem(index, mediaItem, isActive)
+            : _buildImageItem(mediaItem, isActive),
+      ),
+    );
+  }
+
+  Widget _buildVideoItem(int index, BannerMediaItem mediaItem, bool isActive) {
+    final controller = _videoControllers[index];
+
+    if (controller == null || !controller.value.isInitialized) {
+      return Stack(
+        children: [
+          if (mediaItem.thumbnailUrl != null)
+            FancyShimmerImage(
+              imageUrl: mediaItem.thumbnailUrl!,
+              width: double.infinity,
+              height: double.infinity,
+              boxFit: BoxFit.cover,
+            )
+          else
+            Container(
+              color: Colors.black,
+              child: const Center(
+                child: CircularProgressIndicator(color: Colors.white),
               ),
             ),
-            AnimatedScale(
-              scale: isActive ? 1.0 : 0.95,
-              duration: const Duration(milliseconds: 400),
-              child: FancyShimmerImage(
-                imageUrl: bannerModel.data?.banner?.mainSliderImage ?? '',
-                width: double.infinity,
-                height: double.infinity,
-                boxFit: BoxFit.cover,
-                errorWidget: Image.asset(
-                  getPngAsset('product'),
-                  fit: BoxFit.cover,
+        ],
+      );
+    }
+
+    if (controller.value.hasError) {
+      return Container(
+        color: Colors.black,
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.error_outline, color: Colors.white, size: 40),
+              const SizedBox(height: 8),
+              Text(
+                'Video unavailable',
+                style: TextStyle(
+                  color: Colors.white.withOpacity(0.7),
+                  fontSize: 12,
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
+        ),
+      );
+    }
+
+    return AnimatedScale(
+      scale: isActive ? 1.0 : 0.95,
+      duration: const Duration(milliseconds: 400),
+      child: Container(
+        color: Colors.black,
+        child: Center(
+          child: AspectRatio(
+            aspectRatio: controller.value.aspectRatio,
+            child: VideoPlayer(controller),
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _buildImageItem(BannerMediaItem mediaItem, bool isActive) {
+    return Stack(
+      children: [
+        if (mediaItem.backgroundImage != null)
+          Positioned.fill(
+            child: FancyShimmerImage(
+              imageUrl: mediaItem.backgroundImage!,
+              width: double.infinity,
+              height: double.infinity,
+              boxFit: BoxFit.cover,
+              errorWidget: Image.asset(
+                getPngAsset('product'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        AnimatedScale(
+          scale: isActive ? 1.0 : 0.95,
+          duration: const Duration(milliseconds: 400),
+          child: FancyShimmerImage(
+            imageUrl: mediaItem.url,
+            width: double.infinity,
+            height: double.infinity,
+            boxFit: BoxFit.cover,
+            errorWidget: Image.asset(
+              getPngAsset('product'),
+              fit: BoxFit.cover,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -265,8 +448,8 @@ class _BannerWidgetState extends State<BannerWidget> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _buildTextContent(),
-            8.hSize,
+            if (_bannerMedia[currentIndex].text != null) _buildTextContent(),
+            if (_bannerMedia[currentIndex].text != null) 8.hSize,
             _buildSelectedIndicator(),
           ],
         ),
@@ -296,7 +479,7 @@ class _BannerWidgetState extends State<BannerWidget> {
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: List.generate(widget.bannerModels.length, (index) {
+        children: List.generate(_bannerMedia.length, (index) {
           return GestureDetector(
             onTap: () {
               _pageController.animateToPage(
@@ -332,6 +515,9 @@ class _BannerWidgetState extends State<BannerWidget> {
   }
 
   Widget _buildTextContent() {
+    final text = _bannerMedia[currentIndex].text;
+    if (text == null || text.isEmpty) return const SizedBox.shrink();
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
@@ -339,7 +525,7 @@ class _BannerWidgetState extends State<BannerWidget> {
         borderRadius: BorderRadius.circular(16),
       ),
       child: MainText(
-        widget.bannerModels[currentIndex].data?.banner?.mainSliderText ?? '',
+        text,
         fontSize: 18,
         color: Colors.white,
         fontWeight: FontWeight.w600,
@@ -385,11 +571,11 @@ class _BannerWidgetState extends State<BannerWidget> {
       child: AnimatedAlign(
         duration: const Duration(milliseconds: 300),
         alignment: Alignment(
-          -1.0 + (2.0 * currentIndex / (widget.bannerModels.length - 1)),
+          -1.0 + (2.0 * currentIndex / (_bannerMedia.length - 1)),
           0,
         ),
         child: Container(
-          width: 100 / widget.bannerModels.length,
+          width: 100 / _bannerMedia.length,
           height: 4,
           decoration: BoxDecoration(
             color: AppColors.yPrimaryColor,
@@ -408,7 +594,7 @@ class _BannerWidgetState extends State<BannerWidget> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
-        '${currentIndex + 1}/${widget.bannerModels.length}',
+        '${currentIndex + 1}/${_bannerMedia.length}',
         style: const TextStyle(
           color: Colors.white,
           fontSize: 14,
@@ -426,7 +612,7 @@ class _BannerWidgetState extends State<BannerWidget> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
-        '${currentIndex + 1} / ${widget.bannerModels.length}',
+        '${currentIndex + 1} / ${_bannerMedia.length}',
         style: const TextStyle(
           color: Colors.white,
           fontSize: 12,
@@ -483,6 +669,9 @@ class _BannerWidgetState extends State<BannerWidget> {
   void dispose() {
     _autoPlayTimer?.cancel();
     _pageController.dispose();
+    for (var controller in _videoControllers.values) {
+      controller.dispose();
+    }
     super.dispose();
   }
 }

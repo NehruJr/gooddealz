@@ -34,14 +34,34 @@ class ProductDetailsPage extends StatefulWidget {
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   bool showMore = false;
-  final List<String> _productImages = [];
+  final List<MediaItem> _productMedia = [];
 
   @override
   void initState() {
     super.initState();
-    if (widget.productDetails.productImages != null) {
-      _productImages.addAll(widget.productDetails.productImages!);
-      _productImages.add(widget.productDetails.image ?? '');
+    if (widget.productDetails.productImages != null &&
+        widget.productDetails.productImages!.isNotEmpty) {
+      _productMedia.addAll(widget.productDetails.productImages!);
+    } else {
+      if (widget.productDetails.productImages != null) {
+        _productMedia.addAll(
+          widget.productDetails.productImages!.map(
+            (url) => MediaItem(url: url.url, isVideo: url.isVideo),
+          ),
+        );
+      }
+    }
+
+    if (widget.productDetails.image != null &&
+        widget.productDetails.image!.isNotEmpty) {
+      final mainImageExists = _productMedia.any(
+        (media) => media.url == widget.productDetails.image,
+      );
+      if (!mainImageExists) {
+        _productMedia.add(
+          MediaItem(url: widget.productDetails.image!, isVideo: false),
+        );
+      }
     }
   }
 
@@ -244,7 +264,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               ),
             ),
           ),
-
           SliverToBoxAdapter(
             child: Container(
               width: context.width,
@@ -325,14 +344,12 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ),
             ),
           ),
-       
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -360,8 +377,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                               ..withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
-                              color:
-                                  AppColors.yPrimaryColor.withValues(alpha: 0.3),
+                              color: AppColors.yPrimaryColor
+                                  .withValues(alpha: 0.3),
                             ),
                           ),
                           child: Column(
@@ -377,7 +394,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                                   .languageCode ==
                                               'en'
                                           ? widget.productDetails.price ?? ''
-                                          : widget.productDetails.currency ?? '',
+                                          : widget.productDetails.currency ??
+                                              '',
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
                                       color: AppColors.yWhiteColor,
@@ -456,7 +474,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       ),
                     ),
                   const SizedBox(height: 24),
-    
                   if (isDrawActive)
                     Container(
                       padding: const EdgeInsets.all(16),
@@ -516,8 +533,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       ),
                     ),
                   const SizedBox(height: 24),
-      
-                  if (_productImages.isNotEmpty)
+                  if (widget.productDetails.productImages?.isNotEmpty ?? false)
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -530,7 +546,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         const SizedBox(height: 12),
                         Center(
                           child: Container(
-                            height: 140,
+                            height: 180,
                             decoration: BoxDecoration(
                               border: Border.all(
                                 color: Colors.grey[300]!,
@@ -543,13 +559,16 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                 ),
                               ],
                             ),
-                            child: CarousalWidget(images: _productImages),
+                            child: MediaCarouselWidget(
+                              mediaItems: _productMedia,
+                              height: 240,
+                              width: double.infinity,
+                            ),
                           ),
                         ),
                       ],
                     ),
                   const SizedBox(height: 24),
-    
                   if (widget.productDetails.prize?.winner != null) ...[
                     MainText(
                       'winner'.tr,
@@ -615,7 +634,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     ),
                     const SizedBox(height: 24),
                   ],
-       
                   if (!isSoldOut)
                     Consumer<CartProvider>(
                       builder: (context, cartProvider, _) {
